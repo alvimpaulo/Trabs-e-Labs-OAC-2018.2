@@ -9,8 +9,8 @@
 
  module Control_UNI(
     input  [31:0] iInstr, 
-    output    	 	oOrigAULA, oOrigBULA, oRegWrite, oMemWrite, oMemRead,
-	 output [1:0]	oMem2Reg, oOrigPC,
+    output    	 	oOrigAULA, oOrigBULA, oRegWrite, oMemWrite, oMemRead, oFPRegWrite, oMemWriteFPouInt, 
+	 output [1:0]	oMem2Reg, oOrigPC, oCompOuMvouCvt, oDataToRegFP
 	 output [4:0]  oALUControl
 );
 
@@ -18,6 +18,7 @@
 wire [6:0] Opcode = iInstr[ 6: 0];
 wire [2:0] Funct3	= iInstr[14:12];
 wire [6:0] Funct7	= iInstr[31:25];
+wire [4:0] RS2      = iInstr[24:20];
 
 
 always @(*)

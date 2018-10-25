@@ -55,7 +55,15 @@ parameter
 	FOPCLT      = 4'd8,
 	FOPCLE      = 4'd9,
 	FOPCVTSW    = 4'd10,
-	FOPCVTWS    = 4'd11,		
+	FOPCVTWS    = 4'd11,    
+    FOPCVTSWU   = 4,d12,    //criar operação
+    FOPCVTWUS   = 4'd13,    //criar operação
+    FOPSGNJS    = 4'd14,    //criar operação		
+    FOPSGNJN    = 4'd15,    //criar operação
+    FOPSGNJX    = 4'd16,    //criar operação
+    FOPMIN      = 4'd17,    //criar operação
+    FOPMAX      = 4'd18,    //criar operação
+
 
 
 /* Campo OpCode */
