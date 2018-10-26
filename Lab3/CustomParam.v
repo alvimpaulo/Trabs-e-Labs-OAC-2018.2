@@ -151,6 +151,10 @@ parameter
 	FUNCT3_REM			= 3'b110,
 	FUNCT3_REMU			= 3'b111,
 
+	/* FLOAT POINT */
+	FUNCT3_FSGNJS		= 3'b000;
+	FUNCT3_FSGNJNS		= 3'b001;
+	FUNCT3_FSGNJXS		= 3'b010;
 
 /* ADDRESS MACROS *****************************************************************************************************/
 
