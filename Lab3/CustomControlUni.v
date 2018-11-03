@@ -12,6 +12,7 @@
     output    	  oOrigAULA, oOrigBULA, oOrigAFULA, oRegWrite, oMemWrite, oMemRead, oFPRegWrite, oMemWriteFPouInt, 
 	output [1:0]  oMem2Reg, oOrigPC, oCompOuMvouCvt, oDataToRegFP
 	output [4:0]  oALUControl
+	output [3:0]  oFPALUControl
 );
 
 
@@ -38,6 +39,7 @@ always @(*)
 				oOrigPC		<= 2'b00;
 				oCompOuMvouCvt <= 2'bxx;
 				oDataToRegFP <= 2'bxx;
+				oFPALUControl <= FPOPNULL;
 			end
 		OPC_OPIMM:
 			begin
@@ -53,6 +55,7 @@ always @(*)
 				oOrigPC		<= 2'b00;
 				oCompOuMvouCvt <= 2'bxx;
 				oDataToRegFP <= 2'bxx;
+				oFPALUControl <= FPOPNULL;
 
 				case (Funct3)
 					FUNCT3_ADD:			oALUControl <= OPADD;
@@ -81,6 +84,7 @@ always @(*)
 							oOrigPC		<= 2'b00;
 							oCompOuMvouCvt <= 2'bxx;
 							oDataToRegFP <= 2'bxx;
+							oFPALUControl <= FPOPNULL;
 						end				
 				endcase
 			end
@@ -100,6 +104,7 @@ always @(*)
 				oOrigPC		<= 2'b00;
 				oCompOuMvouCvt <= 2'bxx;
 				oDataToRegFP <= 2'bxx;
+				oFPALUControl <= FPOPNULL;
 			end
 			
 		OPC_STORE:
@@ -117,6 +122,7 @@ always @(*)
 				oOrigPC		<= 2'b00;
 				oCompOuMvouCvt <= 2'bxx;
 				oDataToRegFP <= 2'bxx;
+				oFPALUControl <= FPOPNULL;
 			end
 		
 		OPC_RTYPE:
@@ -133,6 +139,7 @@ always @(*)
 				oOrigPC		<= 2'b00;
 				oCompOuMvouCvt <= 2'bxx;
 				oDataToRegFP <= 2'bxx;
+				oFPALUControl <= FPOPNULL;
 			case (Funct7)
 				FUNCT7_ADD,  // ou qualquer outro 7'b0000000
 				FUNCT7_SUB:	 // SUB ou SRA			
@@ -166,6 +173,7 @@ always @(*)
 								oOrigPC		<= 2'b00;
 								oCompOuMvouCvt <= 2'bxx;
 								oDataToRegFP <= 2'bxx;
+								oFPALUControl <= FPOPNULL;
 							end				
 					endcase
 
@@ -195,6 +203,7 @@ always @(*)
 								oOrigPC		<= 2'b00;
 								oCompOuMvouCvt <= 2'bxx;
 								oDataToRegFP <= 2'bxx;
+								oFPALUControl <= FPOPNULL;
 							end				
 					endcase
 `endif		
@@ -213,6 +222,7 @@ always @(*)
 						oOrigPC		<= 2'b00;
 						oCompOuMvouCvt <= 2'bxx;
 						oDataToRegFP <= 2'bxx;
+						oFPALUControl <= FPOPNULL;
 					end				
 			endcase			
 		end
@@ -227,6 +237,7 @@ always @(*)
 				oMemWriteFPouInt <= 1'bx; 
 				oMemRead 	<= 1'b0; 
 				oOrigPC		<= 2'b00;
+				oALUControl	<= OPNULL;
 
                 case (Funct7):
                     FUNCT7_FP_ADD:
@@ -234,36 +245,40 @@ always @(*)
 							oRegWrite <= 1'b0;
 							oFPRegWrite <= 1'b1;
 							oMem2Reg 	<= 2'bxx;
-							oALUControl	<= FOPADD;
+							oFPALUControl	<= FOPADD;
 							oDataToRegFP <= 2'b00;
 							oCompOuMvouCvt <= 2'bxx;
+							oALUControl	<= OPNULL;
 						end	
                     FUNCT7_FP_SUB:
 						begin
 							oRegWrite <= 1'b0;
 							oFPRegWrite <= 1'b1;
 							oMem2Reg 	<= 2'bxx;
-							oALUControl	<= FOPSUB;
+							oFPALUControl	<= FOPSUB;
 							oDataToRegFP <= 2'b00;
 							oCompOuMvouCvt <= 2'bxx;
+							oALUControl	<= OPNULL;
 						end	
                     FUNCT7_FP_MUL:
 						begin
 							oRegWrite <= 1'b0;
 							oFPRegWrite <= 1'b1;
 							oMem2Reg 	<= 2'bxx;
-							oALUControl	<= FOPMUL;
+							oFPALUControl	<= FOPMUL;
 							oDataToRegFP <= 2'b00;
 							oCompOuMvouCvt <= 2'bxx;
+							oALUControl	<= OPNULL;
 						end	
                     FUNCT7_FP_DIV:
 						begin
 							oRegWrite <= 1'b0;
 							oFPRegWrite <= 1'b1;
 							oMem2Reg 	<= 2'bxx;
-							oALUControl	<= FOPDIV;
+							oFPALUControl	<= FOPDIV;
 							oDataToRegFP <= 2'b00;
 							oCompOuMvouCvt <= 2'bxx;
+							oALUControl	<= OPNULL;
 						end
                     FUNCT7_FP_SIGN:
 						begin
@@ -272,15 +287,17 @@ always @(*)
 							oMem2Reg 	<= 2'bxx;
 							oDataToRegFP <= 2'b00;
 							oCompOuMvouCvt <= 2'bxx;
+							oALUControl	<= OPNULL;
 							case (Funct3)
-								FUNCT3_FSGNJS: oALUControl	<= FOPSGNJS;
-								FUNCT3_FSGNJNS: oALUControl	<= FOPSGNJNS; 
-								FUNCT3_FSGNJXS:	 oALUControl	<= FOPSGNJXS; 
+								FUNCT3_FSGNJS: oFPALUControl	<= FOPSGNJS;
+								FUNCT3_FSGNJNS: oFPALUControl	<= FOPSGNJNS; 
+								FUNCT3_FSGNJXS:	 oFPALUControl	<= FOPSGNJXS; 
 								default:
 									begin
 										oRegWrite <= 1'b0;
 										oFPRegWrite <= 1'b0;
 										oMem2Reg 	<= 2'bxx;
+										oALUControl	<= OPNULL;
 										oALUControl	<= OPNULL;
 										oDataToRegFP <= 2'b00;
 										oCompOuMvouCvt <= 2'bxx;
@@ -294,9 +311,10 @@ always @(*)
 							oMem2Reg 	<= 2'bxx;
 							oDataToRegFP <= 2'b00;
 							oCompOuMvouCvt <= 2'bxx;
+							oALUControl	<= OPNULL;
 							case (Funct3)
-								FUNCT3_MIN:	oALUControl	<= FOPMIN;
-								FUNCT3_MAX: oALUControl	<= FOPMAX;
+								FUNCT3_MIN:	oFPALUControl	<= FOPMIN;
+								FUNCT3_MAX: oFPALUControl	<= FOPMAX;
 								default:
 									begin
 										oRegWrite <= 1'b1;
@@ -313,9 +331,10 @@ always @(*)
 							oRegWrite <= 1'b0;
 							oFPRegWrite <= 1'b1;
 							oMem2Reg 	<= 2'bxx;
-							oALUControl	<= FOPSQRT;
+							oFPALUControl	<= FOPSQRT;
 							oDataToRegFP <= 2'b00;
 							oCompOuMvouCvt <= 2'bxx;
+							oALUControl	<= OPNULL;
 						end	
                     FUNCT7_FP_COMP:
 						begin
@@ -325,14 +344,16 @@ always @(*)
 							oMem2Reg 	<= 2'b11;
 							oDataToRegFP <= 2'bxx;
 							oCompOuMvouCvt <= 2'b01;
+							oALUControl	<= OPNULL;
 							case (Funct3)
-								FUNCT3_FLE: oALUControl	<= FOPCLE;
-								FUNCT3_FLT: oALUControl	<= FOPCLT; 
-								FUNCT3_FEQ: oALUControl	<= FOPCEQ; 
+								FUNCT3_FLE: oFPALUControl	<= FOPCLE;
+								FUNCT3_FLT: oFPALUControl	<= FOPCLT; 
+								FUNCT3_FEQ: oFPALUControl	<= FOPCEQ; 
 								default:
 									begin
 										oRegWrite <= 1'b1;
 										oFPRegWrite <= 1'b0;
+										oFPALUControl	<= OPNULL;
 										oMem2Reg 	<= 2'b11;
 										oALUControl	<= OPNULL;
 										oDataToRegFP <= 2'bxx;
@@ -347,10 +368,20 @@ always @(*)
 							oMem2Reg 	<= 2'b11;
 							oDataToRegFP <= 2'bxx;
 							oCompOuMvouCvt <= 2'b10;
+							oALUControl	<= OPNULL;
 							case (RS2)
-								RS2_CVTWS: oALUControl	<= FOPCVTWS;
-								RS2_CVTWUS: oALUControl	<= FOPCVTWUS;
+								RS2_CVTWS: oFPALUControl	<= FOPCVTWS;
+								RS2_CVTWUS: oFPALUControl	<= FOPCVTWUS;
 								default:
+									begin
+										oRegWrite <= 1'b1;
+										oFPRegWrite <= 1'b0;
+										oFPALUControl	<= OPNULL;
+										oMem2Reg 	<= 2'b11;
+										oALUControl	<= OPNULL;
+										oDataToRegFP <= 2'bxx;
+										oCompOuMvouCvt <= 2'b00;
+									end
 							endcase
 						end
                     FUNCT7_FP_CVTSW:
@@ -361,10 +392,20 @@ always @(*)
 							oMem2Reg 	<= 2'bxx;
 							oDataToRegFP <= 2'b01;
 							oCompOuMvouCvt <= 2'bxx;
+							oALUControl	<= OPNULL;
 							case (RS2)
-								RS2_CVTWS: oALUControl	<= FOPCVTSW;
-								RS2_CVTWUS: oALUControl	<= FOPCVTSWU;
+								RS2_CVTWS: oFPALUControl	<= FOPCVTSW;
+								RS2_CVTWUS: oFPALUControl	<= FOPCVTSWU;
 								default:
+									begin
+										oRegWrite <= 1'b1;
+										oFPRegWrite <= 1'b0;
+										oFPALUControl	<= OPNULL;
+										oMem2Reg 	<= 2'b11;
+										oALUControl	<= OPNULL;
+										oDataToRegFP <= 2'bxx;
+										oCompOuMvouCvt <= 2'b00;
+									end
 							endcase
 						end
                     FUNCT7_FP_MVXW:
@@ -372,6 +413,7 @@ always @(*)
 							oRegWrite <= 1'b1;
 							oFPRegWrite <= 1'b0;
 							oMem2Reg 	<= 2'b11;
+							oFPALUControl	<= OPNULL;
 							oALUControl	<= OPNULL;
 							oDataToRegFP <= 2'bxx;
 							oCompOuMvouCvt <= 2'b01;
@@ -381,6 +423,7 @@ always @(*)
 							oRegWrite <= 1'b0;
 							oFPRegWrite <= 1'b1;
 							oMem2Reg 	<= 2'bxx;
+							oFPALUControl	<= OPNULL;
 							oALUControl	<= OPNULL;
 							oDataToRegFP <= 2'b00;
 							oCompOuMvouCvt <= 2'bxx;
@@ -388,6 +431,7 @@ always @(*)
 					default:
 						begin
 							oRegWrite	<= 1'b0;
+							oFPALUControl	<= OPNULL;
 							oFPRegWrite <= 1'b0;
 							oALUControl	<= OPNULL;
 							oMem2Reg 	<= 2'b00;
@@ -411,6 +455,7 @@ always @(*)
 				oOrigPC		<= 2'b00;
 				oCompOuMvouCvt <= 2'bxx;
 				oDataToRegFP <= 2'b00;
+				oFPALUControl <= FPOPNULL;
 			end
         OPC_FP_FSW:
             begin
@@ -427,6 +472,7 @@ always @(*)
 				oOrigPC		<= 2'b00;
 				oCompOuMvouCvt <= 2'bxx;
 				oDataToRegFP <= 2'bxx;
+				oFPALUControl <= FPOPNULL;
             end
 `endif
 		
@@ -444,6 +490,7 @@ always @(*)
 				oOrigPC		<= 2'b00;
 				oCompOuMvouCvt <= 2'bxx;
 				oDataToRegFP <= 2'bxx;
+				oFPALUControl <= FPOPNULL;
 			end
 			
 		OPC_BRANCH:
@@ -460,6 +507,7 @@ always @(*)
 				oOrigPC		<= 2'b01;
 				oCompOuMvouCvt <= 2'bxx;
 				oDataToRegFP <= 2'bxx;
+				oFPALUControl <= FPOPNULL;
 			end
 			
 		OPC_JALR:
@@ -476,6 +524,7 @@ always @(*)
 				oOrigPC		<= 2'b11;
 				oCompOuMvouCvt <= 2'bxx;
 				oDataToRegFP <= 2'bxx;
+				oFPALUControl <= FPOPNULL;
 			end
 		
 		OPC_JAL:
@@ -492,6 +541,7 @@ always @(*)
 				oOrigPC		<= 2'b10;
 				oCompOuMvouCvt <= 2'bxx;
 				oDataToRegFP <= 2'bxx;
+				oFPALUControl <= FPOPNULL;
 			end
       
 		default: // instrucao invalida
@@ -508,6 +558,7 @@ always @(*)
 				oOrigPC		<= 2'b00;
 				oCompOuMvouCvt <= 2'bxx;
 				oDataToRegFP <= 2'bxx;
+				oFPALUControl <= FPOPNULL;
         end
 	endcase
 
