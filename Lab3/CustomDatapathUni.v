@@ -20,17 +20,10 @@ module Datapath_UNI (
     output wire [31:0] mDebug,	 
     input  wire [ 4:0] mVGASelect,
     output wire [31:0] mVGARead,
-<<<<<<< HEAD
 	output wire [31:0] mRead1,
 	output wire [31:0] mRead2,
 	output wire [31:0] mRegWrite,
 	output wire [31:0] mULA,	 
-=======
-	 output wire [31:0] mRead1,
-	 output wire [31:0] mRead2,
-	 output wire [31:0] mRegWrite,
-	 output wire [31:0] mULA,	 
->>>>>>> origin/master
 
 
     //  Barramento de Dados
@@ -55,24 +48,16 @@ module Datapath_UNI (
 reg  [31:0] PC;
 wire [31:0] wPC, wPC4;
 wire [ 4:0] wRs1, wRs2, wRd;
-<<<<<<< HEAD
 wire [31:0] wRead1, wRead2, wRegWrite, wReadFP1, wReadFP2, wRegFPWrite, wiMem, woMUXCMC;
 wire [31:0] wOrigAULA, wOrigBULA, wALUresult, wOrigAFPULA, wOrigBFPULA, wFPULAresult, wFPULACompResult;
 wire [31:0] wiPC;
 wire 		wBranch;
-=======
-wire [31:0] wRead1, wRead2, wRegWrite;
-wire [31:0] wOrigAULA,wOrigBULA,wALUresult;
-wire [31:0] wiPC;
-wire 			wBranch;
->>>>>>> origin/master
 wire [31:0] wBranchPC;
 wire [31:0] wImmediate;
 wire [31:0] wInstr;
 wire [ 2:0] wFunct3;
 
 // sinais do controle 
-<<<<<<< HEAD
 wire        wCRegWrite, wCFPRegWrite;
 wire 		wCOrigAULA,wCOrigBULA, wCOrigAFPULA;
 wire [ 1:0] wCOrigPC;
@@ -81,14 +66,6 @@ wire 		wCMemRead, wCMemWrite, wCMemWriteFPouInt;
 wire [ 1:0] wCDataToRegFP;
 wire [ 1:0] wCCompOuMvOuCvt;
 wire [ 4:0] wCALUControl, wCFPALUControl;
-=======
-wire        wCRegWrite;
-wire 		   wCOrigAULA,wCOrigBULA;
-wire [ 1:0] wCOrigPC;
-wire [ 1:0] wCMem2Reg;
-wire 			wCMemRead, wCMemWrite;
-wire [ 4:0] wCALUControl;
->>>>>>> origin/master
 
 
 // Sinais de monitoramento e Debug
@@ -161,7 +138,6 @@ Registers REGISTERS0 (
 	);
 
 
-<<<<<<< HEAD
 // -- Registradores FP
 FPRegisters REGISTERS1 (
     .iCLK(iCLK),
@@ -179,8 +155,6 @@ FPRegisters REGISTERS1 (
     .iVGASelect(wVGASelect),            // para mostrar Regs na tela
     .oVGARead(wVGARead)                 // para mostrar Regs na tela
 );
-=======
->>>>>>> origin/master
 // Unidade geradora do imediato 
 ImmGen IMMGEN0 (
     .iInstrucao(wInstr),
@@ -197,15 +171,10 @@ ALU ALU0 (
     .oZero()
 	);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
 // Unidade de controle de escrita 
 wire [31:0] wMemDataWrite,wReadData;
 wire [ 3:0] wMemEnable;
 
-<<<<<<< HEAD
 // FPALU
 FPALU FPALU0 (
     .iclock(CLK),
@@ -224,12 +193,6 @@ MemStore MEMSTORE0 (
     .iAlignment(wALUresult[1:0]),
     .iFunct3(wFunct3),
     .iData(wiMem),
-=======
-MemStore MEMSTORE0 (
-    .iAlignment(wALUresult[1:0]),
-    .iFunct3(wFunct3),
-    .iData(wRead2),
->>>>>>> origin/master
     .oData(wMemDataWrite),
     .oByteEnable(wMemEnable),
     .oException()
@@ -260,7 +223,6 @@ MemLoad MEMLOAD0 (
 Control_UNI CONTROL0 (
     .iInstr(wInstr),
     .oOrigAULA(wCOrigAULA),
-<<<<<<< HEAD
     .oOrigBULA(wCOrigBULA),
     .oOrigAFPULA(wOrigAFPULA),
     .oMem2Reg(wCMem2Reg),
@@ -273,15 +235,6 @@ Control_UNI CONTROL0 (
     .oOrigPC(wCOrigPC),
     .oCompOuMvouCvt(wCCompOuMvOuCvt),
     .oDataToRegFP(wCDataToRegFP)
-=======
-    .oOrigBULA(wCOrigBULA),	 
-    .oMem2Reg(wCMem2Reg),
-    .oRegWrite(wCRegWrite),
-    .oMemWrite(wCMemWrite),
-	 .oMemRead(wCMemRead),
-    .oALUControl(wCALUControl),
-    .oOrigPC(wCOrigPC)
->>>>>>> origin/master
 	);
 
 
@@ -294,12 +247,9 @@ BranchControl BC0 (
 );
 
 
-<<<<<<< HEAD
 // ******************************************************
 // ASSIGN !!!
 assign wOrigBFPULA      = wReadFP2;
-=======
->>>>>>> origin/master
 
 // ******************************************************
 // multiplexadores							  						 
@@ -312,16 +262,11 @@ always @(*)
 		  default:	 wOrigAULA <= ZERO;
     endcase
 
-<<<<<<< HEAD
-=======
-	 
->>>>>>> origin/master
 
 always @(*)
     case(wCOrigBULA)
         1'b0:      wOrigBULA <= wRead2;
         1'b1:      wOrigBULA <= wImmediate;
-<<<<<<< HEAD
 		default:   wOrigBULA <= ZERO;
     endcase	 
 
@@ -368,45 +313,21 @@ always @(*)
         2'b01:     wRegWrite <= wPC4;				// jalr e jal
         2'b10:     wRegWrite <= wMemLoad;			// Loads
         2'b11:     wRegWrite <= woMUXCMC;           // MUXCompouMovouConv to ...
-=======
-		  default:	 wOrigBULA <= ZERO;
-    endcase	 
-	 
-
-	 
-always @(*)
-    case(wCMem2Reg)
-        2'b00:     wRegWrite <= wALUresult;		// Tipo-R e Tipo-I
-        2'b01:     wRegWrite <= wPC4;				// jalr e jal
-        2'b10:     wRegWrite <= wMemLoad;			// Loads
->>>>>>> origin/master
         default:   wRegWrite <= ZERO;
     endcase
 
 	 
 always @(*)
 	case(wCOrigPC)
-<<<<<<< HEAD
 		2'b00:     wiPC <= wPC4;									    // PC+4
         2'b01:     wiPC <= wBranch ? wBranchPC: wPC4;					// Branches
         2'b10:     wiPC <= wBranchPC;									// jal
         2'b11:     wiPC <= (wRead1+wImmediate) & ~(32'h000000001);	    // jalr
 		default:   wiPC <= ZERO;
-=======
-		2'b00:     wiPC <= wPC4;												// PC+4
-      2'b01:     wiPC <= wBranch ? wBranchPC: wPC4;					// Branches
-      2'b10:     wiPC <= wBranchPC;											// jal
-      2'b11:     wiPC <= (wRead1+wImmediate) & ~(32'h000000001);	// jalr
-		default:	  wiPC <= ZERO;
->>>>>>> origin/master
 	endcase
 
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
 // ****************************************************** 
 // A cada ciclo de clock					  						 
 

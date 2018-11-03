@@ -9,9 +9,9 @@
 
  module Control_UNI(
     input  [31:0] iInstr, 
-    output    	  oOrigAULA, oOrigBULA, oOrigAFULA, oRegWrite, oMemWrite, oMemRead, oFPRegWrite, oMemWriteFPouInt, 
-	output [1:0]  oMem2Reg, oOrigPC, oCompOuMvouCvt, oDataToRegFP
-	output [4:0]  oALUControl
+    output    	  oOrigAULA, oOrigBULA, oOrigFPAULA, oRegWrite, oMemWrite, oMemRead, oFPRegWrite, oMemWriteFPouInt, 
+	output [1:0]  oMem2Reg, oOrigPC, oCompOuMvouCvt, oDataToRegFP,
+	output [4:0]  oALUControl,
 	output [3:0]  oFPALUControl
 );
 
@@ -239,7 +239,7 @@ always @(*)
 				oOrigPC		<= 2'b00;
 				oALUControl	<= OPNULL;
 
-                case (Funct7):
+                case (Funct7)
                     FUNCT7_FP_ADD:
 						begin
 							oRegWrite <= 1'b0;
@@ -360,7 +360,7 @@ always @(*)
 										oCompOuMvouCvt <= 2'b00;
 									end
 							endcase
-						
+						end
                     FUNCT7_FP_CVTWS:
 						begin
 							oRegWrite <= 1'b1;
