@@ -44,6 +44,7 @@ parameter
 	OPNULL	= 5'd31, // saída ZERO
 		
 /* Operacoes da ULA FP */
+	FPOPNULL	= 4'd31
 	FOPADD      = 4'd0,
 	FOPSUB      = 4'd1,
 	FOPMUL      = 4'd2,
