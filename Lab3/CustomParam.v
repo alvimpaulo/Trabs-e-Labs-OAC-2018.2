@@ -152,9 +152,22 @@ parameter
 	FUNCT3_REMU			= 3'b111,
 
 	/* FLOAT POINT */
+	FUNCT3_FLE			= 3'b000;
+	FUNCT3_FLT			= 3'b001;
+	FUNCT3_FEQ			= 3'b010;
+	FUNCT3_MIN			= 3'b000;
+	FUNCT3_MAX			= 3'b001;
 	FUNCT3_FSGNJS		= 3'b000;
 	FUNCT3_FSGNJNS		= 3'b001;
 	FUNCT3_FSGNJXS		= 3'b010;
+
+	/*RS2*/
+
+	RS2_CVTWS 			= 5'b00000;
+	RS2_CVTWUS			= 5'b00001;
+	RS2_CVTSW 			= 5'b00000;
+	RS2_CVTSWU			= 5'b00001;
+
 
 /* ADDRESS MACROS *****************************************************************************************************/
 
