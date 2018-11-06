@@ -5,7 +5,7 @@
 module FPALU (
 	input iclock,
 	input [31:0] idataa,idatab,
-	input [3:0] icontrol,
+	input [4:0] icontrol,
 	output reg [31:0] oresult,
 	output reg 		  onan, ozero, ooverflow, ounderflow,
 	output reg [31:0] oCompResult
