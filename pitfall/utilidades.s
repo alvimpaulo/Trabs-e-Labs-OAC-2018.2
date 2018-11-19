@@ -29,7 +29,7 @@ FimDrawQuadrado: jalr x0 ra 0
 
 ## Retorna true se (x, y) está dentro do quadrado ((x_0, y_0), (x_1, y_1)) e false caso contrário
 ## a0 = x_0; a1 = y_0; a2 = x_1; a3 = y_1; a4 = x; a5 y
-ColisaoObj:
+ColisaoObj: nop
 	#t0 = a0 < a4
 	slt t0 a0 a4
 	#t1 = a2 > a4
