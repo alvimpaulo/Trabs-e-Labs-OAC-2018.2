@@ -9,8 +9,8 @@ MSG2:	.string "Nao ha erros :)"
 
 .text
 	la t1, N		#t0 = N     flw     fsw
-	fcvt.s.w ft1, zero
 	flw ft0, 0(t1)
+	fcvt.s.w ft1, zero
 	fsw ft0, 8(t1)
 	flw ft0, 8(t1)
 	feq.s t0, ft0, ft1
