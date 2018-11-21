@@ -2,6 +2,7 @@
 N:	.float 5.5
 N2:	.float 30.25
 N3:	.float -5.5
+N4:	.word 4 
 MSG:	.string "Endereco do erro : "
 MSG2:	.string "Nao ha erros :)"
 
@@ -9,8 +10,9 @@ MSG2:	.string "Nao ha erros :)"
 
 .text
 	la t1, N		#t0 = N     flw     fsw
+	la t2, N4
 	flw ft0, 0(t1)
-	fcvt.s.w ft1, zero
+	fcvt.s.w ft1, t2
 	fsw ft0, 8(t1)
 	flw ft0, 8(t1)
 	feq.s t0, ft0, ft1
