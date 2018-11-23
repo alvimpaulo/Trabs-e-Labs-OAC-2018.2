@@ -9,9 +9,9 @@ FimDoPrograma: jal x0 FimDoPrograma
 Main: nop
 	addi sp sp -4
 	sw ra 0(sp)
-	InitPersonagem (POSICAO_INICIAL_PERSONAGEM_SUPERIOR_DIREITA_X, POSICAO_INICIAL_PERSONAGEM_SUPERIOR_DIREITA_Y)
+	InitPersonagem (POSICAO_INICIAL_PERSONAGEM_SUPERIOR_DIREITA_X, POSICAO_INICIAL_PERSONAGEM_SUPERIOR_DIREITA_Y) #inicia o personagem
 	loop_do_jogo_Main:
-		jal ra LeTeclaDoTeclado
+		jal ra LeTeclaDoTeclado  #chama a função que le a tecla do teclado
 		li t0 '\n'
 		if_jogo_pausar_loop_do_jogo_Main: bne a0 t0 else_jogo_pausar_loop_do_jogo_Main
 			la t0 estadoDoJogo
