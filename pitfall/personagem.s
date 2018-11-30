@@ -3,6 +3,7 @@ posicaoPersonagemX: .space 4
 posicaoPersonagemY: .space 4
 vectorAditionalParaPulo: .half -2, -1, -1, -1, 0, 0, 0, 1, 1, 1, 2 
 numElementosNoVetor: .half 11
+direcaoDoMovimento: .word 0
 estadoDoPulo: .word 0
 
 .text
@@ -11,7 +12,7 @@ estadoDoPulo: .word 0
 MovePersonagem:
 	la s1 vectorAditionalParaPulo
 	li t0 ' '
-	lw t1 48(s1)
+	lw t1 32(s1)
 	
 	sub t0 t0 a0
 	snez t2 t1
@@ -36,13 +37,16 @@ MovePersonagem:
 	else_tecla_de_pular_foi_apertada_MovePersonagem: nop
 		li t0 'a'
 		if_tecla_de_a_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_a_foi_apertada_MovePersonagem
+			# Altera a posição do personagem pra esquerda
 			lw t0 -8(s1)
 			addi t0 t0 -VELOCIDADE_DOS_PERSONAGEM
 			sw t0 -8(s1)
+
 			jalr x0 ra 0
 		else_tecla_de_a_foi_apertada_MovePersonagem: nop
 			li t0 'd'	 
-			if_tecla_de_d_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_d_foi_apertada_MovePersonagem	
+			if_tecla_de_d_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_d_foi_apertada_MovePersonagem
+				# Altera a posição do personagem pra esquerda	
 				lw t0 -8(s1)
 				addi t0 t0 VELOCIDADE_DOS_PERSONAGEM
 				sw t0 -8(s1)
@@ -52,14 +56,19 @@ MovePersonagem:
 FimMovePersonagem: jalr x0 ra 0
 
 DesenhaPersonagem:
-	addi sp sp -4
+	# salva stack
+	addi sp sp -4 
 	sw ra 0(sp)
-	la t0 posicaoPersonagemX
-	lw a0 0(t0)
-	addi a2 a0 LARGURA_PERSONAGEM
-	lw a1 4(t0)
-	addi a3 a1 ALTURA_PERSONAGEM
+
+	la t0 posicaoPersonagemX 
+	lw a0 0(t0)	#carrega em a0 o ponto x superior esquerdo do personagem
+	addi a2 a0 LARGURA_PERSONAGEM #carrega em a0 o ponto x inferior direito do personagem
+	lw a1 4(t0) #carrega em a0 o ponto y superior esquerdo do personagem
+	addi a3 a1 ALTURA_PERSONAGEM #carrega em a0 o ponto y inferior direito do personagem
+
 	jal ra DrawQuadrado
+
+	# carrega stack
 	lw ra 0(sp)
 	addi sp sp 4
 FimDesenhaPersonagem: jalr x0 ra 0
