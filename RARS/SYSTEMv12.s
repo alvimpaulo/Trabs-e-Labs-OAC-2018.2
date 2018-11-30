@@ -458,9 +458,9 @@ loop1printInt:	div 	t4, a0, t2			# divide por 10 (quociente)
 		rem 	t3, a0, t2			# resto
 		addi 	sp, sp, -4			# aloca espaco na pilha
 		sw 	t3, 0(sp)			# coloca resto na pilha
-		mv 	a0, t4			# atualiza o numero com o quociente
+		mv 	a0, t4				# atualiza o numero com o quociente
 		addi 	t1, t1, 1			# incrementa o contador de digitos
-		bne 	a0, zero, loop1printInt	# verifica se o numero eh zero
+		bne 	a0, zero, loop1printInt		# verifica se o numero eh zero
 				
 loop2printInt:	lw 	t2, 0(sp)			# le digito da pilha
 		addi 	sp, sp, 4			# libera espaco
@@ -468,7 +468,7 @@ loop2printInt:	lw 	t2, 0(sp)			# le digito da pilha
 		sb 	t2, 0(t0)			# coloca caractere no buffer
 		addi 	t0, t0, 1			# incrementa endereco do buffer
 		addi 	t1, t1, -1			# decrementa contador de digitos
-		bne 	t1, zero, loop2printInt	# eh o ultimo?
+		bne 	t1, zero, loop2printInt		# eh o ultimo?
 		sb 	zero, 0(t0)			# insere \NULL na string
 		
 		la 	a0, TempBuffer			# Endereco do buffer da srting
@@ -476,7 +476,7 @@ loop2printInt:	lw 	t2, 0(sp)			# le digito da pilha
 				
 		lw 	ra, 0(sp)			# recupera a
 		addi 	sp, sp, 4			# libera espaco
-fimprintInt:	ret			# retorna
+fimprintInt:	ret					# retorna
 		
 
 
@@ -534,7 +534,7 @@ printString:	addi	sp, sp, -8			# aloca espaco
     		mv	s0, a0              		# s0 = endereco do caractere na string
 
 loopprintString: lb	a0, 0(s0)                 	# le em a0 o caracter a ser impresso
-    		beq     a0, zero, fimloopprintString   # string ASCIIZ termina com NULL
+    		beq     a0, zero, fimloopprintString	# string ASCIIZ termina com NULL
 
     		jal     printChar       		# imprime char
     		
@@ -1119,7 +1119,7 @@ lePrimeiroreadFloat:	mv 	t0, s7		# Endereco de Inicio
 	beq 	t1, tp, pulaPrimreadChar
 	j leUltimoreadFloat
 
-pulaPrimreadChar: addi s7,s7,1		# incrementa o endereco inicial
+pulaPrimreadChar: addi s7,s7,1			# incrementa o endereco inicial
 		  j lePrimeiroreadFloat		# volta a testar o novo primeiro caractere
 		  
 insere0AreadFloat: mv t0, s0			# endereco do ultimo caractere
@@ -1227,7 +1227,7 @@ loopfracreadFloat: 	bge 	t0, s3, fimfracreadFloat	# endereco eh 'e' 'E' ou >ulti
 fimfracreadFloat:
 
 ### Encontra a potencia em ft2																																																																																																																																																							
-potreadFloat:		fcvt.s.w 	ft2, zero			# zera potencia
+potreadFloat:		fcvt.s.w 	ft2, zero		# zera potencia
 			addi 	t0, s3, 1			# endereco seguinte ao 'e'
 			li 	s4, 0				# sinal do expoente positivo
 			lb 	t1, 0(t0)			# le o caractere seguinte ao 'e'
@@ -1243,10 +1243,10 @@ pulapotsinalreadFloat:	mv 	s5, t0 				# Neste ponto s5 contem o endereco do prim
 			fmv.s 	ft3, ft1			# ft3 un/dez/cen = 1
 	
 ### Encontra o expoente inteiro em t2
-expreadFloat:		li 	t2, 0			# zera expoente
-			mv 	t0, s0			# endereco do ultimo caractere da string
-			li 	t3, 10			# numero dez
-			li 	t4, 1			# und/dez/cent
+expreadFloat:		li 	t2, 0				# zera expoente
+			mv 	t0, s0				# endereco do ultimo caractere da string
+			li 	t3, 10				# numero dez
+			li 	t4, 1				# und/dez/cent
 				
 loopexpreadFloat:	blt 	t0, s5, fimexpreadFloat		# ainda nao eh o endereco do primeiro digito?
 			lb 	t1, 0(t0)			# le o caracter

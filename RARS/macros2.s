@@ -6,11 +6,11 @@
 
 ######### Seta o endereco UTVEC ###############
 .macro M_SetEcall(%label)
- 	la t0,%label		# carrega em t0 o endereço base das rotinas do sistema ECALL
- 	csrrw zero,5,t0 	# seta utvec (reg 5) para o endereço t0
+ 	la t6,%label		# carrega em t0 o endereço base das rotinas do sistema ECALL
+ 	csrrw zero,5,t6 	# seta utvec (reg 5) para o endereço t0
  	csrrsi zero,0,1 	# seta o bit de habilitação de interrupção em ustatus (reg 0)
  	la tp,UTVEC		# caso nao tenha csrrw apenas salva o endereco %label em UTVEC
- 	sw t0,0(tp)
+ 	sw t6,0(tp)
  .end_macro
 
 ######### Chamada de Ecall #################
@@ -22,6 +22,8 @@ NotECALL: la tp,UEPC
 	la t6,FimECALL	# endereco após o ecall
 	sw t6,0(tp)	# salva UEPC
 	lw tp,4(tp)	# UTVEC
+	nop
+	nop
 	jalr zero,tp,0	# chama UTVEC
 FimECALL: nop
  .end_macro
