@@ -1,0 +1,33 @@
+###physical resources - MULTICICLE###
+
+#ALMs needed
+9.173
+
+#Total registers
+6092
+
+#Memory bits
+2.214.616
+
+#DSP Blocks
+28
+
+###timing analyzer###
+#TSU
+5.900 (fall)
+
+#TH
+3.544 (rise)
+
+#TCO
+38.839 (fall)
+
+#TPD
+32.590 (FF)
+
+#FMax
+-CLOCK_50
+56.1 MHz
+
+-altera_reserved_tck
+84.58 MHz
