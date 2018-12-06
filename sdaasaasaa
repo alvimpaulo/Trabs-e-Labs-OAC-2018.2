@@ -1,0 +1,147 @@
+[1mdiff --git a/pitfall/personagem.s b/pitfall/personagem.s[m
+[1mindex a12f5a5..8a58952 100644[m
+[1m--- a/pitfall/personagem.s[m
+[1m+++ b/pitfall/personagem.s[m
+[36m@@ -8,14 +8,19 @@[m [mestadoDoPulo: .word 0[m
+ [m
+ .text[m
+ [m
+[32m+[m
+[32m+[m
+[32m+[m[32m#s1 = endereco do vetor do pulo[m
+ # a0 = tecla precionada[m
+ MovePersonagem:[m
+ 	la s1 vectorAditionalParaPulo[m
+ 	li t0 ' '[m
+ 	lw t1 32(s1)[m
+[32m+[m	[32maddi sp, sp, -4[m
+[32m+[m	[32msw ra 0(sp)[m
+ 	[m
+[31m-	sub t0 t0 a0[m
+[31m-	snez t2 t1[m
+[32m+[m	[32msub t0 t0 a0 #Espaco menos  tecla pressionada[m
+[32m+[m	[32msnez t2 t1 # t2 = t1 == 0[m
+ 	snez t0 t0[m
+ 	if_tecla_de_pular_foi_apertada_MovePersonagem: bne t2 t0 else_tecla_de_pular_foi_apertada_MovePersonagem[m
+ 		addi t1 t1 1[m
+[36m@@ -37,38 +42,71 @@[m [mMovePersonagem:[m
+ 	else_tecla_de_pular_foi_apertada_MovePersonagem: nop[m
+ 		li t0 'a'[m
+ 		if_tecla_de_a_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_a_foi_apertada_MovePersonagem[m
+[32m+[m			[32mjal ra ApagaPersonagem[m
+ 			# Altera a posição do personagem pra esquerda[m
+ 			lw t0 -8(s1)[m
+ 			addi t0 t0 -VELOCIDADE_DOS_PERSONAGEM[m
+ 			sw t0 -8(s1)[m
+[31m-[m
+[32m+[m[41m			[m
+[32m+[m			[32m#rotina de final[m
+[32m+[m			[32mlw ra 0(sp)[m
+[32m+[m			[32maddi sp, sp, 4[m
+ 			jalr x0 ra 0[m
+ 		else_tecla_de_a_foi_apertada_MovePersonagem: nop[m
+ 			li t0 'd'	 [m
+ 			if_tecla_de_d_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_d_foi_apertada_MovePersonagem[m
+[32m+[m				[32mjal ra ApagaPersonagem[m
+ 				# Altera a posição do personagem pra esquerda	[m
+ 				lw t0 -8(s1)[m
+ 				addi t0 t0 VELOCIDADE_DOS_PERSONAGEM[m
+ 				sw t0 -8(s1)[m
+[31m-				jalr x0 ra 0[m
+[32m+[m				[32m# jalr x0 ra 0[m
+ 			else_tecla_de_d_foi_apertada_MovePersonagem: nop[m
+ 	[m
+[31m-FimMovePersonagem: jalr x0 ra 0[m
+[32m+[m[32mFimMovePersonagem:[m[41m [m
+[32m+[m		[32mlw ra 0(sp)[m
+[32m+[m		[32maddi sp, sp, 4[m
+[32m+[m		[32mjalr x0 ra 0[m
+ [m
+ DesenhaPersonagem:[m
+ 	# salva stack[m
+ 	addi sp sp -4 [m
+ 	sw ra 0(sp)[m
+[32m+[m[41m	[m
+ [m
+[32m+[m[41m	[m
+ 	la t0 posicaoPersonagemX [m
+ 	lw a0 0(t0)	#carrega em a0 o ponto x superior esquerdo do personagem[m
+ 	addi a2 a0 LARGURA_PERSONAGEM #carrega em a0 o ponto x inferior direito do personagem[m
+ 	lw a1 4(t0) #carrega em a0 o ponto y superior esquerdo do personagem[m
+ 	addi a3 a1 ALTURA_PERSONAGEM #carrega em a0 o ponto y inferior direito do personagem[m
+[31m-[m
+[32m+[m[41m	[m
+[32m+[m	[32m#desenha o quadrado atual[m
+[32m+[m	[32mli a4 0xAA[m
+ 	jal ra DrawQuadrado[m
+ [m
+ 	# carrega stack[m
+ 	lw ra 0(sp)[m
+ 	addi sp sp 4[m
+ FimDesenhaPersonagem: jalr x0 ra 0[m
+[32m+[m
+[32m+[m[32mApagaPersonagem:[m
+[32m+[m	[32m# salva stack[m
+[32m+[m	[32maddi sp sp -4[m[41m [m
+[32m+[m	[32msw ra 0(sp)[m
+[32m+[m[41m	[m
+[32m+[m	[32mla t0 posicaoPersonagemX[m[41m [m
+[32m+[m	[32mlw a0 0(t0)	#carrega em a0 o ponto x superior esquerdo do personagem[m
+[32m+[m	[32maddi a2 a0 1 #carrega em a0 o ponto x inferior direito do personagem[m
+[32m+[m	[32mlw a1 4(t0) #carrega em a0 o ponto y superior esquerdo do personagem[m
+[32m+[m	[32maddi a3 a1 ALTURA_PERSONAGEM #carrega em a0 o ponto y inferior direito do personagem[m
+[32m+[m[41m	[m
+[32m+[m	[32m#desenha o quadrado atual[m
+[32m+[m	[32mli a4 0x00[m
+[32m+[m	[32mjal ra DrawQuadrado[m
+[32m+[m
+[32m+[m	[32m# carrega stack[m
+[32m+[m	[32mlw ra 0(sp)[m
+[32m+[m	[32maddi sp sp 4[m
+[32m+[m[32mFimApagaPersonagem:[m
+[32m+[m[32mjalr x0 ra 0[m
+[1mdiff --git a/pitfall/utilidades.s b/pitfall/utilidades.s[m
+[1mindex 94d49f5..405b870 100644[m
+[1m--- a/pitfall/utilidades.s[m
+[1m+++ b/pitfall/utilidades.s[m
+[36m@@ -1,5 +1,5 @@[m
+ .text[m
+[31m-## a0 = x_0; a1 = y_0; a2 = x_1; a3 = y_1;[m
+[32m+[m[32m## a0 = x_0; a1 = y_0; a2 = x_1; a3 = y_1; a4 = y_1;[m
+ DrawQuadrado: nop[m
+ 	li t0 INIT_MEMORIA_VIDEO	# carrega a memória inicial de video[m
+ 	li t1 320					# carrega a largura da tela[m
+[36m@@ -16,9 +16,8 @@[m [mDrawQuadrado: nop[m
+ 	mul t6 a3 t1 #fim[m
+ 	add t6 t6 a2 #fim[m
+ 	add t6 t6 t0 #fim[m
+[31m-	li a0 0xAA[m
+ 	loop_cria_quadrado_linha_DrawQuadrado: nop[m
+[31m-		sb a0 0(t5)								# salva a cor do do quadrado a ser desenhado[m
+[32m+[m		[32msb a4 0(t5)								# salva a cor do do quadrado a ser desenhado[m
+ 		if_vai_proxima_linha_loop_cria_quadrado_linha_DrawQuadrado: blt t4 t2 else_vai_proxima_linha_loop_cria_quadrado_linha_DrawQuadrado # if es[m
+ 			li t4 0[m
+ 			add t5 t5 t3[m
+[36m@@ -28,7 +27,7 @@[m [mDrawQuadrado: nop[m
+ 		addi t4 t4 1 [m
+ 		bne t5 t6 loop_cria_quadrado_linha_DrawQuadrado[m
+ 	end_loop_cria_quadrado_linha_DrawQuadrado:[m
+[31m-	sb a0 0(t5)[m
+[32m+[m	[32msb a4 0(t5)[m
+ FimDrawQuadrado: jalr x0 ra 0[m
+ [m
+ ## Retorna true se (x, y) est� dentro do quadrado ((x_0, y_0), (x_1, y_1)) e false caso contr�rio[m
+[36m@@ -51,10 +50,12 @@[m [mColisaoObj: nop[m
+ FimColisaoObj: jalr x0 ra 0[m
+ [m
+ LeTeclaDoTeclado:	nop[m
+[32m+[m	[32mli a0 0[m
+ 	li t1 INIT_MEMORIA_TECLADO # carrega valor da memória inicial do tecla[m
+ 	lw a1 ADD_MEMORIA_TECLADO_ESTA_ATIVO(t1) # carrega a word onde tem o bit que diz que uma teca foi apertada[m
+ 	andi a1 a1 MASK_MEMORIA_TECLADO # deixa somente o bit que diz que uma teca foi apertada[m
+[31m-  if_tem_tecla_apertada_LeTeclaDoTeclado: beq t0 x0 FimLeTeclaDoTeclado # if nenhuma tecla foi apertada ele cai fora[m
+[32m+[m[32m  if_tem_tecla_apertada_LeTeclaDoTeclado: beq a1 x0 FimLeTeclaDoTeclado # if nenhuma tecla foi apertada ele cai fora[m
+   	lw a0, ADD_MEMORIA_TECLADO_LE(t1) # carrega o valor da tecla apertada em a0[m
+[32m+[m[41m  [m	[32msw a0, ADD_MEMORIA_TECLADO_MOSTRA(t1) #mostra no display a tecla pressionada[m
+ 	else_tem_tecla_apertada_LeTeclaDoTeclado:[m
+ FimLeTeclaDoTeclado: jalr x0 ra 0[m
