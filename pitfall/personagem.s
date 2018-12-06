@@ -75,8 +75,6 @@ DesenhaPersonagem:
 	addi sp sp -4 
 	sw ra 0(sp)
 	
-
-	
 	la t0 posicaoPersonagemX 
 	lw a0 0(t0)	#carrega em a0 o ponto x superior esquerdo do personagem
 	addi a2 a0 LARGURA_PERSONAGEM #carrega em a0 o ponto x inferior direito do personagem
@@ -99,7 +97,7 @@ ApagaPersonagem:
 	
 	la t0 posicaoPersonagemX 
 	lw a0 0(t0)	#carrega em a0 o ponto x superior esquerdo do personagem
-	addi a2 a0 1 #carrega em a0 o ponto x inferior direito do personagem
+	addi a2 a0 LARGURA_PERSONAGEM #carrega em a0 o ponto x inferior direito do personagem
 	lw a1 4(t0) #carrega em a0 o ponto y superior esquerdo do personagem
 	addi a3 a1 ALTURA_PERSONAGEM #carrega em a0 o ponto y inferior direito do personagem
 	

@@ -1,5 +1,5 @@
 .text
-## a0 = x_0; a1 = y_0; a2 = x_1; a3 = y_1; a4 = y_1;
+## a0 = x_0; a1 = y_0; a2 = x_1; a3 = y_1; a4 = cor;
 DrawQuadrado: nop
 	li t0 INIT_MEMORIA_VIDEO	# carrega a memória inicial de video
 	li t1 320					# carrega a largura da tela
