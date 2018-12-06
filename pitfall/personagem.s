@@ -18,26 +18,28 @@ MovePersonagem:
 	lw t1 32(s1)
 	addi sp, sp, -4
 	sw ra 0(sp)
+	jal ra incioPulo
+
 	
-	sub t0 t0 a0 #Espaco menos  tecla pressionada
+	sub t0 t0 a0 # Espaco menos  tecla pressionada
 	snez t2 t1 # t2 = t1 == 0
 	snez t0 t0
 	if_tecla_de_pular_foi_apertada_MovePersonagem: bne t2 t0 else_tecla_de_pular_foi_apertada_MovePersonagem
+		#personagem deve pular -- nao implementado
+		
 		addi t1 t1 1
 		li t0 11
 		rem t1 t1 t0
 		sw t1 48(s1)
 		
 		beq t1 x0 FimMovePersonagem
-		
-		addi t1 t1 -1
-		slli t1 t1 2
-		add t1 t1 s1
-		lw t0 -4(s1)
-		lh t2 0(t1)
-		add t0 t2 t0
-		sw t0 -4(s1)
-		
+		bnez s0, else_estado_zero 
+		if_estado_zero:
+			addi s0 s0 1
+		else_estado_zero:
+		 jal ra incioPulo
+		lw ra 0(sp)
+		addi sp, sp, 4
 		jalr x0 ra 0
 	else_tecla_de_pular_foi_apertada_MovePersonagem: nop
 		li t0 'a'

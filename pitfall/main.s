@@ -1,17 +1,24 @@
+# | --- Tabela de registradores salvos --- 			|
+# | s0 -> Estado atual do personagem				|	
+# | s1 -> Vetor de movimentacao para o pulo do personagem 	|
+
 .data
-	estadoDoJogo: .space 4 	# 0 está pausado
-													# 1 não está pausado
+	estadoDoJogo: .space 4 	# 0 estï¿½ pausado
+	vetorDeslocamentoPulo: .word -10,-10, -5, -5, 0, 5, 5, 10, 10
+													# 1 nï¿½o estï¿½ pausado
 .text
 .include "macro.s"
 .include "macro_personagem.s"
+
 jal ra Main
 FimDoPrograma: jal x0 FimDoPrograma
 Main: nop
 	addi sp sp -4
 	sw ra 0(sp)
+	li s0 0 #estado inicial
 	InitPersonagem (POSICAO_INICIAL_PERSONAGEM_SUPERIOR_DIREITA_X, POSICAO_INICIAL_PERSONAGEM_SUPERIOR_DIREITA_Y) #inicia o personagem
 	loop_do_jogo_Main:
-		jal ra LeTeclaDoTeclado  #chama a função que le a tecla do teclado
+		jal ra LeTeclaDoTeclado  #chama a funï¿½ï¿½o que le a tecla do teclado
 		li t0 '\n'
 		if_jogo_pausar_loop_do_jogo_Main: bne a0 t0 else_jogo_pausar_loop_do_jogo_Main
 			la t0 estadoDoJogo
@@ -30,3 +37,4 @@ Main: nop
 FimMain: jalr x0 ra 0
 .include "personagem.s"
 .include "utilidades.s"
+.include "movimentacoes/movimento_pulo.s"

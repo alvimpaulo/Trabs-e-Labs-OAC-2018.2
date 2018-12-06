@@ -31,7 +31,7 @@ CHECKFIN:
 	li $t4, 0 #contador horizontal
 	li $t5, 0 #contador vertical
 	li $s0, 320 #largura do mapa
-loopDesenhaWord:beq $t5, $t3, fimLoop
+loopDesenhaWord:beq $t5, $t3, fimLoopDesenhaWord
 testeFimLinha:	beq $t4, $t2, fimDaLinhaSprite
 	lw $t6, 0($t1) #carrega o valor da word que esta em %EnderecoDados
 	sw $t6, 0($t0) #manda o valor que est� dentro de PLAYERDADOS para o display, posicao $s0
