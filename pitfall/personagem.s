@@ -111,10 +111,36 @@ ApagaPersonagem:
 FimApagaPersonagem:
 jalr x0 ra 0
 
-# a0 = 
-DesenhaPersonagemMacro:
+# a0 = endereco memoria da sprite
+DesenhaSpritePersonagem:
 	# salva stack
 	addi sp sp -4 
+	sw ra 0(sp)
+	mv t1 a0
+
+	lw a2, 0(t1) # a2 = largura da sprite
+	lw a3 4(t1) # a3 = altura da sprite
+
+	lw a0 posicaoPersonagemY
+	li t0 320
+	mul a0 a0 t0 # a0 = y*320
+	lw t0 posicaoPersonagemX
+	add a0 t0 a0 # a0 = y*320 + x
+	li t0 0xff000000
+	add a0 a0 t0 # a0 = posicao da memoria que a sprite comeca
+	mv a1 t1 # dados do sprite
+	addi a1 a1 8
+	jal ra printSprite
+
+	# carrega stack
+	lw ra 0(sp)
+	addi sp sp 4
+	jalr x0 ra 0
+
+# a0 = endereco memoria da sprite
+ApagaPersonagemParado:
+
+addi sp sp -4 
 	sw ra 0(sp)
 	
 	lw a2, Personagem_Parado_10_24_1_Frame # a2 = largura da sprite
@@ -129,7 +155,7 @@ DesenhaPersonagemMacro:
 	add a0 t0 a0 # a0 = y*320 + x
 	li t0 0xff000000
 	add a0 a0 t0 # a0 = posicao da memoria que a sprite comeca
-	la a1 Personagem_Parado_10_24_1_Frame
+	la a1 Personagem_Parado_10_24_1_Frame # dados do sprite
 	addi a1 a1 8
 	jal ra printSprite
 

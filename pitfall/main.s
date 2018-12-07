@@ -1,6 +1,7 @@
-# | --- Tabela de registradores salvos --- 			|
-# | s0 -> Estado atual do personagem				|	
+# | --- Tabela de registradores salvos --- 					|
+# | s0 -> Estado atual do personagem						|	
 # | s1 -> Vetor de movimentacao para o pulo do personagem 	|
+# | s2 -> Endereco da memoria onde esta o mapa atual		|
 
 .data
 	estadoDoJogo: .space 4
@@ -30,7 +31,8 @@ Main: nop
 		else_jogo_pausar_loop_do_jogo_Main:
 			# a0 vem  daqui jal ra LeTeclaDoTeclado
 			jal ra MovePersonagem
-			jal ra DesenhaPersonagemMacro
+			la a0 Personagem_Parado_10_24_1_Frame
+			jal ra DesenhaSpritePersonagem
 		jal x0 loop_do_jogo_Main
 	end_loop_do_jogo_Main:
 	lw ra 0(sp)
