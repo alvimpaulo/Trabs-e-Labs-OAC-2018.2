@@ -3,9 +3,10 @@
 # | s1 -> Vetor de movimentacao para o pulo do personagem 	|
 
 .data
-	estadoDoJogo: .space 4 	# 0 est� pausado
+	estadoDoJogo: .space 4
 	vetorDeslocamentoPulo: .word -10,-10, -5, -5, 0, 5, 5, 10, 10
-													# 1 n�o est� pausado
+	.include "Sprites\source\Personagem_Parado_10_24_1_Frame.s"
+													
 .text
 .include "macro.s"
 .include "macro_personagem.s"
@@ -29,7 +30,7 @@ Main: nop
 		else_jogo_pausar_loop_do_jogo_Main:
 			# a0 vem  daqui jal ra LeTeclaDoTeclado
 			jal ra MovePersonagem
-			jal ra DesenhaPersonagem
+			jal ra DesenhaPersonagemMacro
 		jal x0 loop_do_jogo_Main
 	end_loop_do_jogo_Main:
 	lw ra 0(sp)
@@ -38,3 +39,4 @@ FimMain: jalr x0 ra 0
 .include "personagem.s"
 .include "utilidades.s"
 .include "movimentacoes/movimento_pulo.s"
+.include "Utilidades_alvim.s"

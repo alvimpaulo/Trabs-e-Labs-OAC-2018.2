@@ -44,7 +44,7 @@ MovePersonagem:
 	else_tecla_de_pular_foi_apertada_MovePersonagem: nop
 		li t0 'a'
 		if_tecla_de_a_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_a_foi_apertada_MovePersonagem
-			jal ra ApagaPersonagem
+			# jal ra ApagaPersonagem
 			# Altera a posição do personagem pra esquerda
 			lw t0 -8(s1)
 			addi t0 t0 -VELOCIDADE_DOS_PERSONAGEM
@@ -57,7 +57,7 @@ MovePersonagem:
 		else_tecla_de_a_foi_apertada_MovePersonagem: nop
 			li t0 'd'	 
 			if_tecla_de_d_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_d_foi_apertada_MovePersonagem
-				jal ra ApagaPersonagem
+				# jal ra ApagaPersonagem
 				# Altera a posição do personagem pra esquerda	
 				lw t0 -8(s1)
 				addi t0 t0 VELOCIDADE_DOS_PERSONAGEM
@@ -110,3 +110,30 @@ ApagaPersonagem:
 	addi sp sp 4
 FimApagaPersonagem:
 jalr x0 ra 0
+
+# a0 = 
+DesenhaPersonagemMacro:
+	# salva stack
+	addi sp sp -4 
+	sw ra 0(sp)
+	
+	lw a2, Personagem_Parado_10_24_1_Frame # t0 = largura da sprite
+	la a3  Personagem_Parado_10_24_1_Frame
+	addi a3 a3 4
+	lw a3 0(a3) # a3 = altura da sprite
+
+	lw a0 posicaoPersonagemY
+	li t0 240
+	mul a0 a0 t0 # a0 = y*240
+	lw t0 posicaoPersonagemX
+	add a0 t0 a0 # a0 = y*240 + x
+	li t0 0xff000000
+	add a0 a0 t0 # a0 = posicao da memoria que a sprite comeca
+	la a1 Personagem_Parado_10_24_1_Frame
+	addi a1 a1 8
+	jal ra printSprite
+
+	# carrega stack
+	lw ra 0(sp)
+	addi sp sp 4
+	jalr x0 ra 0
