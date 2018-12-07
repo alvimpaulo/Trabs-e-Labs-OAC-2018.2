@@ -27,7 +27,7 @@ andarDireita:
     # fim checagem do ultimo movimento
 
     frame1:
-        la a0 Personagem_Parado_10_24_1_Frame
+        la a0 Personagem_Parado_16_24_1_Frame
         jal ra ApagaPersonagem
 
         # move o personagem
@@ -81,10 +81,11 @@ andarDireita:
         
         j fimMovimentacaoDireita
 
-    la a0 Personagem_Parado_10_24_1_Frame
+    la a0 Personagem_Parado_16_24_1_Frame
     jal ra ApagaPersonagem
     
     fimMovimentacaoDireita:
+    addi s0, s0, 1
     li t3, 15
     rem s0, s0, t3 # se passar do decimo quarto, zerar estado
         
