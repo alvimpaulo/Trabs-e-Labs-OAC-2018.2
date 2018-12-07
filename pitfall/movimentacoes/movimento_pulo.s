@@ -7,7 +7,7 @@
         beq s0, zero, fimPuloVertical #se s0 estiver zerado, pulo terminou
         li t0 10
         bge s0 t0 fimPuloVertical # se s0 nao for um estado do pulo vertical (>= 10) 
-        la a0 Personagem_Parado_10_24_1_Frame
+        la a0 Personagem_Parado_16_24_1_Frame
         jal ra ApagaPersonagem
         slli t0, s0, 2 # word = 4 bytes
         addi t0, t0, -4
@@ -45,7 +45,7 @@ inicioPuloDiagonalDireita:
         beq s0 t0 puloVeioDeParado
 
         puloVeioDeParado:
-        la a0 Personagem_Parado_10_24_1_Frame
+        la a0 Personagem_Parado_16_24_1_Frame
         jal ra ApagaPersonagem
 
         # fim da checagem

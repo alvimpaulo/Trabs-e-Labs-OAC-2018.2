@@ -13,7 +13,7 @@
 	estadoDoJogo: .space 4
 	ultimaTeclaPressionada: .space 4
 	vetorDeslocamentoPulo: .word -10,-8, -5, -3, 0, 3, 5, 8, 10
-	.include "Sprites\source\Personagem_Parado_10_24_1_Frame.s"
+	.include "Sprites\source\Personagem_Parado_16_24_1_Frame.s"
 	.include "Sprites\source\Cobra_10_10_1_Frame.s"
 	.include "Sprites\source\Cobra_10_10_2_Frame.s"
 	.include "Sprites\source\Cobra_10_10_3_Frame.s"
@@ -83,8 +83,48 @@ Main: nop
 			# a0 vem  daqui jal ra LeTeclaDoTeclado
 			jal ra MovePersonagem
 			mv s4 a0 # ultima tecla pressionada
-			la a0 Personagem_Parado_10_24_1_Frame
-			jal ra DesenhaSpritePersonagem
+
+			# testes para ver qual personagem imprime
+			li t0 0
+			beq s0 t0 imprimir_personagem_parado # parado
+			li t0 10 
+			beq s0 t0 imprimir_personagem_correndo1 # 1 frame da corrida
+			li t0 11 
+			beq s0 t0 imprimir_personagem_correndo2 # 2 frame da corrida
+			li t0 12 
+			beq s0 t0 imprimir_personagem_correndo3 # 3 frame da corrida
+			li t0 13 
+			beq s0 t0 imprimir_personagem_correndo4 # 4 frame da corrida
+			li t0 14 
+			beq s0 t0 imprimir_personagem_correndo5 # 5 frame da corrida
+			# fim dos testes
+
+			imprimir_personagem_parado:
+				la a0 Personagem_Parado_16_24_1_Frame
+				jal ra DesenhaSpritePersonagem
+				j fim_desenho_personagem
+			imprimir_personagem_correndo1:
+				la a0 Personagem_Correndo_16_24_1
+				jal ra DesenhaSpritePersonagem
+				j fim_desenho_personagem
+			imprimir_personagem_correndo2:
+				la a0 Personagem_Correndo_16_24_2
+				jal ra DesenhaSpritePersonagem
+				j fim_desenho_personagem
+			imprimir_personagem_correndo3:
+				la a0 Personagem_Correndo_16_24_3
+				jal ra DesenhaSpritePersonagem
+				j fim_desenho_personagem
+			imprimir_personagem_correndo4:
+				la a0 Personagem_Correndo_16_24_4
+				jal ra DesenhaSpritePersonagem
+				j fim_desenho_personagem
+			imprimir_personagem_correndo5:
+				la a0 Personagem_Correndo_16_24_5
+				jal ra DesenhaSpritePersonagem
+				j fim_desenho_personagem
+			
+			fim_desenho_personagem:
 			lw s4 ultimaTeclaPressionada # salvando a ultima tecla pressionada
 		jal x0 loop_do_jogo_Main
 	end_loop_do_jogo_Main:

@@ -41,7 +41,7 @@ MovePersonagem:
 		li t0 'a'
 		if_tecla_de_a_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_a_foi_apertada_MovePersonagem
 			# apaga sprite
-			la a0 Personagem_Parado_10_24_1_Frame
+			la a0 Personagem_Parado_16_24_1_Frame
 			jal ra ApagaPersonagem
 			# Altera a posição do personagem pra esquerda
 			lw t0 -8(s1)
@@ -56,7 +56,7 @@ MovePersonagem:
 			li t0 'd'	 
 			if_tecla_de_d_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_d_foi_apertada_MovePersonagem
 				
-				li t0 10
+				li t0 9
 				ble s0, t0, if_esta_correndo_direita 
 				li t0 15
 				bge s0, t0, if_esta_correndo_direita 
