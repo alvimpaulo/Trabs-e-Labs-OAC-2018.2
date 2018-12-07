@@ -1,12 +1,14 @@
 # | --- Tabela de registradores salvos --- 					|
 # | s0 -> Estado atual do personagem						|	
 # | s1 -> Vetor de movimentacao para o pulo do personagem 	|
-# | s2 -> Endereco da memoria onde esta o mapa atual		|
+# | s2 -> Mapa atual										|
+# | s3 - > Endereco da memoria onde esta o mapa atual 		|
 
 .data
 	estadoDoJogo: .space 4
 	vetorDeslocamentoPulo: .word -10,-10, -5, -5, 0, 5, 5, 10, 10
 	.include "Sprites\source\Personagem_Parado_10_24_1_Frame.s"
+	.include "Sprites\source\fase2.s"
 													
 .text
 .include "macro.s"

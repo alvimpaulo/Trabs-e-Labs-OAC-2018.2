@@ -25,7 +25,6 @@ MovePersonagem:
 	snez t2 t1 # t2 = t1 == 0
 	snez t0 t0
 	if_tecla_de_pular_foi_apertada_MovePersonagem: bne t2 t0 else_tecla_de_pular_foi_apertada_MovePersonagem
-		#personagem deve pular -- nao implementado
 		
 		addi t1 t1 1
 		li t0 11
@@ -128,8 +127,8 @@ DesenhaSpritePersonagem:
 	add a0 t0 a0 # a0 = y*320 + x
 	li t0 0xff000000
 	add a0 a0 t0 # a0 = posicao da memoria que a sprite comeca
-	mv a1 t1 # dados do sprite
-	addi a1 a1 8
+	mv a1 t1 
+	addi a1 a1 8 # a1 = dados do sprite
 	jal ra printSprite
 
 	# carrega stack
@@ -140,26 +139,46 @@ DesenhaSpritePersonagem:
 # a0 = endereco memoria da sprite
 ApagaPersonagemParado:
 
-addi sp sp -4 
+	addi sp sp -28 
 	sw ra 0(sp)
+	sw s0 -4(sp)
+	sw s1 -8(sp)
+	sw s2 -12(sp)
+	sw s3 -16(sp)
+	sw s4 -20(sp)
+	sw s5 -24(sp)
 	
-	lw a2, Personagem_Parado_10_24_1_Frame # a2 = largura da sprite
-	la a3  Personagem_Parado_10_24_1_Frame
-	addi a3 a3 4
-	lw a3 0(a3) # a3 = altura da sprite
-
-	lw a0 posicaoPersonagemY
-	li t0 320
-	mul a0 a0 t0 # a0 = y*320
-	lw t0 posicaoPersonagemX
-	add a0 t0 a0 # a0 = y*320 + x
-	li t0 0xff000000
-	add a0 a0 t0 # a0 = posicao da memoria que a sprite comeca
-	la a1 Personagem_Parado_10_24_1_Frame # dados do sprite
-	addi a1 a1 8
-	jal ra printSprite
-
+	lw s0, 0(a0) # s0 = largura da sprite
+	lw s1 4(a0) # s1 = altura da sprite
+	lw s2 posicaoPersonagemY # s2 = posicao y
+	lw s3 posicaoPersonagemX # s3 = posicao x
+	li s4 0 # inicia contador de linhas da sprite
+	mv s5 a0 # s5 tem o endereco do sprite
+LoopApagaSprite: 	
+	addi t0 s4 1 # t0 = contador + 1 
+	beq t0 s1 fimLoopApagaSprite  # se (contador + 1) == altura 
+		addi a3 zero 1 # altura = 1
+		lw a1 -16(sp) # a1 tem o mapa atual
+		li t0 320
+		add t1 s2 s4 # t1 = y + linha atual
+		mul t0 t1 t0 # t5 = (y + linha atual) * 320
+		add a0 t0 s3 # a0 = (y + linha atual)*320 + x
+		mv t1 a0 # t1 = (y + linha atual)*320 + x
+		li t0 0xff000000
+		add a0 a0 t0 # a0 = posicao da memoria que a sprite comeca
+		lw a1 -16(sp) # dados do mapa atual
+		add a1 a1 t1
+		jal ra printSprite
+		addi s4 s4 1
+		j LoopApagaSprite
+fimLoopApagaSprite:
 	# carrega stack
 	lw ra 0(sp)
-	addi sp sp 4
+	lw s0 -4(sp)
+	lw s1 -8(sp)
+	lw s2 -12(sp)
+	lw s3 -16(sp)
+	lw s4 -20(sp)
+	lw s5 -24(sp)
+	addi sp sp 28
 	jalr x0 ra 0
