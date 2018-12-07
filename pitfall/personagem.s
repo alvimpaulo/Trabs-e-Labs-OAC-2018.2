@@ -18,7 +18,7 @@ MovePersonagem:
 	lw t1 32(s1)
 	addi sp, sp, -4
 	sw ra 0(sp)
-	jal ra incioPulo
+	jal ra incioPuloVertical
 
 	li t0 ' '
 	if_tecla_de_pular_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_pular_foi_apertada_MovePersonagem
@@ -31,9 +31,9 @@ MovePersonagem:
 		beq t1 x0 FimMovePersonagem
 		bnez s0, else_estado_zero 
 		if_estado_zero:
-			addi s0 s0 1
+			li s0 1
 		else_estado_zero:
-		jal ra incioPulo
+		jal ra incioPuloVertical
 		lw ra 0(sp)
 		addi sp, sp, 4
 		jalr x0 ra 0
@@ -42,7 +42,7 @@ MovePersonagem:
 		if_tecla_de_a_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_a_foi_apertada_MovePersonagem
 			# apaga sprite
 			la a0 Personagem_Parado_10_24_1_Frame
-			jal ra ApagaPersonagemParado
+			jal ra ApagaPersonagem
 			# Altera a posição do personagem pra esquerda
 			lw t0 -8(s1)
 			addi t0 t0 -VELOCIDADE_DOS_PERSONAGEM
@@ -55,13 +55,17 @@ MovePersonagem:
 		else_tecla_de_a_foi_apertada_MovePersonagem: nop
 			li t0 'd'	 
 			if_tecla_de_d_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_d_foi_apertada_MovePersonagem
-				# apaga sprite
-				la a0 Personagem_Parado_10_24_1_Frame
-				jal ra ApagaPersonagemParado
-				# Altera a posição do personagem pra esquerda	
-				lw t0 -8(s1)
-				addi t0 t0 VELOCIDADE_DOS_PERSONAGEM
-				sw t0 -8(s1)
+				
+				li t0 10
+				ble s0, t0, if_esta_correndo_direita 
+				li t0 15
+				bge s0, t0, if_esta_correndo_direita 
+				j else_esta_correndo_direita
+				if_esta_correndo_direita:
+					li s0 10
+				else_esta_correndo_direita:
+				jal ra andarDireita
+
 			else_tecla_de_d_foi_apertada_MovePersonagem: nop
 	
 FimMovePersonagem: 
@@ -116,7 +120,7 @@ DesenhaSpritePersonagem:
 	jalr x0 ra 0
 
 # a0 = endereco memoria da sprite
-ApagaPersonagemParado:
+ApagaPersonagem:
 
 	addi sp sp -28 
 	sw ra 0(sp)
