@@ -6,7 +6,7 @@
 		
         beq s0, zero, fimPulo #se s0 estiver zerado, pulo terminou
         la a0 Personagem_Parado_10_24_1_Frame
-        jal ra ApagaPersonagem
+        jal ra ApagaPersonagemParado
         slli t0, s0, 2 # word = 4 bytes
         addi t0, t0, -4
         la t1 vetorDeslocamentoPulo

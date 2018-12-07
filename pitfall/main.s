@@ -20,6 +20,14 @@ Main: nop
 	addi sp sp -4
 	sw ra 0(sp)
 	li s0 0 #estado inicial
+	la s3 fase2
+	addi s3 s3 8 # s3 = mapa inicial
+	#printa o mapa
+	li a0 0xff000000
+	mv a1 s3
+	li a2 320
+	li a3 224
+	jal ra printSprite
 	InitPersonagem (POSICAO_INICIAL_PERSONAGEM_SUPERIOR_DIREITA_X, POSICAO_INICIAL_PERSONAGEM_SUPERIOR_DIREITA_Y) #inicia o personagem
 	loop_do_jogo_Main:
 		jal ra LeTeclaDoTeclado  #chama a fun��o que le a tecla do teclado
