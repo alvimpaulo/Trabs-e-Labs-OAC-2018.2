@@ -18,13 +18,10 @@ MovePersonagem:
 	lw t1 32(s1)
 	addi sp, sp, -4
 	sw ra 0(sp)
-	jal ra incioPulo
+	jal ra incioPuloVertical
 
-	
-	sub t0 t0 a0 # Espaco menos  tecla pressionada
-	snez t2 t1 # t2 = t1 == 0
-	snez t0 t0
-	if_tecla_de_pular_foi_apertada_MovePersonagem: bne t2 t0 else_tecla_de_pular_foi_apertada_MovePersonagem
+	li t0 ' '
+	if_tecla_de_pular_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_pular_foi_apertada_MovePersonagem
 		
 		addi t1 t1 1
 		li t0 11
@@ -34,16 +31,18 @@ MovePersonagem:
 		beq t1 x0 FimMovePersonagem
 		bnez s0, else_estado_zero 
 		if_estado_zero:
-			addi s0 s0 1
+			li s0 1
 		else_estado_zero:
-		 jal ra incioPulo
+		jal ra incioPuloVertical
 		lw ra 0(sp)
 		addi sp, sp, 4
 		jalr x0 ra 0
 	else_tecla_de_pular_foi_apertada_MovePersonagem: nop
 		li t0 'a'
 		if_tecla_de_a_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_a_foi_apertada_MovePersonagem
-			# jal ra ApagaPersonagem
+			# apaga sprite
+			la a0 Personagem_Parado_16_24_1_Frame
+			jal ra ApagaPersonagem
 			# Altera a posição do personagem pra esquerda
 			lw t0 -8(s1)
 			addi t0 t0 -VELOCIDADE_DOS_PERSONAGEM
@@ -56,12 +55,17 @@ MovePersonagem:
 		else_tecla_de_a_foi_apertada_MovePersonagem: nop
 			li t0 'd'	 
 			if_tecla_de_d_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_d_foi_apertada_MovePersonagem
-				# jal ra ApagaPersonagem
-				# Altera a posição do personagem pra esquerda	
-				lw t0 -8(s1)
-				addi t0 t0 VELOCIDADE_DOS_PERSONAGEM
-				sw t0 -8(s1)
-				# jalr x0 ra 0
+				
+				li t0 9
+				ble s0, t0, if_esta_correndo_direita 
+				li t0 15
+				bge s0, t0, if_esta_correndo_direita 
+				j else_esta_correndo_direita
+				if_esta_correndo_direita:
+					li s0 10
+				else_esta_correndo_direita:
+				jal ra andarDireita
+
 			else_tecla_de_d_foi_apertada_MovePersonagem: nop
 	
 FimMovePersonagem: 
@@ -88,27 +92,6 @@ DesenhaPersonagem:
 	lw ra 0(sp)
 	addi sp sp 4
 FimDesenhaPersonagem: jalr x0 ra 0
-
-ApagaPersonagem:
-	# salva stack
-	addi sp sp -4 
-	sw ra 0(sp)
-	
-	la t0 posicaoPersonagemX 
-	lw a0 0(t0)	#carrega em a0 o ponto x superior esquerdo do personagem
-	addi a2 a0 LARGURA_PERSONAGEM #carrega em a0 o ponto x inferior direito do personagem
-	lw a1 4(t0) #carrega em a0 o ponto y superior esquerdo do personagem
-	addi a3 a1 ALTURA_PERSONAGEM #carrega em a0 o ponto y inferior direito do personagem
-	
-	#desenha o quadrado atual
-	li a4 0x00
-	jal ra DrawQuadrado
-
-	# carrega stack
-	lw ra 0(sp)
-	addi sp sp 4
-FimApagaPersonagem:
-jalr x0 ra 0
 
 # a0 = endereco memoria da sprite
 DesenhaSpritePersonagem:
@@ -137,16 +120,16 @@ DesenhaSpritePersonagem:
 	jalr x0 ra 0
 
 # a0 = endereco memoria da sprite
-ApagaPersonagemParado:
+ApagaPersonagem:
 
 	addi sp sp -28 
 	sw ra 0(sp)
-	sw s0 -4(sp)
-	sw s1 -8(sp)
-	sw s2 -12(sp)
-	sw s3 -16(sp)
-	sw s4 -20(sp)
-	sw s5 -24(sp)
+	sw s0 4(sp)
+	sw s1 8(sp)
+	sw s2 12(sp)
+	sw s3 16(sp)
+	sw s4 20(sp)
+	sw s5 24(sp)
 	
 	lw s0, 0(a0) # s0 = largura da sprite
 	lw s1 4(a0) # s1 = altura da sprite
@@ -156,9 +139,9 @@ ApagaPersonagemParado:
 	mv s5 a0 # s5 tem o endereco do sprite
 LoopApagaSprite: 	
 	addi t0 s4 1 # t0 = contador + 1 
-	beq t0 s1 fimLoopApagaSprite  # se (contador + 1) == altura 
+	beq s4 s1 fimLoopApagaSprite  # se (contador + 1) == altura 
 		addi a3 zero 1 # altura = 1
-		lw a1 -16(sp) # a1 tem o mapa atual
+		lw a1 16(sp) # a1 tem o mapa atual
 		li t0 320
 		add t1 s2 s4 # t1 = y + linha atual
 		mul t0 t1 t0 # t5 = (y + linha atual) * 320
@@ -166,19 +149,18 @@ LoopApagaSprite:
 		mv t1 a0 # t1 = (y + linha atual)*320 + x
 		li t0 0xff000000
 		add a0 a0 t0 # a0 = posicao da memoria que a sprite comeca
-		lw a1 -16(sp) # dados do mapa atual
-		add a1 a1 t1
+		add a1 a1 t1 # local atual do mapa + memoria do mapa
 		jal ra printSprite
 		addi s4 s4 1
 		j LoopApagaSprite
 fimLoopApagaSprite:
 	# carrega stack
 	lw ra 0(sp)
-	lw s0 -4(sp)
-	lw s1 -8(sp)
-	lw s2 -12(sp)
-	lw s3 -16(sp)
-	lw s4 -20(sp)
-	lw s5 -24(sp)
+	lw s0 4(sp)
+	lw s1 8(sp)
+	lw s2 12(sp)
+	lw s3 16(sp)
+	lw s4 20(sp)
+	lw s5 24(sp)
 	addi sp sp 28
 	jalr x0 ra 0
