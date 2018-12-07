@@ -117,16 +117,16 @@ DesenhaPersonagemMacro:
 	addi sp sp -4 
 	sw ra 0(sp)
 	
-	lw a2, Personagem_Parado_10_24_1_Frame # t0 = largura da sprite
+	lw a2, Personagem_Parado_10_24_1_Frame # a2 = largura da sprite
 	la a3  Personagem_Parado_10_24_1_Frame
 	addi a3 a3 4
 	lw a3 0(a3) # a3 = altura da sprite
 
 	lw a0 posicaoPersonagemY
-	li t0 240
-	mul a0 a0 t0 # a0 = y*240
+	li t0 320
+	mul a0 a0 t0 # a0 = y*320
 	lw t0 posicaoPersonagemX
-	add a0 t0 a0 # a0 = y*240 + x
+	add a0 t0 a0 # a0 = y*320 + x
 	li t0 0xff000000
 	add a0 a0 t0 # a0 = posicao da memoria que a sprite comeca
 	la a1 Personagem_Parado_10_24_1_Frame
