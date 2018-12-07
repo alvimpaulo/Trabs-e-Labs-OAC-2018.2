@@ -1,17 +1,77 @@
+# | --- Tabela de registradores salvos --- 					|
+# | s0 -> Estado atual do personagem						|	
+# | s1 -> Vetor de movimentacao para o pulo do personagem 	|
+# | s2 -> Mapa atual										|
+# | s3 - > Endereco da memoria onde esta o mapa atual 		|
+# | s4 -> ultimo input										|
+
+# | 					Tabela dos Estados					|
+# | 0 - > Parado 											|
+# | 1 - 9 -> Pulo vertical									|
+
 .data
-	estadoDoJogo: .space 4 	# 0 está pausado
-													# 1 não está pausado
+	estadoDoJogo: .space 4
+	ultimaTeclaPressionada: .space 4
+	vetorDeslocamentoPulo: .word -10,-8, -5, -3, 0, 3, 5, 8, 10
+	.include "Sprites\source\Personagem_Parado_10_24_1_Frame.s"
+	.include "Sprites\source\Cobra_10_10_1_Frame.s"
+	.include "Sprites\source\Cobra_10_10_2_Frame.s"
+	.include "Sprites\source\Cobra_10_10_3_Frame.s"
+	.include "Sprites\source\Cobra_10_10_4_Frame.s"
+	.include "Sprites\source\Cobra_10_10_5_Frame.s"
+	.include "Sprites\source\Cobra_10_10_6_Frame.s"
+	.include "Sprites\source\Cobra_10_10_7_Frame.s"
+	.include "Sprites\source\Cogumelo_10_10_1Frame.s"
+	.include "Sprites\source\Cogumelo_10_10_2Frame.s"
+	.include "Sprites\source\DragonBall_10_10_1Frame.s"
+	.include "Sprites\source\Fogueira_10_10_1Frame.s"
+	.include "Sprites\source\Fogueira_10_10_2Frame.s"
+	.include "Sprites\source\Fogueira_10_10_3Frame.s"
+	.include "Sprites\source\Fogueira_10_10_4Frame.s"
+	.include "Sprites\source\Jacare_10_10_1Frame.s"
+	.include "Sprites\source\Jacare_10_10_2Frame.s"
+	.include "Sprites\source\Moeda_10_10_1Frame.s"
+	.include "Sprites\source\Moeda_10_10_2Frame.s"
+	.include "Sprites\source\Moeda_10_10_3Frame.s"
+	.include "Sprites\source\Moeda_10_10_4Frame.s"
+	.include "Sprites\source\Moeda_10_10_5Frame.s"
+	.include "Sprites\source\Moeda_10_10_6Frame.s"
+	.include "Sprites\source\Personagem_Correndo_16_24_1.s"
+	.include "Sprites\source\Personagem_Correndo_16_24_2.s"
+	.include "Sprites\source\Personagem_Correndo_16_24_3.s"
+	.include "Sprites\source\Personagem_Correndo_16_24_4.s"
+	.include "Sprites\source\Personagem_Correndo_16_24_5.s"
+	.include "Sprites\source\Pokebola_10_10_1Frame.s"
+	.include "Sprites\source\Pokebola_10_10_2Frame.s"
+	.include "Sprites\source\Pokebola_10_10_3Frame.s"
+	.include "Sprites\source\Pokebola_10_10_4Frame.s"
+	.include "Sprites\source\fase2.s"
+													
 .text
 .include "macro.s"
 .include "macro_personagem.s"
+
 jal ra Main
 FimDoPrograma: jal x0 FimDoPrograma
 Main: nop
 	addi sp sp -4
 	sw ra 0(sp)
+	li s0 0 # estado inicial
+	li s4 0
+	la s3 fase2
+	addi s3 s3 8 # s3 = mapa inicial
+
+	# printa o mapa
+		li a0 0xff000000
+		mv a1 s3
+		li a2 320
+		li a3 224
+		jal ra printSprite
+	
 	InitPersonagem (POSICAO_INICIAL_PERSONAGEM_SUPERIOR_DIREITA_X, POSICAO_INICIAL_PERSONAGEM_SUPERIOR_DIREITA_Y) #inicia o personagem
 	loop_do_jogo_Main:
-		jal ra LeTeclaDoTeclado  #chama a função que le a tecla do teclado
+		jal ra LeTeclaDoTeclado  # chama a funcao que le a tecla do teclado
+		sw a0 ultimaTeclaPressionada, t0
 		li t0 '\n'
 		if_jogo_pausar_loop_do_jogo_Main: bne a0 t0 else_jogo_pausar_loop_do_jogo_Main
 			la t0 estadoDoJogo
@@ -22,7 +82,10 @@ Main: nop
 		else_jogo_pausar_loop_do_jogo_Main:
 			# a0 vem  daqui jal ra LeTeclaDoTeclado
 			jal ra MovePersonagem
-			jal ra DesenhaPersonagem
+			mv s4 a0 # ultima tecla pressionada
+			la a0 Personagem_Parado_10_24_1_Frame
+			jal ra DesenhaSpritePersonagem
+			lw s4 ultimaTeclaPressionada # salvando a ultima tecla pressionada
 		jal x0 loop_do_jogo_Main
 	end_loop_do_jogo_Main:
 	lw ra 0(sp)
@@ -30,3 +93,6 @@ Main: nop
 FimMain: jalr x0 ra 0
 .include "personagem.s"
 .include "utilidades.s"
+.include "movimentacoes/movimento_pulo.s"
+.include "movimentacoes/movimento_direita.s"
+.include "Utilidades_alvim.s"
