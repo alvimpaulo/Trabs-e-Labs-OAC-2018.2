@@ -21,8 +21,14 @@
 .data
 	estadoDoJogo: .space 4
 	ultimaTeclaPressionada: .space 4
+	vetorDeslocamentoPulo: .word -10,-8, -5, -3, 0, 3, 5, 8, 10
 	vetorDeslocamentoPuloVertical: .word -10,-8, -4, -2, 0, 2, 4, 8, 10
 	vetorDeslocamentoPuloDiagonal: .word -10,-8, -4, -2, 0, 2, 4, 8, 10
+    vectorImagensMenu: .space 12
+    vectorFuncoesMenu: .space 12
+	.include "Sprites\source\menuJogar.s"
+	.include "Sprites\source\menuCreditos.s"
+	.include "Sprites\source\menuSair.s"
 	.include "Sprites\source\Personagem_Parado_16_24_1_Frame.s"
 	.include "Sprites\source\Cobra_10_10_1_Frame.s"
 	.include "Sprites\source\Cobra_10_10_2_Frame.s"
@@ -65,7 +71,145 @@
 
 jal ra Main
 FimDoPrograma: jal x0 FimDoPrograma
-Main: nop
+Main:
+reset_MenuDoJogo:
+		addi	sp sp -4
+		sw ra 0(sp)
+    li t1 2
+    la t2 vectorImagensMenu
+    
+    la t3 menuSair
+    sw t3 0(t2)
+    
+    la t3 menuCreditos
+    sw t3 4(t2)
+    
+    la t3 menuJogar
+    sw t3 8(t2)
+
+
+    la t2 vectorFuncoesMenu
+    
+    la t3 fim_while_loop_menu
+    sw t3 0(t2)
+    
+    la t3 fim_while_loop_menu
+    sw t3 4(t2)
+    
+    la t3 Jogo
+    sw t3 8(t2)
+    while_loop_menu:
+    		addi sp sp -4
+    		sw t1 0(sp)
+        jal ra LeTeclaDoTeclado
+    		lw t1 0(sp)
+        addi sp sp 4
+        li t0 'w'
+        if_tecla_w_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_w_foi_apertada_MovePersonagem
+            addi t1 t1 1
+            li t3 3
+            if_passou_do_limite_superior:bne t1 t3 else_passou_do_limite_superior
+                addi t1 t1 -3
+            else_passou_do_limite_superior:
+
+                li a0 0xff004530
+
+                la a1 vectorImagensMenu
+  	            slli t2 t1 2 
+    	          add a1 a1 t2
+      	        lw a1 0(a1)
+	              addi a1 a1 8
+
+                li a2 100
+
+                li a3 129
+
+                
+                addi sp sp -4
+                sw t1 0(sp)
+                jal ra printSpriteWord
+                lw t1 0(sp)
+                addi sp sp 4
+
+            jal x0 while_loop_menu
+        else_tecla_w_foi_apertada_MovePersonagem:
+            li t0 's'
+            if_tecla_s_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_s_foi_apertada_MovePersonagem
+                addi t1 t1 -1
+                li t3 -1
+                if_passou_do_limite_inferior: bne t1 t3 else_passou_do_limite_inferior
+                    addi t1 t1 3
+                else_passou_do_limite_inferior:
+
+                li a0 0xff004530
+
+                la a1 vectorImagensMenu
+  	            slli t2 t1 2 
+    	          add a1 a1 t2
+      	        lw a1 0(a1)
+	              addi a1 a1 8
+
+                li a2 100
+
+                li a3 129
+
+                addi sp sp -4
+                sw t1 0(sp)
+                jal ra printSpriteWord
+                lw t1 0(sp)
+                addi sp sp 4
+
+                jal x0 while_loop_menu
+            else_tecla_s_foi_apertada_MovePersonagem:
+                li t0 ' '
+                if_tecla_sp_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_sp_foi_apertada_MovePersonagem
+
+                    addi sp sp -4
+                    sw t1 0(sp)
+
+                    la t2 vectorFuncoesMenu
+                    slli t3 t1 2
+                    add t2 t2 t3
+                    lw t2 0(t2)
+
+                    addi sp sp -4
+                    sw t1 0(sp)
+                    jalr ra t2 00
+                    lw t1 0(sp)
+                    addi sp sp 4
+
+                    lw t1 0(sp)
+                    addi sp sp 4
+
+                    jal x0 reset_MenuDoJogo
+                    jal x0 while_loop_menu
+                else_tecla_sp_foi_apertada_MovePersonagem:
+                    li a0 0xff004530
+
+                    la a1 vectorImagensMenu
+                    slli t2 t1 2 
+                    add a1 a1 t2
+                    lw a1 0(a1)
+                    addi a1 a1 8
+
+                    li a2 100
+
+                    li a3 129
+
+                    addi sp sp -4
+                    sw t1 0(sp)
+                    jal ra printSpriteWord
+                    lw t1 0(sp)
+                    addi sp sp 4
+            	    
+	  jal x0 while_loop_menu
+	  fim_while_loop_menu:
+    
+		lw ra 0(sp)
+		addi	sp sp 4
+FimMain: jalr x0 ra 0
+
+Jogo: nop
 	addi sp sp -4
 	sw ra 0(sp)
 	li s0 0 # estado inicial
@@ -81,7 +225,7 @@ Main: nop
 		jal ra printSprite
 	
 	InitPersonagem (POSICAO_INICIAL_PERSONAGEM_SUPERIOR_DIREITA_X, POSICAO_INICIAL_PERSONAGEM_SUPERIOR_DIREITA_Y) #inicia o personagem
-	loop_do_jogo_Main:
+	loop_do_jogo_Jogo:
 		# ecall tmepo
 		li a7 30
 		ecall
@@ -108,13 +252,13 @@ Main: nop
 		sw a0 ultimaTeclaPressionada, t0
 		li t0 1
 		li t0 '\n'
-		if_jogo_pausar_loop_do_jogo_Main: bne a0 t0 else_jogo_pausar_loop_do_jogo_Main
+		if_jogo_pausar_loop_do_jogo_Jogo: bne a0 t0 else_jogo_pausar_loop_do_jogo_Jogo
 			la t0 estadoDoJogo
 			lw t1 0(t0)
 			xori t1 t1 1
 			sw t1 0(t0)
-			j loop_do_jogo_Main
-		else_jogo_pausar_loop_do_jogo_Main:
+			j loop_do_jogo_Jogo
+		else_jogo_pausar_loop_do_jogo_Jogo:
 			# a0 vem  daqui jal ra LeTeclaDoTeclado
 			jal ra MovePersonagem
 			# mv s4 a0 # ultima tecla pressionada
@@ -173,18 +317,17 @@ Main: nop
 			mv s6 s0 # salva o ultimo estado
 			
 			
+		li t0 33
 		while_nao_aconteceu_30_FPS:
-			li t0 100
 			li a7 30
 			ecall
 			sub a0 a0 s5
 			blt a0 t0 while_nao_aconteceu_30_FPS # se o tempo for < 30 segundo fica preso no loop
-	
-		jal x0 loop_do_jogo_Main
-	end_loop_do_jogo_Main:
+		jal x0 loop_do_jogo_Jogo
+	end_loop_do_jogo_Jogo:
 	lw ra 0(sp)
 	addi sp sp 4
-FimMain: jalr x0 ra 0
+FimJogo: jalr x0 ra 0
 .include "personagem.s"
 .include "utilidades.s"
 .include "movimentacoes/movimento_pulo.s"
