@@ -16,11 +16,16 @@ MovePersonagem:
 	la s1 vectorAditionalParaPulo
 	li t0 ' '
 	lw t1 32(s1)
-	addi sp, sp, -4
+	addi sp, sp, -8
 	sw ra 0(sp)
+	sw a0 4(sp)
 	jal ra incioPuloVertical
 	jal ra incioPuloDireita
-
+	seqz t0 s6 # t0 = 1 se o ultimo estado por ele parado
+	seqz t1 s0 # t1 = 1 se o estado atual e ele parado
+	bgt t1 t0 FimMovePersonagem # se o estado atual for parado e o ultimo estado nao, terminar
+	lw a0 4(sp)
+	lw t1 32(s1)
 	li t0 ' '
 	if_tecla_de_pular_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_pular_foi_apertada_MovePersonagem
 		
@@ -45,13 +50,12 @@ MovePersonagem:
 
 		finalPulo:
 		lw ra 0(sp)
-		addi sp, sp, 4
+		addi sp, sp, 8
 		jalr x0 ra 0
 	else_tecla_de_pular_foi_apertada_MovePersonagem: nop
 		li t0 'a'
 		if_tecla_de_a_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_a_foi_apertada_MovePersonagem
 			# apaga sprite
-			la a0 Personagem_Parado_16_24_1_Frame
 			jal ra ApagaPersonagem
 			# Altera a posição do personagem pra esquerda
 			lw t0 -8(s1)
@@ -59,13 +63,13 @@ MovePersonagem:
 			sw t0 -8(s1)
 			
 			#rotina de final
-			lw ra 0(sp)
-			addi sp, sp, 4
-			jalr x0 ra 0
+			 j FimMovePersonagem
+
 		else_tecla_de_a_foi_apertada_MovePersonagem: nop
 			li t0 'd'	 
 			if_tecla_de_d_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_d_foi_apertada_MovePersonagem
-				
+				jal ra ApagaPersonagem
+
 				li t0 9
 				ble s0, t0, if_esta_correndo_direita 
 				li t0 15
@@ -75,12 +79,18 @@ MovePersonagem:
 					li s0 10
 				else_esta_correndo_direita:
 				jal ra andarDireita
-
-			else_tecla_de_d_foi_apertada_MovePersonagem: nop
+				j FimMovePersonagem
+			else_tecla_de_d_foi_apertada_MovePersonagem: 
+					li t0 0
+					beq s0 t0 if_nada_pressionado_e_perso_parado
+						jal ra ApagaPersonagem
+					if_nada_pressionado_e_perso_parado:
+					li s0 0 # personagem parado
 	
 FimMovePersonagem: 
 		lw ra 0(sp)
-		addi sp, sp, 4
+		lw a0 4(sp)
+		addi sp, sp, 8
 		jalr x0 ra 0
 
 DesenhaPersonagem:
@@ -129,7 +139,6 @@ DesenhaSpritePersonagem:
 	addi sp sp 4
 	jalr x0 ra 0
 
-# a0 = endereco memoria da sprite
 ApagaPersonagem:
 
 	addi sp sp -28 
@@ -141,6 +150,57 @@ ApagaPersonagem:
 	sw s4 20(sp)
 	sw s5 24(sp)
 	
+	# checar o ultimo estado para descobrir qual sprite apagar
+			li t0 0
+			sgt t1 s6 t0
+			li t0 10
+			slt t2 s6 t0
+			beq t2 t1 la_personagem_pulando_1 # apaga a sprite do pulo vertical
+            li t0 10 # estado corrida direita 1
+			beq s6 t0 la_personagem_correndo_1 # apaga a sprite 1 de personagem correndo
+            li t0 11 # estado corrida direita 2
+			beq s6 t0 la_personagem_correndo_2 # apaga a sprite 2 de personagem correndo
+            li t0 12 # estado corrida direita 3
+			beq s6 t0 la_personagem_correndo_3 # apaga a sprite 3 de personagem correndo
+            li t0 13 # estado corrida direita 4
+			beq s6 t0 la_personagem_correndo_4 # apaga a sprite 4 de personagem correndo
+            li t0 14 # estado corrida direita 5
+			beq s6 t0 la_personagem_correndo_5 # apaga a sprite 5 de personagem correndo
+            li t0 15 # estado pulo 1
+			beq s6 t0 la_personagem_pulando_1 # apaga a sprite 1 de personagem pulando
+            li t0 16 # estado pulo > 1
+			bge s6 t0 la_personagem_pulando_2 # apaga a sprite 2 de personagem pulando
+			
+        # fim da checagem
+        
+        # carregar personagem certo
+            la_personagem_correndo_1:
+                la a0 Personagem_Correndo_16_24_1
+                j apagarPersonagemDepoisDaChecagem
+            la_personagem_correndo_2:
+                la a0 Personagem_Correndo_16_24_2
+                j apagarPersonagemDepoisDaChecagem
+            la_personagem_correndo_3:
+                la a0 Personagem_Correndo_16_24_3
+                j apagarPersonagemDepoisDaChecagem
+            la_personagem_correndo_4:
+                la a0 Personagem_Correndo_16_24_4
+                j apagarPersonagemDepoisDaChecagem
+            la_personagem_correndo_5:
+                la a0 Personagem_Correndo_16_24_5
+                j apagarPersonagemDepoisDaChecagem
+            la_personagem_pulando_1:
+                la a0 Personagem_Pulando_14_24_1Frame
+                j apagarPersonagemDepoisDaChecagem
+            la_personagem_pulando_2:
+                la a0 Personagem_Pulando_14_24_2Frame
+                j apagarPersonagemDepoisDaChecagem
+
+		apagarPersonagemDepoisDaChecagem:
+        # fim do carregamento
+
+
+
 	lw s0, 0(a0) # s0 = largura da sprite
 	lw s1 4(a0) # s1 = altura da sprite
 	lw s2 posicaoPersonagemY # s2 = posicao y

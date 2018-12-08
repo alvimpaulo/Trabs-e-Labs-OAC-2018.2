@@ -87,9 +87,26 @@ Main: nop
 		ecall
 		mv s5 a0
 		# end
+		
+		# estados que nao podem ter teclas lidas
+		li t0 0									# \
+		sgt t1 s0 t0							#  \
+		li t0 10								#   - Pulo Vertical
+		slt t2 s0 t0							#  /
+		mv a0 s4
+		beq t1 t2 else_jogo_pausar_loop_do_jogo_Main # /	
 
+		li t0 14								# \	
+		sgt t1 s0 t0							#  \
+		li t0 25								#    - Pulo Diagonal direita
+		slt t2 s0 t0							#  /
+		mv a0 s4
+		beq t1 t2 else_jogo_pausar_loop_do_jogo_Main	# /
+
+		# fim desses estados
 		jal ra LeTeclaDoTeclado  # chama a funcao que le a tecla do teclado
 		sw a0 ultimaTeclaPressionada, t0
+		li t0 1
 		li t0 '\n'
 		if_jogo_pausar_loop_do_jogo_Main: bne a0 t0 else_jogo_pausar_loop_do_jogo_Main
 			la t0 estadoDoJogo
@@ -117,11 +134,11 @@ Main: nop
 			beq s0 t0 imprimir_personagem_correndo5 # 5 frame da corrida
 			li t0 15 
 			beq s0 t0 imprimir_personagem_pulo_direita1 # 5 frame da corrida
-			li t0 16 
+			li t0 15
 			sgt t1 s0 t0  # s0 >= 16
 			li t0 25
-			slt t1 s0 t0  # s0 <= 25
-			bnez t1 imprimir_personagem_pulo_direita2
+			slt t2 s0 t0  # s0 <= 25
+			beq t2 t1 imprimir_personagem_pulo_direita2
 			# fim dos testes
 
 			imprimir_personagem_parado:
