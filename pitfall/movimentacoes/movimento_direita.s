@@ -32,7 +32,7 @@ andarDireita:
 
         # move o personagem
         lw t0 posicaoPersonagemX
-        addi t0 t0 1
+        addi t0 t0 VELOCIDADE_DOS_PERSONAGEM
         sw t0 posicaoPersonagemX, t1
         
         j fimMovimentacaoDireita
@@ -43,7 +43,7 @@ andarDireita:
 
         # move o personagem
         lw t0 posicaoPersonagemX
-        addi t0 t0 1
+        addi t0 t0 VELOCIDADE_DOS_PERSONAGEM
         sw t0 posicaoPersonagemX, t1
         
         j fimMovimentacaoDireita
@@ -54,7 +54,7 @@ andarDireita:
 
         # move o personagem
         lw t0 posicaoPersonagemX
-        addi t0 t0 1
+        addi t0 t0 VELOCIDADE_DOS_PERSONAGEM
         sw t0 posicaoPersonagemX, t1
         
         j fimMovimentacaoDireita
@@ -65,7 +65,7 @@ andarDireita:
 
         # move o personagem
         lw t0 posicaoPersonagemX
-        addi t0 t0 1
+        addi t0 t0 VELOCIDADE_DOS_PERSONAGEM
         sw t0 posicaoPersonagemX, t1
         
         j fimMovimentacaoDireita
@@ -76,7 +76,7 @@ andarDireita:
 
         # move o personagem
         lw t0 posicaoPersonagemX
-        addi t0 t0 1
+        addi t0 t0 VELOCIDADE_DOS_PERSONAGEM
         sw t0 posicaoPersonagemX, t1
         
         j fimMovimentacaoDireita
