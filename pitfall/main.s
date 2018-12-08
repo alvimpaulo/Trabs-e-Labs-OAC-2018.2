@@ -115,6 +115,13 @@ Main: nop
 			beq s0 t0 imprimir_personagem_correndo4 # 4 frame da corrida
 			li t0 14 
 			beq s0 t0 imprimir_personagem_correndo5 # 5 frame da corrida
+			li t0 15 
+			beq s0 t0 imprimir_personagem_pulo_direita1 # 5 frame da corrida
+			li t0 16 
+			sgt t1 s0 t0  # s0 >= 16
+			li t0 25
+			slt t1 s0 t0  # s0 <= 25
+			bnez t1 imprimir_personagem_pulo_direita2
 			# fim dos testes
 
 			imprimir_personagem_parado:
@@ -135,6 +142,12 @@ Main: nop
 			imprimir_personagem_correndo5:
 				la a0 Personagem_Correndo_16_24_5
 				j desenho_personagem
+			imprimir_personagem_pulo_direita1:
+				la a0 Personagem_Pulando_14_24_1Frame
+				j desenho_personagem
+			imprimir_personagem_pulo_direita2:
+				la a0 Personagem_Pulando_14_24_2Frame
+				j desenho_personagem
 				
 			
 			desenho_personagem:
@@ -144,7 +157,7 @@ Main: nop
 			
 			
 		while_nao_aconteceu_30_FPS:
-			li t0 33
+			li t0 100
 			li a7 30
 			ecall
 			sub a0 a0 s5
