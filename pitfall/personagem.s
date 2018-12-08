@@ -14,15 +14,16 @@ estadoDoPulo: .word 0
 # a0 = tecla precionada
 MovePersonagem:
 	la s1 vectorAditionalParaPulo
-	li t0 ' '
 	lw t1 32(s1)
 	addi sp, sp, -8
 	sw ra 0(sp)
 	sw a0 4(sp)
 	jal ra incioPuloVertical
 	jal ra incioPuloDireita
-	seqz t0 s6 # t0 = 1 se o ultimo estado por ele parado
-	seqz t1 s0 # t1 = 1 se o estado atual e ele parado
+	li t0 1
+	slt t0 s6 t0 # t0 = 1 se o ultimo estado for ele parado
+	li t1 1
+	slt t1 s0 t1 # t1 = 1 se o estado atual e ele parado
 	bgt t1 t0 FimMovePersonagem # se o estado atual for parado e o ultimo estado nao, terminar
 	lw a0 4(sp)
 	lw t1 32(s1)
@@ -35,7 +36,7 @@ MovePersonagem:
 		sw t1 48(s1)
 		
 		beq t1 x0 FimMovePersonagem
-		bnez s0, else_estado_zero 
+		bgt s0, zero, else_estado_zero 
 		if_estado_zero:
 			li s0 1
 		else_estado_zero:
@@ -55,15 +56,18 @@ MovePersonagem:
 	else_tecla_de_pular_foi_apertada_MovePersonagem: nop
 		li t0 'a'
 		if_tecla_de_a_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_a_foi_apertada_MovePersonagem
-			# apaga sprite
 			jal ra ApagaPersonagem
-			# Altera a posição do personagem pra esquerda
-			lw t0 -8(s1)
-			addi t0 t0 -VELOCIDADE_DOS_PERSONAGEM
-			sw t0 -8(s1)
-			
-			#rotina de final
-			 j FimMovePersonagem
+
+			li t0 24
+			ble s0, t0, if_esta_correndo_esquerda 
+			li t0 30
+			bge s0, t0, if_esta_correndo_esquerda 
+			j else_esta_correndo_direita
+			if_esta_correndo_esquerda:
+				li s0 25
+			else_esta_correndo_esquerda:
+			jal ra andarEsquerda
+			j FimMovePersonagem
 
 		else_tecla_de_a_foi_apertada_MovePersonagem: nop
 			li t0 'd'	 
@@ -81,11 +85,22 @@ MovePersonagem:
 				jal ra andarDireita
 				j FimMovePersonagem
 			else_tecla_de_d_foi_apertada_MovePersonagem: 
+
 					li t0 0
 					beq s0 t0 if_nada_pressionado_e_perso_parado
-						jal ra ApagaPersonagem
+						li t0 -1
+						beq s0 t0 personagemParadoParaAEsquerda
+							jal ra ApagaPersonagem
+							li t0 24
+							sgt t0 s6 t0
+							li t1 30
+							slt t1 s6 t1 # se o ultimo estado foi uma andada para a esquerda
+							beq t0 t1 personagemParadoParaAEsquerda
 					if_nada_pressionado_e_perso_parado:
-					li s0 0 # personagem parado
+						li s0 0 # personagem parado para a direita
+						j FimMovePersonagem
+					personagemParadoParaAEsquerda:
+						li s0 -1
 	
 FimMovePersonagem: 
 		lw ra 0(sp)

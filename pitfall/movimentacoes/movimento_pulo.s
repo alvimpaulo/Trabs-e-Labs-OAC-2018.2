@@ -4,7 +4,7 @@
 		addi sp sp -4 
 		sw ra 0(sp)
 		
-        beq s0, zero, fimPuloVertical # se s0 estiver zerado, personagem parado
+        ble s0, zero, fimPuloVertical # se s0 estiver zerado, personagem parado
         li t0 10
         bge s0 t0 fimPuloVertical # se s0 nao for um estado do pulo vertical (>= 10) 
         jal ra ApagaPersonagem

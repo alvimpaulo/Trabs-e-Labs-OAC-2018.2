@@ -12,11 +12,13 @@
 # | s10-> vazio												|
 # | s11-> relógio do jogo
 
-# | 					Tabela dos Estados					|
-# | 0 - > Parado 											|
+# | 			Tabela dos Estados de s0					|
+# | -1 -> Parado para a esquerda							|
+# | 0 - > Parado para a direita 							|
 # | 1 - 9 -> Pulo vertical									|
 # | 10 - 14 -> movimentacao para a direita					|
-# | 15 - 24 -> movimentacao para a direita					|
+# | 15 - 24 -> pulo para a direita							|
+# | 25 - 29 -> movimentacao para a esquerda					|
 
 .data
 	estadoDoJogo: .space 4
@@ -30,6 +32,7 @@
 	.include "Sprites\source\menuCreditos.s"
 	.include "Sprites\source\menuSair.s"
 	.include "Sprites\source\Personagem_Parado_16_24_1_Frame.s"
+	.include "Sprites\source\Personagem_Parado_16_24_1_Frame_Espelhado.s"
 	.include "Sprites\source\Cobra_10_10_1_Frame.s"
 	.include "Sprites\source\Cobra_10_10_2_Frame.s"
 	.include "Sprites\source\Cobra_10_10_3_Frame.s"
@@ -57,6 +60,11 @@
 	.include "Sprites\source\Personagem_Correndo_16_24_3.s"
 	.include "Sprites\source\Personagem_Correndo_16_24_4.s"
 	.include "Sprites\source\Personagem_Correndo_16_24_5.s"
+	.include "Sprites\source\Personagem_Correndo_16_24_1_Espelhado.s"
+	.include "Sprites\source\Personagem_Correndo_16_24_2_Espelhado.s"
+	.include "Sprites\source\Personagem_Correndo_16_24_3_Espelhado.s"
+	.include "Sprites\source\Personagem_Correndo_16_24_4_Espelhado.s"
+	.include "Sprites\source\Personagem_Correndo_16_24_5_Espelhado.s"
 	.include "Sprites\source\Personagem_Pulando_14_24_1Frame.s"
 	.include "Sprites\source\Personagem_Pulando_14_24_2Frame.s"
 	.include "Sprites\source\Pokebola_10_10_1Frame.s"
@@ -264,50 +272,91 @@ Jogo: nop
 			# mv s4 a0 # ultima tecla pressionada
 
 			# testes para ver qual personagem imprime
+			li t0 -1
+			beq s0 t0 imprimir_personagem_parado_esquerda # parado para a esquerda
 			li t0 0
-			beq s0 t0 imprimir_personagem_parado # parado
+			beq s0 t0 imprimir_personagem_parado_direita # parado para a direita
+
+			li t0 0
+			sgt t1 s0 t0  # s0 >= 1
+			li t0 10
+			slt t2 s0 t0  # s0 < 10
+			beq t2 t1 imprimir_personagem_pulo_direita2 # pulo vertical para a direita
+
 			li t0 10 
-			beq s0 t0 imprimir_personagem_correndo1 # 1 frame da corrida
+			beq s0 t0 imprimir_personagem_correndo1_direita # 1 frame da corrida para a direita
 			li t0 11 
-			beq s0 t0 imprimir_personagem_correndo2 # 2 frame da corrida
+			beq s0 t0 imprimir_personagem_correndo2_direita # 2 frame da corrida para a direita
 			li t0 12 
-			beq s0 t0 imprimir_personagem_correndo3 # 3 frame da corrida
+			beq s0 t0 imprimir_personagem_correndo3_direita # 3 frame da corrida para a direita
 			li t0 13 
-			beq s0 t0 imprimir_personagem_correndo4 # 4 frame da corrida
+			beq s0 t0 imprimir_personagem_correndo4_direita # 4 frame da corrida para a direita
 			li t0 14 
-			beq s0 t0 imprimir_personagem_correndo5 # 5 frame da corrida
+			beq s0 t0 imprimir_personagem_correndo5_direita # 5 frame da corrida para a direita
+
 			li t0 15 
-			beq s0 t0 imprimir_personagem_pulo_direita1 # 5 frame da corrida
+			beq s0 t0 imprimir_personagem_pulo_direita1 # pulo para a direita
 			li t0 15
 			sgt t1 s0 t0  # s0 >= 16
 			li t0 25
 			slt t2 s0 t0  # s0 <= 25
 			beq t2 t1 imprimir_personagem_pulo_direita2
+			li t0 25 
+			beq s0 t0 imprimir_personagem_correndo1_esquerda # 1 frame da corrida para a esquerda
+			li t0 26 
+			beq s0 t0 imprimir_personagem_correndo2_esquerda # 2 frame da corrida para a esquerda
+			li t0 27 
+			beq s0 t0 imprimir_personagem_correndo3_esquerda # 3 frame da corrida para a esquerda
+			li t0 28 
+			beq s0 t0 imprimir_personagem_correndo4_esquerda # 4 frame da corrida para a esquerda
+			li t0 29 
+			beq s0 t0 imprimir_personagem_correndo5_esquerda # 5 frame da corrida para a esquerda
 			# fim dos testes
 
-			imprimir_personagem_parado:
+			imprimir_personagem_parado_esquerda:
+				la a0 Personagem_Parado_16_24_1_Frame_Espelhado
+				j desenho_personagem
+			imprimir_personagem_parado_direita:
 				la a0 Personagem_Parado_16_24_1_Frame
 				j desenho_personagem
-			imprimir_personagem_correndo1:
+
+			imprimir_personagem_correndo1_direita:
 				la a0 Personagem_Correndo_16_24_1
 				j desenho_personagem
-			imprimir_personagem_correndo2:
+			imprimir_personagem_correndo2_direita:
 				la a0 Personagem_Correndo_16_24_2
 				j desenho_personagem
-			imprimir_personagem_correndo3:
+			imprimir_personagem_correndo3_direita:
 				la a0 Personagem_Correndo_16_24_3
 				j desenho_personagem
-			imprimir_personagem_correndo4:
+			imprimir_personagem_correndo4_direita:
 				la a0 Personagem_Correndo_16_24_4
 				j desenho_personagem
-			imprimir_personagem_correndo5:
+			imprimir_personagem_correndo5_direita:
 				la a0 Personagem_Correndo_16_24_5
 				j desenho_personagem
+
 			imprimir_personagem_pulo_direita1:
 				la a0 Personagem_Pulando_14_24_1Frame
 				j desenho_personagem
 			imprimir_personagem_pulo_direita2:
 				la a0 Personagem_Pulando_14_24_2Frame
+				j desenho_personagem
+
+			imprimir_personagem_correndo1_esquerda:
+				la a0 Personagem_Correndo_16_24_1_Espelhado
+				j desenho_personagem
+			imprimir_personagem_correndo2_esquerda:
+				la a0 Personagem_Correndo_16_24_2_Espelhado
+				j desenho_personagem
+			imprimir_personagem_correndo3_esquerda:
+				la a0 Personagem_Correndo_16_24_3_Espelhado
+				j desenho_personagem
+			imprimir_personagem_correndo4_esquerda:
+				la a0 Personagem_Correndo_16_24_4_Espelhado
+				j desenho_personagem
+			imprimir_personagem_correndo5_esquerda:
+				la a0 Personagem_Correndo_16_24_5_Espelhado
 				j desenho_personagem
 				
 			
@@ -332,5 +381,6 @@ FimJogo: jalr x0 ra 0
 .include "utilidades.s"
 .include "movimentacoes/movimento_pulo.s"
 .include "movimentacoes/movimento_direita.s"
+.include "movimentacoes/movimento_esquerda.s"
 .include "movimentacoes/movimento_pulo_direita.s"
 .include "Utilidades_alvim.s"

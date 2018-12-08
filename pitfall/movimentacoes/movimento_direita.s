@@ -1,4 +1,4 @@
-# 10 >= s0 > 15?  
+# 10 >= s0 > 15  
 
 .text 
 andarDireita:
@@ -13,20 +13,20 @@ andarDireita:
     
     # checagem do ultimo movimento
     li t0 10
-    beq s0 t0 frame1 # se for o primeiro movimento para a direita
+    beq s0 t0 frame1_direita # se for o primeiro movimento para a direita
     li t0 'd'
-    bne s4 t0 frame1 # se nao estiver se movendo para a direita
+    bne s4 t0 frame1_direita # se nao estiver se movendo para a direita
     li t0 11
-    beq s0 t0 frame2 # se for o segundo movimento para a direira
+    beq s0 t0 frame2_direita # se for o segundo movimento para a direira
     li t0 12
-    beq s0 t0 frame3 # se for o terceiro movimento para a direira
+    beq s0 t0 frame3_direita # se for o terceiro movimento para a direira
     li t0 13
-    beq s0 t0 frame4 # se for o quarto  movimento para a direira
+    beq s0 t0 frame4_direita # se for o quarto  movimento para a direira
     li t0 14
-    beq s0 t0 frame5 # se for o segundo movimento para a direira
+    beq s0 t0 frame5_direita # se for o segundo movimento para a direira
     # fim checagem do ultimo movimento
 
-    frame1:
+    frame1_direita:
         la a0 Personagem_Correndo_16_24_1
         # move o personagem
         lw t0 posicaoPersonagemX
@@ -35,7 +35,7 @@ andarDireita:
         
         j fimMovimentacaoDireita
     
-    frame2:
+    frame2_direita:
 
         la a0 Personagem_Correndo_16_24_2
         # move o personagem
@@ -45,7 +45,7 @@ andarDireita:
         
         j fimMovimentacaoDireita
 
-    frame3:
+    frame3_direita:
 
         la a0 Personagem_Correndo_16_24_3
         # move o personagem
@@ -55,7 +55,7 @@ andarDireita:
         
         j fimMovimentacaoDireita
 
-    frame4:
+    frame4_direita:
 
     la a0 Personagem_Correndo_16_24_4
         # move o personagem
@@ -65,7 +65,7 @@ andarDireita:
         
         j fimMovimentacaoDireita
 
-    frame5:
+    frame5_direita:
 
         la a0 Personagem_Correndo_16_24_5
         # move o personagem
