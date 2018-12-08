@@ -4,6 +4,13 @@
 # | s2 -> Mapa atual										|
 # | s3 - > Endereco da memoria onde esta o mapa atual 		|
 # | s4 -> ultimo input										|
+# | s5 -> tempo que o loop começou							|
+# | s6 -> ultimo input										|
+# | s7 -> ultimo input										|
+# | s8 -> ultimo input										|
+# | s9 -> ultimo input										|
+# | s10-> ultimo input										|
+# | s11-> relógio do jogo
 
 # | 					Tabela dos Estados					|
 # | 0 - > Parado 											|
@@ -74,6 +81,12 @@ Main: nop
 	
 	InitPersonagem (POSICAO_INICIAL_PERSONAGEM_SUPERIOR_DIREITA_X, POSICAO_INICIAL_PERSONAGEM_SUPERIOR_DIREITA_Y) #inicia o personagem
 	loop_do_jogo_Main:
+		# ecall tmepo
+		li a7 30
+		ecall
+		mv s5 a0
+		# end
+
 		jal ra LeTeclaDoTeclado  # chama a funcao que le a tecla do teclado
 		sw a0 ultimaTeclaPressionada, t0
 		li t0 '\n'
@@ -126,6 +139,13 @@ Main: nop
 			desenho_personagem:
 			jal ra DesenhaSpritePersonagem
 			lw s4 ultimaTeclaPressionada # salvando a ultima tecla pressionada
+			
+		while_nao_aconteceu_30_FPS:
+			li a7 30
+			ecall
+			sub a0 a0 s5
+			blt a0 s8 while_nao_aconteceu_30_FPS # se o tempo for < 30 segundo fica preso no loop
+	
 		jal x0 loop_do_jogo_Main
 	end_loop_do_jogo_Main:
 	lw ra 0(sp)
