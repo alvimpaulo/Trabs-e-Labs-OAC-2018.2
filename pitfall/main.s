@@ -8,11 +8,13 @@
 # | 					Tabela dos Estados					|
 # | 0 - > Parado 											|
 # | 1 - 9 -> Pulo vertical									|
+# | 10 - 14 -> movimentacao para a direita					|
 
 .data
 	estadoDoJogo: .space 4
 	ultimaTeclaPressionada: .space 4
-	vetorDeslocamentoPulo: .word -10,-8, -5, -3, 0, 3, 5, 8, 10
+	vetorDeslocamentoPuloVertical: .word -10,-8, -5, -3, 0, 3, 5, 8, 10
+	vetorDeslocamentoPuloDiagonal: .word -10,-8, -5, -3, 0, 3, 5, 8, 10
 	.include "Sprites\source\Personagem_Parado_16_24_1_Frame.s"
 	.include "Sprites\source\Cobra_10_10_1_Frame.s"
 	.include "Sprites\source\Cobra_10_10_2_Frame.s"
@@ -41,6 +43,8 @@
 	.include "Sprites\source\Personagem_Correndo_16_24_3.s"
 	.include "Sprites\source\Personagem_Correndo_16_24_4.s"
 	.include "Sprites\source\Personagem_Correndo_16_24_5.s"
+	.include "Sprites\source\Personagem_Pulando_14_24_1Frame.s"
+	.include "Sprites\source\Personagem_Pulando_14_24_2Frame.s"
 	.include "Sprites\source\Pokebola_10_10_1Frame.s"
 	.include "Sprites\source\Pokebola_10_10_2Frame.s"
 	.include "Sprites\source\Pokebola_10_10_3Frame.s"
@@ -101,30 +105,26 @@ Main: nop
 
 			imprimir_personagem_parado:
 				la a0 Personagem_Parado_16_24_1_Frame
-				jal ra DesenhaSpritePersonagem
-				j fim_desenho_personagem
+				j desenho_personagem
 			imprimir_personagem_correndo1:
 				la a0 Personagem_Correndo_16_24_1
-				jal ra DesenhaSpritePersonagem
-				j fim_desenho_personagem
+				j desenho_personagem
 			imprimir_personagem_correndo2:
 				la a0 Personagem_Correndo_16_24_2
-				jal ra DesenhaSpritePersonagem
-				j fim_desenho_personagem
+				j desenho_personagem
 			imprimir_personagem_correndo3:
 				la a0 Personagem_Correndo_16_24_3
-				jal ra DesenhaSpritePersonagem
-				j fim_desenho_personagem
+				j desenho_personagem
 			imprimir_personagem_correndo4:
 				la a0 Personagem_Correndo_16_24_4
-				jal ra DesenhaSpritePersonagem
-				j fim_desenho_personagem
+				j desenho_personagem
 			imprimir_personagem_correndo5:
 				la a0 Personagem_Correndo_16_24_5
-				jal ra DesenhaSpritePersonagem
-				j fim_desenho_personagem
+				j desenho_personagem
+				
 			
-			fim_desenho_personagem:
+			desenho_personagem:
+			jal ra DesenhaSpritePersonagem
 			lw s4 ultimaTeclaPressionada # salvando a ultima tecla pressionada
 		jal x0 loop_do_jogo_Main
 	end_loop_do_jogo_Main:
