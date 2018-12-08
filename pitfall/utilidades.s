@@ -59,3 +59,11 @@ LeTeclaDoTeclado:	nop
   	sw a0, ADD_MEMORIA_TECLADO_MOSTRA(t1) # mostra no display a tecla pressionada
 	else_tem_tecla_apertada_LeTeclaDoTeclado:
 FimLeTeclaDoTeclado: jalr x0 ra 0
+
+# CLS Clear Screen Randomico (preto atualmente)
+CLS:	li a7,141
+	# M_Ecall
+	li a0,0x00
+	li a7,148
+	M_Ecall
+	ret
