@@ -238,14 +238,14 @@ Jogo: nop
 		li t0 10								#   - Pulo Vertical
 		slt t2 s0 t0							#  /
 		mv a0 s4
-		beq t1 t2 else_jogo_pausar_loop_do_jogo_Main # /	
+		beq t1 t2 else_jogo_pausar_loop_do_jogo_Jogo # /	
 
 		li t0 14								# \	
 		sgt t1 s0 t0							#  \
 		li t0 25								#    - Pulo Diagonal direita
 		slt t2 s0 t0							#  /
 		mv a0 s4
-		beq t1 t2 else_jogo_pausar_loop_do_jogo_Main	# /
+		beq t1 t2 else_jogo_pausar_loop_do_jogo_Jogo	# /
 
 		# fim desses estados
 		jal ra LeTeclaDoTeclado  # chama a funcao que le a tecla do teclado
