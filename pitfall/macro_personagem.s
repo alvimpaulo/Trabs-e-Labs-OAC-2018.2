@@ -8,7 +8,7 @@
 .eqv POSICAO_INICIAL_PERSONAGEM_INFERIOR_ESQUERDA_Y		30
 .eqv LARGURA_PERSONAGEM 															12
 .eqv ALTURA_PERSONAGEM																24
-.eqv VELOCIDADE_DOS_PERSONAGEM												1
+.eqv VELOCIDADE_DOS_PERSONAGEM												2
 .macro InitPersonagem (%posicao_x, %posicao_y)
 	la t0 posicaoPersonagemX
 	li t1 %posicao_x

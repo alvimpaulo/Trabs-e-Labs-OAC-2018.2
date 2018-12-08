@@ -5,23 +5,24 @@
 # | s3 - > Endereco da memoria onde esta o mapa atual 		|
 # | s4 -> ultimo input										|
 # | s5 -> tempo que o loop começou							|
-# | s6 -> ultimo input										|
-# | s7 -> ultimo input										|
-# | s8 -> ultimo input										|
-# | s9 -> ultimo input										|
-# | s10-> ultimo input										|
+# | s6 -> ultimo estado										|
+# | s7 -> vazio												|
+# | s8 -> vazio												|
+# | s9 -> vazio												|
+# | s10-> vazio												|
 # | s11-> relógio do jogo
 
 # | 					Tabela dos Estados					|
 # | 0 - > Parado 											|
 # | 1 - 9 -> Pulo vertical									|
 # | 10 - 14 -> movimentacao para a direita					|
+# | 15 - 24 -> movimentacao para a direita					|
 
 .data
 	estadoDoJogo: .space 4
 	ultimaTeclaPressionada: .space 4
-	vetorDeslocamentoPuloVertical: .word -10,-8, -5, -3, 0, 3, 5, 8, 10
-	vetorDeslocamentoPuloDiagonal: .word -10,-8, -5, -3, 0, 3, 5, 8, 10
+	vetorDeslocamentoPuloVertical: .word -10,-8, -4, -2, 0, 2, 4, 8, 10
+	vetorDeslocamentoPuloDiagonal: .word -10,-8, -4, -2, 0, 2, 4, 8, 10
 	.include "Sprites\source\Personagem_Parado_16_24_1_Frame.s"
 	.include "Sprites\source\Cobra_10_10_1_Frame.s"
 	.include "Sprites\source\Cobra_10_10_2_Frame.s"
@@ -99,7 +100,7 @@ Main: nop
 		else_jogo_pausar_loop_do_jogo_Main:
 			# a0 vem  daqui jal ra LeTeclaDoTeclado
 			jal ra MovePersonagem
-			mv s4 a0 # ultima tecla pressionada
+			# mv s4 a0 # ultima tecla pressionada
 
 			# testes para ver qual personagem imprime
 			li t0 0
@@ -139,12 +140,15 @@ Main: nop
 			desenho_personagem:
 			jal ra DesenhaSpritePersonagem
 			lw s4 ultimaTeclaPressionada # salvando a ultima tecla pressionada
+			mv s6 s0 # salva o ultimo estado
+			
 			
 		while_nao_aconteceu_30_FPS:
+			li t0 33
 			li a7 30
 			ecall
 			sub a0 a0 s5
-			blt a0 s8 while_nao_aconteceu_30_FPS # se o tempo for < 30 segundo fica preso no loop
+			blt a0 t0 while_nao_aconteceu_30_FPS # se o tempo for < 30 segundo fica preso no loop
 	
 		jal x0 loop_do_jogo_Main
 	end_loop_do_jogo_Main:
@@ -155,4 +159,5 @@ FimMain: jalr x0 ra 0
 .include "utilidades.s"
 .include "movimentacoes/movimento_pulo.s"
 .include "movimentacoes/movimento_direita.s"
+.include "movimentacoes/movimento_pulo_direita.s"
 .include "Utilidades_alvim.s"

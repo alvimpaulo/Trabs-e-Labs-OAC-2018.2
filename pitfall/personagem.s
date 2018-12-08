@@ -19,6 +19,7 @@ MovePersonagem:
 	addi sp, sp, -4
 	sw ra 0(sp)
 	jal ra incioPuloVertical
+	jal ra incioPuloDireita
 
 	li t0 ' '
 	if_tecla_de_pular_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_pular_foi_apertada_MovePersonagem
@@ -33,7 +34,16 @@ MovePersonagem:
 		if_estado_zero:
 			li s0 1
 		else_estado_zero:
-		jal ra incioPuloVertical
+		li t0 'd'
+		beq s4 t0 espaco_precedido_de_d
+			jal ra incioPuloVertical
+			j finalPulo
+		espaco_precedido_de_d:
+			li s0 15
+			jal ra incioPuloDireita
+			j finalPulo
+
+		finalPulo:
 		lw ra 0(sp)
 		addi sp, sp, 4
 		jalr x0 ra 0

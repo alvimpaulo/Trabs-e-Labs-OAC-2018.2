@@ -56,7 +56,6 @@ LeTeclaDoTeclado:	nop
 	andi a1 a1 MASK_MEMORIA_TECLADO # deixa somente o bit que diz que uma teca foi apertada
   if_tem_tecla_apertada_LeTeclaDoTeclado: beq a1 x0 FimLeTeclaDoTeclado # if nenhuma tecla foi apertada ele cai fora
   	lw a0, ADD_MEMORIA_TECLADO_LE(t1) # carrega o valor da tecla apertada em a0
-	mv s4 a0
   	sw a0, ADD_MEMORIA_TECLADO_MOSTRA(t1) # mostra no display a tecla pressionada
 	else_tem_tecla_apertada_LeTeclaDoTeclado:
 FimLeTeclaDoTeclado: jalr x0 ra 0
