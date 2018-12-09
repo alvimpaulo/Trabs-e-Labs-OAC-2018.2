@@ -15,10 +15,12 @@
 # | 			Tabela dos Estados de s0					|
 # | -1 -> Parado para a esquerda							|
 # | 0 - > Parado para a direita 							|
-# | 1 - 9 -> Pulo vertical									|
+# | 1 - 9 -> Pulo vertical virado a direita					|
 # | 10 - 14 -> movimentacao para a direita					|
 # | 15 - 24 -> pulo para a direita							|
 # | 25 - 29 -> movimentacao para a esquerda					|
+# | 30 - 39 -> pulo para a esquerda							|
+# | 40 - 49 -> Pulo vertical virado a esquerda 				|
 
 .data
 	estadoDoJogo: .space 4
@@ -67,6 +69,8 @@
 	.include "Sprites\source\Personagem_Correndo_16_24_5_Espelhado.s"
 	.include "Sprites\source\Personagem_Pulando_14_24_1Frame.s"
 	.include "Sprites\source\Personagem_Pulando_14_24_2Frame.s"
+	.include "Sprites\source\Personagem_Pulando_14_24_1Frame_Espelhado.s"
+	.include "Sprites\source\Personagem_Pulando_14_24_2Frame_Espelhado.s"
 	.include "Sprites\source\Pokebola_10_10_1Frame.s"
 	.include "Sprites\source\Pokebola_10_10_2Frame.s"
 	.include "Sprites\source\Pokebola_10_10_3Frame.s"
@@ -241,18 +245,25 @@ Jogo: nop
 		# end
 		
 		# estados que nao podem ter teclas lidas
-		li t0 0									# \
-		sgt t1 s0 t0							#  \
-		li t0 10								#   - Pulo Vertical
-		slt t2 s0 t0							#  /
-		mv a0 s4
-		beq t1 t2 else_jogo_pausar_loop_do_jogo_Jogo # /	
+		li t0 0											# \
+		sgt t1 s0 t0									#  \
+		li t0 10										#   - Pulo Vertical
+		slt t2 s0 t0									#   /
+		mv a0 s4										#  /
+		beq t1 t2 else_jogo_pausar_loop_do_jogo_Jogo 	# /	
 
-		li t0 14								# \	
-		sgt t1 s0 t0							#  \
-		li t0 25								#    - Pulo Diagonal direita
-		slt t2 s0 t0							#  /
-		mv a0 s4
+		li t0 14										# \	
+		sgt t1 s0 t0									#  \
+		li t0 25										#    - Pulo Diagonal direita
+		slt t2 s0 t0									#   /
+		mv a0 s4										#  /
+		beq t1 t2 else_jogo_pausar_loop_do_jogo_Jogo	# /
+
+		li t0 29										# \	
+		sgt t1 s0 t0									#  \
+		li t0 40										#    - Pulo Diagonal direita
+		slt t2 s0 t0									#   /
+		mv a0 s4										#  /
 		beq t1 t2 else_jogo_pausar_loop_do_jogo_Jogo	# /
 
 		# fim desses estados
@@ -299,7 +310,7 @@ Jogo: nop
 			li t0 15
 			sgt t1 s0 t0  # s0 >= 16
 			li t0 25
-			slt t2 s0 t0  # s0 <= 25
+			slt t2 s0 t0  # s0 <= 26
 			beq t2 t1 imprimir_personagem_pulo_direita2
 			li t0 25 
 			beq s0 t0 imprimir_personagem_correndo1_esquerda # 1 frame da corrida para a esquerda
@@ -311,6 +322,21 @@ Jogo: nop
 			beq s0 t0 imprimir_personagem_correndo4_esquerda # 4 frame da corrida para a esquerda
 			li t0 29 
 			beq s0 t0 imprimir_personagem_correndo5_esquerda # 5 frame da corrida para a esquerda
+
+			li t0 30 
+			beq s0 t0 imprimir_personagem_pulo_direita1_Espelhado # pulo para a direita
+			li t0 30
+			sgt t1 s0 t0  # s0 >= 31
+			li t0 40
+			slt t2 s0 t0  # s0 <= 39
+			beq t2 t1 imprimir_personagem_pulo_direita2_Espelhado
+
+			li t0 39
+			sgt t1 s0 t0  # s0 >= 40
+			li t0 50
+			slt t2 s0 t0  # s0 <= 49
+			beq t2 t1 imprimir_personagem_pulo_direita2_Espelhado
+
 			# fim dos testes
 
 			imprimir_personagem_parado_esquerda:
@@ -358,6 +384,13 @@ Jogo: nop
 			imprimir_personagem_correndo5_esquerda:
 				la a0 Personagem_Correndo_16_24_5_Espelhado
 				j desenho_personagem
+
+			imprimir_personagem_pulo_direita1_Espelhado:
+				la a0 Personagem_Pulando_14_24_1Frame_Espelhado
+				j desenho_personagem
+			imprimir_personagem_pulo_direita2_Espelhado:
+				la a0 Personagem_Pulando_14_24_2Frame_Espelhado
+				j desenho_personagem
 				
 			
 			desenho_personagem:
@@ -366,7 +399,7 @@ Jogo: nop
 			mv s6 s0 # salva o ultimo estado
 			
 			
-		li t0 33
+		li t0 100
 		while_nao_aconteceu_30_FPS:
 			li a7 30
 			ecall
@@ -380,7 +413,9 @@ FimJogo: jalr x0 ra 0
 .include "personagem.s"
 .include "utilidades.s"
 .include "movimentacoes/movimento_pulo.s"
+.include "movimentacoes/movimento_pulo_vertical_esquerda.s"
 .include "movimentacoes/movimento_direita.s"
 .include "movimentacoes/movimento_esquerda.s"
 .include "movimentacoes/movimento_pulo_direita.s"
+.include "movimentacoes/movimento_pulo_esquerda.s"
 .include "Utilidades_alvim.s"
