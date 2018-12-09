@@ -1,34 +1,4 @@
 .text
-## a0 = x_0; a1 = y_0; a2 = x_1; a3 = y_1; a4 = cor;
-DrawQuadrado: nop
-	li t0 INIT_MEMORIA_VIDEO	# carrega a memória inicial de video
-	li t1 320					# carrega a largura da tela
-	sub t2 a2 a0				# calcula a largura do personagem
-	sub t3 t1 t2				# calcula qtd a ser adicionada para ir para proxima linha
-	li t4 0 					# contador j = 0				
-	
-	# o endereço inicial/ contador i
-	mul t5 a1 t1 #ini t5 = y * 320 
-	add t5 t5 a0 #ini t5 += x
-	add t5 t5 t0 #ini t5 += 0xff000000
-	
-	# o endereço final
-	mul t6 a3 t1 #fim
-	add t6 t6 a2 #fim
-	add t6 t6 t0 #fim
-	loop_cria_quadrado_linha_DrawQuadrado: nop
-		sb a4 0(t5)								# salva a cor do do quadrado a ser desenhado
-		if_vai_proxima_linha_loop_cria_quadrado_linha_DrawQuadrado: blt t4 t2 else_vai_proxima_linha_loop_cria_quadrado_linha_DrawQuadrado # if es
-			li t4 0
-			add t5 t5 t3
-			bne t5 t6 loop_cria_quadrado_linha_DrawQuadrado
-		else_vai_proxima_linha_loop_cria_quadrado_linha_DrawQuadrado: nop
-		addi t5 t5 1 
-		addi t4 t4 1 
-		bne t5 t6 loop_cria_quadrado_linha_DrawQuadrado
-	end_loop_cria_quadrado_linha_DrawQuadrado:
-	sb a4 0(t5)
-FimDrawQuadrado: jalr x0 ra 0
 
 ## Retorna true se (x, y) est� dentro do quadrado ((x_0, y_0), (x_1, y_1)) e false caso contr�rio
 ## a0 = x_0; a1 = y_0; a2 = x_1; a3 = y_1; a4 = x; a5 y
@@ -93,3 +63,11 @@ fimloopDesenhaWord:
 	lw s1 8(sp)
 	addi sp  sp  12
 	jalr x0 ra 0
+
+# CLS Clear Screen Randomico (preto atualmente)
+CLS:	li a7,141
+	# M_Ecall
+	li a0,0x00
+	li a7,148
+	M_Ecall
+	ret
