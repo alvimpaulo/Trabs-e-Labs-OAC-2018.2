@@ -99,22 +99,49 @@ MovePersonagem:
 				jal ra andarDireita
 				j FimMovePersonagem
 			else_tecla_de_d_foi_apertada_MovePersonagem: 
+					li t0 'w'
+					if_tecla_de_w_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_w_foi_apertada_MovePersonagem
 
-					li t0 0
-					beq s0 t0 if_nada_pressionado_e_perso_parado
-						li t0 -1
-						beq s0 t0 personagemParadoParaAEsquerda
-							jal ra ApagaPersonagem
-							li t0 24
-							sgt t0 s6 t0
-							li t1 30
-							slt t1 s6 t1 # se o ultimo estado foi uma andada para a esquerda
-							beq t0 t1 personagemParadoParaAEsquerda
-					if_nada_pressionado_e_perso_parado:
-						li s0 0 # personagem parado para a direita
-						j FimMovePersonagem
-					personagemParadoParaAEsquerda:
-						li s0 -1
+						jal ra ApagaPersonagem
+
+						li t0 146
+						lw t1 posicaoPersonagemX
+						sgt t2 t1 t0
+						li t0 173
+						slt t3 t1 t0 # se o personagem esta na linha da escada
+						beq t2 t3 else_nao_esta_na_escada
+						if_esta_na_escada:
+							j else_tecla_de_w_foi_apertada_MovePersonagem
+						else_nao_esta_na_escada:
+							li t0 49
+							sgt t1 s0 t0
+							li t0 61
+							slt t2 s0 t0 # se o personagem nao estiver na animacao da escada
+							beq t2 t1 else_nao_esta_animacao_escada
+							if_nao_esta_animacao_escada:
+								li s0 50
+								jal ra incioEscadaCima
+								j FimMovePersonagem
+							else_nao_esta_animacao_escada:
+								addi s0 s0 1
+								jal ra incioEscadaCima
+								j FimMovePersonagem
+					else_tecla_de_w_foi_apertada_MovePersonagem:
+						li t0 0
+						beq s0 t0 if_nada_pressionado_e_perso_parado
+							li t0 -1
+							beq s0 t0 personagemParadoParaAEsquerda
+								jal ra ApagaPersonagem
+								li t0 24
+								sgt t0 s6 t0
+								li t1 30
+								slt t1 s6 t1 # se o ultimo estado foi uma andada para a esquerda
+								beq t0 t1 personagemParadoParaAEsquerda
+						if_nada_pressionado_e_perso_parado:
+							li s0 0 # personagem parado para a direita
+							j FimMovePersonagem
+						personagemParadoParaAEsquerda:
+							li s0 -1
 	
 FimMovePersonagem: 
 		lw ra 0(sp)
