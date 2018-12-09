@@ -1,7 +1,7 @@
 # 50 >= s0 >= 60
 
 .text
-    incioEscadaBaixo: nop
+    incioEscada: nop
 		# salva stack
 		addi sp sp -4 
 		sw ra 0(sp)

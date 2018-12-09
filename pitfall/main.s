@@ -418,7 +418,6 @@ FimJogo: jalr x0 ra 0
 .include "movimentacoes/movimento_esquerda.s"
 .include "movimentacoes/movimento_pulo_direita.s"
 .include "movimentacoes/movimento_pulo_esquerda.s"
-.include "movimentacoes/movimento_escada_cima.s"
-.include "movimentacoes/movimento_escada_baixo.s"
+.include "movimentacoes/movimento_escada.s"
 .include "SYSTEMv12.s"
 
