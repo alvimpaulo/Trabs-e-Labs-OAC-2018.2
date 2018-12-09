@@ -20,7 +20,7 @@
 
 #	li a7, 10
 #	ecall
-imprimir_vida: 	addi sp, sp, -28
+imprimir_vida: 	addi sp, sp, -32
 	sw s0, 0(sp)					# liberando s0
 	sw a1, 4(sp)
 	sw a2, 8(sp)
@@ -28,6 +28,7 @@ imprimir_vida: 	addi sp, sp, -28
 	sw a4, 16(sp)
 	sw a5, 20(sp)
 	sw a0, 24(sp)
+	sw ra, 28(sp)
 	la t4, VIDAS	    			# qtd de vida	
 	lw s0, 0(t4)
 	mv a4, a1						# a1 vai ser utilizado para end. do sprite
@@ -56,6 +57,7 @@ imprimir_exit: lw s0, 0(sp)
 	lw a4, 16(sp)
 	lw a5, 20(sp)
 	lw a0, 24(sp)
-	addi sp, sp, 28
+	lw ra, 28(sp)
+	addi sp, sp, 32
 	ret
 # .include "../Utilidades_alvim.s"
