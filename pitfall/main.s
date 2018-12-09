@@ -411,6 +411,7 @@ FimJogo: jalr x0 ra 0
 .include "personagem.s"
 .include "relogio.s"
 .include "vida.s"
+.include "vetorJogo.s"
 .include "pontuacao.s"
 .include "movimentacoes/movimento_pulo.s"
 .include "movimentacoes/movimento_pulo_vertical_esquerda.s"

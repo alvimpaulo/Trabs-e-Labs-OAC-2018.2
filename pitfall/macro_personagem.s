@@ -9,10 +9,18 @@
 .eqv LARGURA_PERSONAGEM 															12
 .eqv ALTURA_PERSONAGEM																24
 .eqv VELOCIDADE_DOS_PERSONAGEM												2
+
 .macro InitPersonagem (%posicao_x, %posicao_y)
 	la t0 posicaoPersonagemX
 	li t1 %posicao_x
 	sw t1 0(t0)
 	li t1 %posicao_y
 	sw t1 4(t0)
+.end_macro
+									
+.macro InitPersonagemReg (%posicao_x, %posicao_y)
+	la t0 posicaoPersonagemX
+	sw %posicao_x 0(t0)
+	la t0 posicaoPersonagemY
+	sw %posicao_y 0(t0)
 .end_macro
