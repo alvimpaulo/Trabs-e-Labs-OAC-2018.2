@@ -14,8 +14,12 @@
         sw t2, 0(t1)
         
         fimMovimentacaoEscadaBaixo:
-        li t3, 50
-        rem s0, s0, t3 # se chegar na base da escada, zerar
+        li t0, 50
+        beq s0 t0 if_chegou_no_chao_da_escada
+        j fimEscadaBaixo
+        if_chegou_no_chao_da_escada: 
+            li s0 0
+
         
         
 		
