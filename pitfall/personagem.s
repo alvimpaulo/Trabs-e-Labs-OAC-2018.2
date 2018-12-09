@@ -109,39 +109,76 @@ MovePersonagem:
 						sgt t2 t1 t0
 						li t0 173
 						slt t3 t1 t0 # se o personagem esta na linha da escada
-						beq t2 t3 else_nao_esta_na_escada
-						if_esta_na_escada:
+						beq t2 t3 else_nao_esta_na_escada_cima
+						if_esta_na_escada_cima:
 							j else_tecla_de_w_foi_apertada_MovePersonagem
-						else_nao_esta_na_escada:
+						else_nao_esta_na_escada_cima:
 							li t0 49
 							sgt t1 s0 t0
 							li t0 61
-							slt t2 s0 t0 # se o personagem nao estiver na animacao da escada
-							beq t2 t1 else_nao_esta_animacao_escada
-							if_nao_esta_animacao_escada:
+							slt t2 s0 t0 # se o personagem estiver na animacao da escada
+							beq t2 t1 else_nao_esta_animacao_escada_cima
+							if_nao_esta_animacao_escada_cima:
 								li s0 50
 								jal ra incioEscadaCima
 								j FimMovePersonagem
-							else_nao_esta_animacao_escada:
+							else_nao_esta_animacao_escada_cima:
 								addi s0 s0 1
 								jal ra incioEscadaCima
 								j FimMovePersonagem
 					else_tecla_de_w_foi_apertada_MovePersonagem:
-						li t0 0
-						beq s0 t0 if_nada_pressionado_e_perso_parado
-							li t0 -1
-							beq s0 t0 personagemParadoParaAEsquerda
-								jal ra ApagaPersonagem
-								li t0 24
-								sgt t0 s6 t0
-								li t1 30
-								slt t1 s6 t1 # se o ultimo estado foi uma andada para a esquerda
-								beq t0 t1 personagemParadoParaAEsquerda
-						if_nada_pressionado_e_perso_parado:
-							li s0 0 # personagem parado para a direita
-							j FimMovePersonagem
-						personagemParadoParaAEsquerda:
-							li s0 -1
+						# li t0 's'
+						# if_tecla_de_s_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_s_foi_apertada_MovePersonagem
+						# 	jal ra ApagaPersonagem
+# 
+						# 	li t0 146
+						# 	lw t1 posicaoPersonagemX
+						# 	sgt t2 t1 t0
+						# 	li t0 173
+						# 	slt t3 t1 t0 # se o personagem esta na linha da escada
+						# 	beq t2 t3 else_nao_esta_na_escada_baixo
+						# 	if_esta_na_escada_baixo:
+						# 		j else_tecla_de_s_foi_apertada_MovePersonagem
+						# 	else_nao_esta_na_escada_baixo:
+						# 		li t0 49
+						# 		sgt t1 s0 t0
+						# 		li t0 61
+						# 		slt t2 s0 t0 # se o personagem estiver na animacao da escada
+						# 		beq t2 t1 else_nao_esta_animacao_escada_baixo
+						# 		if_nao_esta_animacao_escada_baixo:
+						# 			li s0 60
+						# 			jal ra incioEscadaBaixo
+						# 			j FimMovePersonagem
+						# 		else_nao_esta_animacao_escada_baixo:
+						# 			addi s0 s0 -1
+						# 			jal ra incioEscadaBaixo
+						# 			j FimMovePersonagem
+						# else_tecla_de_s_foi_apertada_MovePersonagem:
+							li t0 0
+							beq s0 t0 if_nada_pressionado_e_perso_parado
+								li t0 -1
+								beq s0 t0 personagemParadoParaAEsquerda
+									jal ra ApagaPersonagem
+									li t0 24
+									sgt t0 s6 t0
+									li t1 30
+									slt t1 s6 t1 # se o ultimo estado foi uma andada para a esquerda
+									beq t0 t1 personagemParadoParaAEsquerda
+
+									li t0 49
+									sgt t0 s6 t0
+									li t1 61
+									slt t1 s6 t1 # se o ultimo estado foi estar na escada
+									beq t0 t1 personagemParadoEscada
+
+							if_nada_pressionado_e_perso_parado:
+								li s0 0 # personagem parado para a direita
+								j FimMovePersonagem
+							personagemParadoParaAEsquerda:
+								li s0 -1
+								j FimMovePersonagem
+							personagemParadoEscada:
+								mv s4 s0
 	
 FimMovePersonagem: 
 		lw ra 0(sp)
@@ -191,7 +228,7 @@ ApagaPersonagem:
 			sgt t1 s6 t0
 			li t0 10
 			slt t2 s6 t0
-			beq t2 t1 la_personagem_pulando_1 # apaga a sprite do pulo vertical
+			beq t2 t1 la_personagem_pulo_direita1 # apaga a sprite do pulo vertical
             li t0 10 # estado corrida direita 1
 			beq s6 t0 la_personagem_correndo_1 # apaga a sprite 1 de personagem correndo
             li t0 11 # estado corrida direita 2
@@ -203,9 +240,43 @@ ApagaPersonagem:
             li t0 14 # estado corrida direita 5
 			beq s6 t0 la_personagem_correndo_5 # apaga a sprite 5 de personagem correndo
             li t0 15 # estado pulo 1
-			beq s6 t0 la_personagem_pulando_1 # apaga a sprite 1 de personagem pulando
-            li t0 16 # estado pulo > 1
-			bge s6 t0 la_personagem_pulando_2 # apaga a sprite 2 de personagem pulando
+			beq s6 t0 la_personagem_pulo_direita1 # apaga a sprite 1 de personagem pulando
+            li t0 15
+			sgt t1 s0 t0  # s0 >= 16
+			li t0 25
+			slt t2 s0 t0  # s0 <= 26
+			beq t2 t1 la_personagem_pulo_direita2
+
+			li t0 25 
+			beq s0 t0 la_personagem_correndo1_esquerda # 1 frame da corrida para a esquerda
+			li t0 26 
+			beq s0 t0 la_personagem_correndo2_esquerda # 2 frame da corrida para a esquerda
+			li t0 27 
+			beq s0 t0 la_personagem_correndo3_esquerda # 3 frame da corrida para a esquerda
+			li t0 28 
+			beq s0 t0 la_personagem_correndo4_esquerda # 4 frame da corrida para a esquerda
+			li t0 29 
+			beq s0 t0 la_personagem_correndo5_esquerda # 5 frame da corrida para a esquerda
+
+			li t0 30 
+			beq s0 t0 la_personagem_pulo_direita1_Espelhado # pulo para a direita
+			li t0 30
+			sgt t1 s0 t0  # s0 >= 31
+			li t0 40
+			slt t2 s0 t0  # s0 <= 39
+			beq t2 t1 la_personagem_pulo_direita2_Espelhado
+
+			 li t0 39
+			 sgt t1 s0 t0  # s0 >= 40
+			 li t0 50
+			 slt t2 s0 t0  # s0 <= 49
+			 beq t2 t1 la_personagem_pulo_direita2_Espelhado
+
+			li t0 49
+			sgt t1 s0 t0  # s0 >= 50
+			li t0 61
+			slt t2 s0 t0  # s0 <= 60
+			beq t2 t1 la_personagem_escada_1
 			
         # fim da checagem
         
@@ -225,12 +296,40 @@ ApagaPersonagem:
             la_personagem_correndo_5:
                 la a0 Personagem_Correndo_16_24_5
                 j apagarPersonagemDepoisDaChecagem
-            la_personagem_pulando_1:
+
+            la_personagem_pulo_direita1:
                 la a0 Personagem_Pulando_14_24_1Frame
                 j apagarPersonagemDepoisDaChecagem
-            la_personagem_pulando_2:
+            la_personagem_pulo_direita2:
                 la a0 Personagem_Pulando_14_24_2Frame
                 j apagarPersonagemDepoisDaChecagem
+# 
+			la_personagem_correndo1_esquerda:
+				la a0 Personagem_Correndo_16_24_1_Espelhado
+				j apagarPersonagemDepoisDaChecagem
+			la_personagem_correndo2_esquerda:
+				la a0 Personagem_Correndo_16_24_2_Espelhado
+				j apagarPersonagemDepoisDaChecagem
+			la_personagem_correndo3_esquerda:
+				la a0 Personagem_Correndo_16_24_3_Espelhado
+				j apagarPersonagemDepoisDaChecagem
+			la_personagem_correndo4_esquerda:
+				la a0 Personagem_Correndo_16_24_4_Espelhado
+				j apagarPersonagemDepoisDaChecagem
+			la_personagem_correndo5_esquerda:
+				la a0 Personagem_Correndo_16_24_5_Espelhado
+				j apagarPersonagemDepoisDaChecagem
+# 
+			la_personagem_pulo_direita1_Espelhado:
+				la a0 Personagem_Pulando_14_24_1Frame_Espelhado
+				j apagarPersonagemDepoisDaChecagem
+			la_personagem_pulo_direita2_Espelhado:
+				la a0 Personagem_Pulando_14_24_2Frame_Espelhado
+				j apagarPersonagemDepoisDaChecagem
+
+			la_personagem_escada_1:
+				la a0 Personagem_Escalando_10_26_1Frame
+				j apagarPersonagemDepoisDaChecagem
 
 		apagarPersonagemDepoisDaChecagem:
         # fim do carregamento

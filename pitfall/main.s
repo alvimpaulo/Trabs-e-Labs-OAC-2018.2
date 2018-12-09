@@ -21,6 +21,7 @@
 # | 25 - 29 -> movimentacao para a esquerda					|
 # | 30 - 39 -> pulo para a esquerda							|
 # | 40 - 49 -> Pulo vertical virado a esquerda 				|
+# | 50 - 60 -> Movimento Escada								|
 
 .data
 	estadoDoJogo: .space 4
@@ -33,8 +34,6 @@
 	.include "Sprites\source\menuJogar.s"
 	.include "Sprites\source\menuCreditos.s"
 	.include "Sprites\source\menuSair.s"
-	.include "Sprites\source\Personagem_Parado_16_24_1_Frame.s"
-	.include "Sprites\source\Personagem_Parado_16_24_1_Frame_Espelhado.s"
 	.include "Sprites\source\Cobra_10_10_1_Frame.s"
 	.include "Sprites\source\Cobra_10_10_2_Frame.s"
 	.include "Sprites\source\Cobra_10_10_3_Frame.s"
@@ -57,6 +56,14 @@
 	.include "Sprites\source\Moeda_10_10_4Frame.s"
 	.include "Sprites\source\Moeda_10_10_5Frame.s"
 	.include "Sprites\source\Moeda_10_10_6Frame.s"
+	.include "Sprites\source\Pokebola_10_10_1Frame.s"
+	.include "Sprites\source\Pokebola_10_10_2Frame.s"
+	.include "Sprites\source\Pokebola_10_10_3Frame.s"
+	.include "Sprites\source\Pokebola_10_10_4Frame.s"
+	.include "Sprites\source\fase2.s"
+	.include "/Sprites/source/Coracao_10_8_1Frame.s"	
+	.include "Sprites\source\Personagem_Parado_16_24_1_Frame.s"
+	.include "Sprites\source\Personagem_Parado_16_24_1_Frame_Espelhado.s"
 	.include "Sprites\source\Personagem_Correndo_16_24_1.s"
 	.include "Sprites\source\Personagem_Correndo_16_24_2.s"
 	.include "Sprites\source\Personagem_Correndo_16_24_3.s"
@@ -71,12 +78,9 @@
 	.include "Sprites\source\Personagem_Pulando_14_24_2Frame.s"
 	.include "Sprites\source\Personagem_Pulando_14_24_1Frame_Espelhado.s"
 	.include "Sprites\source\Personagem_Pulando_14_24_2Frame_Espelhado.s"
-	.include "Sprites\source\Pokebola_10_10_1Frame.s"
-	.include "Sprites\source\Pokebola_10_10_2Frame.s"
-	.include "Sprites\source\Pokebola_10_10_3Frame.s"
-	.include "Sprites\source\Pokebola_10_10_4Frame.s"
-	.include "Sprites\source\fase2.s"
-	.include "/Sprites/source/Coracao_10_8_1Frame.s"										
+	.include "Sprites\source\Personagem_Escalando_10_26_1Frame.s"
+	.include "Sprites\source\Personagem_Escalando_10_26_2Frame.s"										
+
 .text
 .include "macros2.s"
 .include "macro.s"
@@ -344,6 +348,12 @@ Jogo: nop
 			slt t2 s0 t0  # s0 <= 49
 			beq t2 t1 imprimir_personagem_pulo_direita2_Espelhado
 
+			li t0 49
+			sgt t1 s0 t0  # s0 >= 50
+			li t0 61
+			slt t2 s0 t0  # s0 <= 60
+			beq t2 t1 imprimir_personagem_escada_1
+
 			# fim dos testes
 
 			imprimir_personagem_parado_esquerda:
@@ -398,6 +408,10 @@ Jogo: nop
 			imprimir_personagem_pulo_direita2_Espelhado:
 				la a0 Personagem_Pulando_14_24_2Frame_Espelhado
 				j desenho_personagem
+
+			imprimir_personagem_escada_1:
+				la a0 Personagem_Escalando_10_26_1Frame
+				j desenho_personagem
 				
 			
 			desenho_personagem:
@@ -426,10 +440,6 @@ Jogo: nop
 	lw ra 0(sp)
 	addi sp sp 4
 FimJogo: jalr x0 ra 0
-.include "personagem.s"
-.include "relogio.s"
-.include "vida.s"
-.include "utilidades.s"
 .include "movimentacoes/movimento_pulo.s"
 .include "movimentacoes/movimento_pulo_vertical_esquerda.s"
 .include "movimentacoes/movimento_direita.s"
@@ -437,5 +447,11 @@ FimJogo: jalr x0 ra 0
 .include "movimentacoes/movimento_pulo_direita.s"
 .include "movimentacoes/movimento_pulo_esquerda.s"
 .include "movimentacoes/movimento_escada_cima.s"
+.include "movimentacoes/movimento_escada_baixo.s"
+.include "personagem.s"
+.include "relogio.s"
+.include "vida.s"
+.include "utilidades.s"
 .include "Utilidades_alvim.s"
 .include "SYSTEMv12.s"
+
