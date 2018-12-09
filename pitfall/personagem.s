@@ -19,10 +19,11 @@ MovePersonagem:
 	sw ra 0(sp)
 	sw a0 4(sp)
 	jal ra incioPuloVertical
+	jal ra incioPuloVerticalEsquerda
 	jal ra incioPuloDireita
+	jal ra incioPuloEsquerda
 	li t0 1
 	slt t0 s6 t0 # t0 = 1 se o ultimo estado for ele parado
-	li t1 1
 	slt t1 s0 t1 # t1 = 1 se o estado atual e ele parado
 	bgt t1 t0 FimMovePersonagem # se o estado atual for parado e o ultimo estado nao, terminar
 	lw a0 4(sp)
@@ -36,17 +37,30 @@ MovePersonagem:
 		sw t1 48(s1)
 		
 		beq t1 x0 FimMovePersonagem
-		bgt s0, zero, else_estado_zero 
+		bne s0, zero, else_estado_zero 
 		if_estado_zero:
 			li s0 1
 		else_estado_zero:
+
+		li t0 -1
+		bne s0, t0, else_parado_esquerda  # se nao esta parado para a esquerda
+		if_parado_esquerda:
+			li s0 40 # pula vertical para a esquerda
+		else_parado_esquerda:
+
 		li t0 'd'
 		beq s4 t0 espaco_precedido_de_d
-			jal ra incioPuloVertical
-			j finalPulo
+			li t0 'a'
+			beq s4 t0 espaco_precedido_de_a
+				jal ra incioPuloVertical
+				j finalPulo
 		espaco_precedido_de_d:
 			li s0 15
 			jal ra incioPuloDireita
+			j finalPulo
+		espaco_precedido_de_a:
+			li s0 30
+			jal ra incioPuloEsquerda
 			j finalPulo
 
 		finalPulo:
@@ -107,26 +121,6 @@ FimMovePersonagem:
 		lw a0 4(sp)
 		addi sp, sp, 8
 		jalr x0 ra 0
-
-DesenhaPersonagem:
-	# salva stack
-	addi sp sp -4 
-	sw ra 0(sp)
-	
-	la t0 posicaoPersonagemX 
-	lw a0 0(t0)	#carrega em a0 o ponto x superior esquerdo do personagem
-	addi a2 a0 LARGURA_PERSONAGEM #carrega em a0 o ponto x inferior direito do personagem
-	lw a1 4(t0) #carrega em a0 o ponto y superior esquerdo do personagem
-	addi a3 a1 ALTURA_PERSONAGEM #carrega em a0 o ponto y inferior direito do personagem
-	
-	#desenha o quadrado atual
-	li a4 0xAA
-	jal ra DrawQuadrado
-
-	# carrega stack
-	lw ra 0(sp)
-	addi sp sp 4
-FimDesenhaPersonagem: jalr x0 ra 0
 
 # a0 = endereco memoria da sprite
 DesenhaSpritePersonagem:
