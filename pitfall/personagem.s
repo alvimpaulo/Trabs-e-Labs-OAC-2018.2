@@ -127,33 +127,33 @@ MovePersonagem:
 								jal ra incioEscadaCima
 								j FimMovePersonagem
 					else_tecla_de_w_foi_apertada_MovePersonagem:
-						# li t0 's'
-						# if_tecla_de_s_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_s_foi_apertada_MovePersonagem
-						# 	jal ra ApagaPersonagem
-# 
-						# 	li t0 146
-						# 	lw t1 posicaoPersonagemX
-						# 	sgt t2 t1 t0
-						# 	li t0 173
-						# 	slt t3 t1 t0 # se o personagem esta na linha da escada
-						# 	beq t2 t3 else_nao_esta_na_escada_baixo
-						# 	if_esta_na_escada_baixo:
-						# 		j else_tecla_de_s_foi_apertada_MovePersonagem
-						# 	else_nao_esta_na_escada_baixo:
-						# 		li t0 49
-						# 		sgt t1 s0 t0
-						# 		li t0 61
-						# 		slt t2 s0 t0 # se o personagem estiver na animacao da escada
-						# 		beq t2 t1 else_nao_esta_animacao_escada_baixo
-						# 		if_nao_esta_animacao_escada_baixo:
-						# 			li s0 60
-						# 			jal ra incioEscadaBaixo
-						# 			j FimMovePersonagem
-						# 		else_nao_esta_animacao_escada_baixo:
-						# 			addi s0 s0 -1
-						# 			jal ra incioEscadaBaixo
-						# 			j FimMovePersonagem
-						# else_tecla_de_s_foi_apertada_MovePersonagem:
+						li t0 's'
+						if_tecla_de_s_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_de_s_foi_apertada_MovePersonagem
+							jal ra ApagaPersonagem
+
+							li t0 146
+							lw t1 posicaoPersonagemX
+							sgt t2 t1 t0
+							li t0 173
+							slt t3 t1 t0 # se o personagem esta na linha da escada
+							beq t2 t3 else_nao_esta_na_escada_baixo
+							if_esta_na_escada_baixo:
+								j else_tecla_de_s_foi_apertada_MovePersonagem
+							else_nao_esta_na_escada_baixo:
+								li t0 49
+								sgt t1 s0 t0
+								li t0 61
+								slt t2 s0 t0 # se o personagem estiver na animacao da escada
+								beq t2 t1 else_nao_esta_animacao_escada_baixo
+								if_nao_esta_animacao_escada_baixo:
+									li s0 60
+									jal ra incioEscadaBaixo
+									j FimMovePersonagem
+								else_nao_esta_animacao_escada_baixo:
+									addi s0 s0 -1
+									jal ra incioEscadaBaixo
+									j FimMovePersonagem
+						else_tecla_de_s_foi_apertada_MovePersonagem:
 							li t0 0
 							beq s0 t0 if_nada_pressionado_e_perso_parado
 								li t0 -1
