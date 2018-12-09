@@ -72,12 +72,13 @@
 	.include "Sprites\source\Pokebola_10_10_3Frame.s"
 	.include "Sprites\source\Pokebola_10_10_4Frame.s"
 	.include "Sprites\source\fase2.s"
-													
+	.include "/Sprites/source/Coracao_10_8_1Frame.s"										
 .text
 .include "macros2.s"
 .include "macro.s"
 .include "macro_personagem.s"
 .include "macro_relogio.s"
+.include "macro_vida.s"
 
 M_SetEcall(exceptionHandling)
 jal ra Main
@@ -228,13 +229,15 @@ Jogo: nop
 	la s3 fase2
 	addi s3 s3 8 # s3 = mapa inicial
 	
-	RELOGIO_INICIO(1200000)
+	RELOGIO_INICIO(1200000)				# Inicializar relogio do jogo
+	inicializar_vida(3)					# Inicializar vidas
 	# printa o mapa
 		li a0 0xff000000
 		mv a1 s3
 		li a2 320
 		li a3 224
 		jal ra printSprite
+	
 	
 	InitPersonagem (POSICAO_INICIAL_PERSONAGEM_SUPERIOR_DIREITA_X, POSICAO_INICIAL_PERSONAGEM_SUPERIOR_DIREITA_Y) #inicia o personagem
 	loop_do_jogo_Jogo:
@@ -379,6 +382,12 @@ Jogo: nop
 		li a1, 4				# coluna do relogio
 		li a2, 228				# linha do relogio
 		jal RELOGIO_LOOP
+
+		li a0, 0XFF000000		# end. bitmap
+		li a1, 228				# coord Y
+		li a2, 280				# coord X
+		jal imprimir_vida	
+
 		jal x0 loop_do_jogo_Jogo
 	end_loop_do_jogo_Jogo:
 	lw ra 0(sp)
@@ -386,6 +395,7 @@ Jogo: nop
 FimJogo: jalr x0 ra 0
 .include "personagem.s"
 .include "relogio.s"
+.include "vida.s"
 .include "utilidades.s"
 .include "movimentacoes/movimento_pulo.s"
 .include "movimentacoes/movimento_direita.s"
