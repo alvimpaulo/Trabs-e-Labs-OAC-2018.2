@@ -158,18 +158,19 @@ MovePersonagem:
 							beq s0 t0 if_nada_pressionado_e_perso_parado
 								li t0 -1
 								beq s0 t0 personagemParadoParaAEsquerda
-									jal ra ApagaPersonagem
-									li t0 24
-									sgt t0 s6 t0
-									li t1 30
-									slt t1 s6 t1 # se o ultimo estado foi uma andada para a esquerda
-									beq t0 t1 personagemParadoParaAEsquerda
-
 									li t0 49
 									sgt t0 s6 t0
 									li t1 61
 									slt t1 s6 t1 # se o ultimo estado foi estar na escada
 									beq t0 t1 personagemParadoEscada
+									
+									jal ra ApagaPersonagem
+									
+									li t0 24
+									sgt t0 s6 t0
+									li t1 30
+									slt t1 s6 t1 # se o ultimo estado foi uma andada para a esquerda
+									beq t0 t1 personagemParadoParaAEsquerda
 
 							if_nada_pressionado_e_perso_parado:
 								li s0 0 # personagem parado para a direita
