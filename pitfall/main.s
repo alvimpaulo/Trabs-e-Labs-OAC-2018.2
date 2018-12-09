@@ -10,7 +10,7 @@
 # | s8 -> vazio												|
 # | s9 -> vazio												|
 # | s10-> vazio												|
-# | s11-> relógio do jogo
+# | s11-> relogio do jogo
 
 # | 			Tabela dos Estados de s0					|
 # | -1 -> Parado para a esquerda							|
@@ -78,9 +78,12 @@
 	.include "Sprites\source\fase2.s"
 													
 .text
+.include "macros2.s"
 .include "macro.s"
 .include "macro_personagem.s"
+.include "macro_relogio.s"
 
+M_SetEcall(exceptionHandling)
 jal ra Main
 FimDoPrograma: jal x0 FimDoPrograma
 Main:
@@ -228,7 +231,8 @@ Jogo: nop
 	li s4 0
 	la s3 fase2
 	addi s3 s3 8 # s3 = mapa inicial
-
+	
+	RELOGIO_INICIO(1200000)
 	# printa o mapa
 		li a0 0xff000000
 		mv a1 s3
@@ -405,12 +409,16 @@ Jogo: nop
 			ecall
 			sub a0 a0 s5
 			blt a0 t0 while_nao_aconteceu_30_FPS # se o tempo for < 30 segundo fica preso no loop
+		li a1, 4				# coluna do relogio
+		li a2, 228				# linha do relogio
+		jal RELOGIO_LOOP
 		jal x0 loop_do_jogo_Jogo
 	end_loop_do_jogo_Jogo:
 	lw ra 0(sp)
 	addi sp sp 4
 FimJogo: jalr x0 ra 0
 .include "personagem.s"
+.include "relogio.s"
 .include "utilidades.s"
 .include "movimentacoes/movimento_pulo.s"
 .include "movimentacoes/movimento_pulo_vertical_esquerda.s"
@@ -419,3 +427,4 @@ FimJogo: jalr x0 ra 0
 .include "movimentacoes/movimento_pulo_direita.s"
 .include "movimentacoes/movimento_pulo_esquerda.s"
 .include "Utilidades_alvim.s"
+.include "SYSTEMv12.s"

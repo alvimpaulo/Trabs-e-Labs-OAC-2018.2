@@ -63,3 +63,11 @@ fimloopDesenhaWord:
 	lw s1 8(sp)
 	addi sp  sp  12
 	jalr x0 ra 0
+
+# CLS Clear Screen Randomico (preto atualmente)
+CLS:	li a7,141
+	# M_Ecall
+	li a0,0x00
+	li a7,148
+	M_Ecall
+	ret
