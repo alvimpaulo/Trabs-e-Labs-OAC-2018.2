@@ -22,6 +22,10 @@
 # | 30 - 39 -> pulo para a esquerda							|
 # | 40 - 49 -> Pulo vertical virado a esquerda 				|
 
+# | 			   .data importados         				|
+# | vidas (.word)  -> Vidas do jogador						|
+# | pontos (.word) -> Quantidade de pontos do jogador		|
+
 .data
 	estadoDoJogo: .space 4
 	ultimaTeclaPressionada: .space 4
