@@ -29,65 +29,25 @@
 	vetorDeslocamentoPulo: .word -10,-8, -5, -3, 0, 3, 5, 8, 10
 	vetorDeslocamentoPuloVertical: .word -10,-8, -4, -2, 0, 2, 4, 8, 10
 	vetorDeslocamentoPuloDiagonal: .word -10,-8, -4, -2, 0, 2, 4, 8, 10
-    vectorImagensMenu: .space 12
-    vectorFuncoesMenu: .space 12
-	.include "Sprites\source\menuJogar.s"
-	.include "Sprites\source\menuCreditos.s"
-	.include "Sprites\source\menuSair.s"
-	.include "Sprites\source\Cobra_10_10_1_Frame.s"
-	.include "Sprites\source\Cobra_10_10_2_Frame.s"
-	.include "Sprites\source\Cobra_10_10_3_Frame.s"
-	.include "Sprites\source\Cobra_10_10_4_Frame.s"
-	.include "Sprites\source\Cobra_10_10_5_Frame.s"
-	.include "Sprites\source\Cobra_10_10_6_Frame.s"
-	.include "Sprites\source\Cobra_10_10_7_Frame.s"
-	.include "Sprites\source\Cogumelo_10_10_1Frame.s"
-	.include "Sprites\source\Cogumelo_10_10_2Frame.s"
-	.include "Sprites\source\DragonBall_10_10_1Frame.s"
-	.include "Sprites\source\Fogueira_10_10_1Frame.s"
-	.include "Sprites\source\Fogueira_10_10_2Frame.s"
-	.include "Sprites\source\Fogueira_10_10_3Frame.s"
-	.include "Sprites\source\Fogueira_10_10_4Frame.s"
-	.include "Sprites\source\Jacare_10_10_1Frame.s"
-	.include "Sprites\source\Jacare_10_10_2Frame.s"
-	.include "Sprites\source\Moeda_10_10_1Frame.s"
-	.include "Sprites\source\Moeda_10_10_2Frame.s"
-	.include "Sprites\source\Moeda_10_10_3Frame.s"
-	.include "Sprites\source\Moeda_10_10_4Frame.s"
-	.include "Sprites\source\Moeda_10_10_5Frame.s"
-	.include "Sprites\source\Moeda_10_10_6Frame.s"
-	.include "Sprites\source\Pokebola_10_10_1Frame.s"
-	.include "Sprites\source\Pokebola_10_10_2Frame.s"
-	.include "Sprites\source\Pokebola_10_10_3Frame.s"
-	.include "Sprites\source\Pokebola_10_10_4Frame.s"
-	.include "Sprites\source\fase2.s"
-	.include "/Sprites/source/Coracao_10_8_1Frame.s"	
-	.include "Sprites\source\Personagem_Parado_16_24_1_Frame.s"
-	.include "Sprites\source\Personagem_Parado_16_24_1_Frame_Espelhado.s"
-	.include "Sprites\source\Personagem_Correndo_16_24_1.s"
-	.include "Sprites\source\Personagem_Correndo_16_24_2.s"
-	.include "Sprites\source\Personagem_Correndo_16_24_3.s"
-	.include "Sprites\source\Personagem_Correndo_16_24_4.s"
-	.include "Sprites\source\Personagem_Correndo_16_24_5.s"
-	.include "Sprites\source\Personagem_Correndo_16_24_1_Espelhado.s"
-	.include "Sprites\source\Personagem_Correndo_16_24_2_Espelhado.s"
-	.include "Sprites\source\Personagem_Correndo_16_24_3_Espelhado.s"
-	.include "Sprites\source\Personagem_Correndo_16_24_4_Espelhado.s"
-	.include "Sprites\source\Personagem_Correndo_16_24_5_Espelhado.s"
-	.include "Sprites\source\Personagem_Pulando_14_24_1Frame.s"
-	.include "Sprites\source\Personagem_Pulando_14_24_2Frame.s"
-	.include "Sprites\source\Personagem_Pulando_14_24_1Frame_Espelhado.s"
-	.include "Sprites\source\Personagem_Pulando_14_24_2Frame_Espelhado.s"
-	.include "Sprites\source\Personagem_Escalando_10_26_1Frame.s"
-	.include "Sprites\source\Personagem_Escalando_10_26_2Frame.s"										
+	vectorImagensMenu: .space 12
+	vectorFuncoesMenu: .space 12		
+	.include "Sprites/source/Coracao_10_8_1Frame.s"	
+	.include "Sprites/source/Personagem_Parado_16_24_1_Frame.s"
+	.include "Sprites/source/Personagem_Parado_16_24_1_Frame_Espelhado.s"							
 
+
+
+.data
+	.include "Sprites/source/menuJogar.s"
+	.include "Sprites/source/menuCreditos.s"
+	.include "Sprites/source/menuSair.s"
+	.include "Sprites/source/fase2.s"	
 .text
-.include "macros2.s"
 .include "macro.s"
-.include "macro_personagem.s"
+.include "macros2.s"
 .include "macro_relogio.s"
+.include "macro_personagem.s"
 .include "macro_vida.s"
-
 M_SetEcall(exceptionHandling)
 jal ra Main
 FimDoPrograma: jal x0 FimDoPrograma
@@ -95,7 +55,7 @@ Main:
 reset_MenuDoJogo:
 		addi	sp sp -4
 		sw ra 0(sp)
-    li t1 2
+	li t1 2
     la t2 vectorImagensMenu
     
     la t3 menuSair

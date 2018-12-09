@@ -1,5 +1,12 @@
 # 25 >= s0 > 29  
 
+.data
+    .include "../Sprites\source\Personagem_Correndo_16_24_1_Espelhado.s"
+	.include "../Sprites\source\Personagem_Correndo_16_24_2_Espelhado.s"
+	.include "../Sprites\source\Personagem_Correndo_16_24_3_Espelhado.s"
+	.include "../Sprites\source\Personagem_Correndo_16_24_4_Espelhado.s"
+	.include "../Sprites\source\Personagem_Correndo_16_24_5_Espelhado.s"
+
 .text 
 andarEsquerda:
     # salva stack

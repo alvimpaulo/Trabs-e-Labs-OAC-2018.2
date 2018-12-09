@@ -1,5 +1,9 @@
 # 30 >= s0 > 39
 
+.data
+    .include "../Sprites\source\Personagem_Pulando_14_24_1Frame_Espelhado.s"
+	.include "../Sprites\source\Personagem_Pulando_14_24_2Frame_Espelhado.s"
+
 .text
     incioPuloEsquerda: nop
 		# salva stack

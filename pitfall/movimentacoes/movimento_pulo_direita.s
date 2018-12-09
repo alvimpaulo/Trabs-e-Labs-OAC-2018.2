@@ -1,3 +1,7 @@
+.data
+    .include "../Sprites\source\Personagem_Pulando_14_24_1Frame.s"
+	.include "../Sprites\source\Personagem_Pulando_14_24_2Frame.s"
+
 .text
     incioPuloDireita: nop
 		# salva stack

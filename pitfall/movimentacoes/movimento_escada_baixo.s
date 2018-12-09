@@ -1,5 +1,7 @@
 # 50 >= s0 >= 60
 
+.data
+    .include "../Sprites\source\Personagem_Escalando_10_26_2Frame.s"
 .text
     incioEscadaBaixo: nop
 		# salva stack

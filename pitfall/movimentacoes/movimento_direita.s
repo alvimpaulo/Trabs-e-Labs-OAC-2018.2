@@ -1,5 +1,12 @@
 # 10 >= s0 > 15  
 
+.data
+	.include "../Sprites\source\Personagem_Correndo_16_24_1.s"
+	.include "../Sprites\source\Personagem_Correndo_16_24_2.s"
+	.include "../Sprites\source\Personagem_Correndo_16_24_3.s"
+	.include "../Sprites\source\Personagem_Correndo_16_24_4.s"
+	.include "../Sprites\source\Personagem_Correndo_16_24_5.s"
+
 .text 
 andarDireita:
     # salva stack
