@@ -1,11 +1,18 @@
 .data
+estadoPersonagem:
+vidas: .space 4
+pontuacao:  .space 4
+cimaOuBaixo: .space 4
+esqOuDir:  .space 4
+cipo: .space 4
+perdeVidas: .space 4
+atualizaTela: .space 4
 posicaoPersonagemX: .space 4
 posicaoPersonagemY: .space 4
 vectorAditionalParaPulo: .half -2, -1, -1, -1, 0, 0, 0, 1, 1, 1, 2 
 numElementosNoVetor: .half 11
 direcaoDoMovimento: .word 0
 estadoDoPulo: .word 0
-
 .text
 
 
