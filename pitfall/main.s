@@ -18,7 +18,7 @@
 # | 1 - 9 -> Pulo vertical virado a direita					|
 # | 10 - 14 -> movimentacao para a direita					|
 # | 15 - 24 -> pulo para a direita							|
-# | 25 - 29 -> movimentacao para a esquerda					|
+
 # | 30 - 39 -> pulo para a esquerda							|
 # | 40 - 49 -> Pulo vertical virado a esquerda 				|
 
@@ -83,6 +83,7 @@
 .include "macro_personagem.s"
 .include "macro_relogio.s"
 .include "macro_vida.s"
+.include "macro_pontuacao.s"
 
 M_SetEcall(exceptionHandling)
 jal ra Main
@@ -235,6 +236,8 @@ Jogo: nop
 	
 	RELOGIO_INICIO(1200000)				# Inicializar relogio do jogo
 	inicializar_vida(3)					# Inicializar vidas
+	inicializar_pontuacao(2000)			# Inicializar pontuacao
+	
 	# printa o mapa
 		li a0 0xff000000
 		mv a1 s3
@@ -421,20 +424,23 @@ Jogo: nop
 		li a2, 280				# coord X
 		jal imprimir_vida	
 
+		jal imprimir_pontuacao
+
 		jal x0 loop_do_jogo_Jogo
 	end_loop_do_jogo_Jogo:
 	lw ra 0(sp)
 	addi sp sp 4
 FimJogo: jalr x0 ra 0
+.include "Utilidades_alvim.s"
+.include "utilidades.s"
 .include "personagem.s"
 .include "relogio.s"
 .include "vida.s"
-.include "utilidades.s"
+.include "pontuacao.s"
 .include "movimentacoes/movimento_pulo.s"
 .include "movimentacoes/movimento_pulo_vertical_esquerda.s"
 .include "movimentacoes/movimento_direita.s"
 .include "movimentacoes/movimento_esquerda.s"
 .include "movimentacoes/movimento_pulo_direita.s"
 .include "movimentacoes/movimento_pulo_esquerda.s"
-.include "Utilidades_alvim.s"
 .include "SYSTEMv12.s"

@@ -9,7 +9,7 @@
 # .include "../macro.s"
 .data
 	# .include "../Sprites/source/Coracao_10_8_1Frame.s"
-	VIDAS: .word 0
+	vidas: .word 0
 	
 .text
 # MAIN: inicializar_vida(3)
@@ -29,7 +29,7 @@ imprimir_vida: 	addi sp, sp, -32
 	sw a5, 20(sp)
 	sw a0, 24(sp)
 	sw ra, 28(sp)
-	la t4, VIDAS	    			# qtd de vida	
+	la t4, vidas	    			# qtd de vida	
 	lw s0, 0(t4)
 	mv a4, a1						# a1 vai ser utilizado para end. do sprite
 	mv a5, a2

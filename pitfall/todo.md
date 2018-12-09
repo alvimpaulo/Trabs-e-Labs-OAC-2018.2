@@ -36,14 +36,14 @@
 	* Movimentação do tronco;
 	* Mudança de cenário;
 	* Sistema de pontuação (_começa com 2 vidas, 2 pontos e 20 minutos_):
-		* Se cair no lago perde 1 vida;
-		* Se for atingido por NPCs/Tronco perde pontuação;
+		* Se cair no lago/buraco perde 1 vida;
+		* Se encostar em NPC perde 1 vida;
+		* Se for atingido por Tronco perde pontuação (enquanto estiver tocando);
 		* Se pegar a recompensa ganha ponto:
-			* Dinheiro   - 2000;
-			* Prata	     - 3000;
-			* Gold       - 4000;
-			* Anel       - 5000;
-			* Easter Egg - ???.	
-		*  Som 🔊
+			* Cogumelo    - 2000;
+			* Moeda	      - 3000;
+        	* Pokebola    - 4000;			
+        	* Dragon Ball - 5000;
+	*  Som 🔊
 
 ![Pitfall_Map](Images/pitfall_map.jpg "Quero ver fazer igual")
