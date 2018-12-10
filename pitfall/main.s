@@ -18,9 +18,14 @@
 # | 1 - 9 -> Pulo vertical virado a direita					|
 # | 10 - 14 -> movimentacao para a direita					|
 # | 15 - 24 -> pulo para a direita							|
-# | 25 - 29 -> movimentacao para a esquerda					|
+
 # | 30 - 39 -> pulo para a esquerda							|
 # | 40 - 49 -> Pulo vertical virado a esquerda 				|
+# | 50 - 60 -> Movimento Escada								|
+
+# | 			   .data importados         				|
+# | vidas (.word)  -> Vidas do jogador						|
+# | pontos (.word) -> Quantidade de pontos do jogador		|
 
 .data
 	estadoDoJogo: .space 4
@@ -29,98 +34,27 @@
 	vetorDeslocamentoPulo: .word -10,-8, -5, -3, 0, 3, 5, 8, 10
 	vetorDeslocamentoPuloVertical: .word -10,-8, -4, -2, 0, 2, 4, 8, 10
 	vetorDeslocamentoPuloDiagonal: .word -10,-8, -4, -2, 0, 2, 4, 8, 10
-  vectorImagensMenu: .space 12
-  vectorFuncoesMenu: .space 12
-	.include "Sprites\source\output.s"
-	# .include "Sprites\source\Cobra_10_10_1_Frame.s"
-	# .include "Sprites\source\Cobra_10_10_2_Frame.s"
-	# .include "Sprites\source\Cobra_10_10_3_Frame.s"
-	# .include "Sprites\source\Cobra_10_10_4_Frame.s"
-	# .include "Sprites\source\Cobra_10_10_5_Frame.s"
-	# .include "Sprites\source\Cobra_10_10_6_Frame.s"
-	# .include "Sprites\source\Cobra_10_10_7_Frame.s"
-	# .include "Sprites\source\Cogumelo_10_10_1Frame.s"
-	# .include "Sprites\source\Cogumelo_10_10_2Frame.s"
-	# .include "Sprites\source\DragonBall_10_10_1Frame.s"
-	# .include "Sprites\source\Fogueira_10_10_1Frame.s"
-	# .include "Sprites\source\Fogueira_10_10_2Frame.s"
-	# .include "Sprites\source\Fogueira_10_10_3Frame.s"
-	# .include "Sprites\source\Fogueira_10_10_4Frame.s"
-	# .include "Sprites\source\Jacare_10_10_1Frame.s"
-	# .include "Sprites\source\Jacare_10_10_2Frame.s"
-	# .include "Sprites\source\Moeda_10_10_1Frame.s"
-	# .include "Sprites\source\Moeda_10_10_2Frame.s"
-	# .include "Sprites\source\Moeda_10_10_3Frame.s"
-	# .include "Sprites\source\Moeda_10_10_4Frame.s"
-	# .include "Sprites\source\Moeda_10_10_5Frame.s"
-	# .include "Sprites\source\Moeda_10_10_6Frame.s"
-	#.include "Sprites\source\Personagem_Parado_16_24_1_Frame_Espelhado.s"
-	# .include "Sprites\source\Cobra_10_10_1_Frame.s"
-	# .include "Sprites\source\Cobra_10_10_2_Frame.s"
-	# .include "Sprites\source\Cobra_10_10_3_Frame.s"
-	# .include "Sprites\source\Cobra_10_10_4_Frame.s"
-	# .include "Sprites\source\Cobra_10_10_5_Frame.s"
-	# .include "Sprites\source\Cobra_10_10_6_Frame.s"
-	# .include "Sprites\source\Cobra_10_10_7_Frame.s"
-	# .include "Sprites\source\Cogumelo_10_10_1Frame.s"
-	# .include "Sprites\source\Cogumelo_10_10_2Frame.s"
-	# .include "Sprites\source\Personagem_Parado_16_24_1_Frame.s"
-	# .include "Sprites\source\DragonBall_10_10_1Frame.s"
-	# .include "Sprites\source\Fogueira_10_10_1Frame.s"
-	# .include "Sprites\source\Fogueira_10_10_2Frame.s"
-	# .include "Sprites\source\Fogueira_10_10_3Frame.s"
-	# .include "Sprites\source\Fogueira_10_10_4Frame.s"
-	# .include "Sprites\source\Jacare_10_10_1Frame.s"
-	# .include "Sprites\source\Jacare_10_10_2Frame.s"
-	# .include "Sprites\source\Moeda_10_10_1Frame.s"
-	# .include "Sprites\source\Moeda_10_10_2Frame.s"
-	# .include "Sprites\source\Moeda_10_10_3Frame.s"
-	# .include "Sprites\source\Moeda_10_10_4Frame.s"
-	# .include "Sprites\source\Moeda_10_10_5Frame.s"
-	# .include "Sprites\source\Moeda_10_10_6Frame.s"
-	# .include "Sprites\source\Personagem_Correndo_16_24_1.s"
-	# .include "Sprites\source\Personagem_Correndo_16_24_2.s"
-	# .include "Sprites\source\Personagem_Correndo_16_24_3.s"
-	# .include "Sprites\source\Personagem_Correndo_16_24_4.s"
-	# .include "Sprites\source\Personagem_Correndo_16_24_5.s"
-	# .include "Sprites\source\Personagem_Correndo_16_24_1_Espelhado.s"
-	# .include "Sprites\source\Personagem_Correndo_16_24_2_Espelhado.s"
-	# .include "Sprites\source\Personagem_Correndo_16_24_3_Espelhado.s"
-	# .include "Sprites\source\Personagem_Correndo_16_24_4_Espelhado.s"
-	# .include "Sprites\source\Personagem_Correndo_16_24_5_Espelhado.s"
-	# .include "Sprites\source\Personagem_Pulando_14_24_1Frame.s"
-	# .include "Sprites\source\Personagem_Pulando_14_24_2Frame.s"
-	# .include "Sprites\source\Pokebola_10_10_1Frame.s"
-	# .include "Sprites\source\Pokebola_10_10_2Frame.s"
-	# .include "Sprites\source\Pokebola_10_10_3Frame.s"
-	# .include "Sprites\source\Pokebola_10_10_4Frame.s"
-	# .include "Sprites\source\fase1.s"
-	# .include "Sprites\source\fase2.s"
-	# .include "Sprites\source\fase3.s"
-	# .include "Sprites\source\fase4.s"
-	# .include "Sprites\source\fase5.s"
-	# .include "Sprites\source\fase6.s"
-	# .include "Sprites\source\fase7.s"
-	# .include "Sprites\source\fase8.s"
-	# .include "Sprites\source\fase9.s"
-	# .include "Sprites\source\fase10.s"
-	# .include "Sprites\source\Personagem_Pulando_14_24_1Frame_Espelhado.s"
-	# .include "Sprites\source\Personagem_Pulando_14_24_2Frame_Espelhado.s"
-	# .include "Sprites\source\Pokebola_10_10_1Frame.s"
-	# .include "Sprites\source\Pokebola_10_10_2Frame.s"
-	# .include "Sprites\source\Pokebola_10_10_3Frame.s"
-	# .include "Sprites\source\Pokebola_10_10_4Frame.s"
-	# .include "/Sprites/source/Coracao_10_8_1Frame.s"
-  
-	# .include "Sprites\source\menuJogar.s"
-	# .include "Sprites\source\menuCreditos.s"
-	# .include "Sprites\source\menuSair.s"
-  .include "macros2.s"
-  .include "macro.s"
-  .include "macro_personagem.s"
-  .include "macro_relogio.s"
-  .include "macro_vida.s"
+	vectorImagensMenu: .space 12
+	vectorFuncoesMenu: .space 12			
+	.include "Sprites\source\sourcezao.s"	
+	.include "Sprites\source\fase1.s"	
+	.include "Sprites\source\fase3.s"	
+	.include "Sprites\source\fase4.s"	
+	.include "Sprites\source\fase5.s"	
+	.include "Sprites\source\fase6.s"	
+	.include "Sprites\source\fase7.s"	
+	.include "Sprites\source\fase8.s"	
+	.include "Sprites\source\fase9.s"	
+	.include "Sprites\source\fase10.s"	
+							
+
 .text
+.include "macros2.s"
+.include "macro.s"
+.include "macro_personagem.s"
+.include "macro_relogio.s"
+.include "macro_vida.s"
+.include "macro_pontuacao.s"
 
 M_SetEcall(exceptionHandling)
 jal ra Main
@@ -276,17 +210,17 @@ Jogo: nop
 	addi s3 s3 8 # s3 = mapa inicial
 	RELOGIO_INICIO(1200000)				# Inicializar relogio do jogo
 	inicializar_vida(3)					# Inicializar vidas
-	li a4 POSICAO_INICIAL_PERSONAGEM_SUPERIOR_ESQUERDA_X
-	li a5 POSICAO_INICIAL_PERSONAGEM_SUPERIOR_ESQUERDA_Y
+	li a4 POSICAO_INICIAL_PERSONAGEM_SUPERIOR_ESQUERDA_X # argumentos de inicialização dos prsonagens
+	li a5 POSICAO_INICIAL_PERSONAGEM_SUPERIOR_ESQUERDA_Y # argumentos de inicialização dos prsonagens
+	inicializar_pontuacao(2000)			# Inicializar pontuacao
 
 	loop_troca_fase_Jogo:
 		mv s7 s9
 		li s0 0 # estado inicial
 		li s4 0
-		lw s3 32(s7)
+		lw s3 32(s7) # carrega o mapa da fase
 		addi s3 s3 8 # s3 = mapa inicial
 		# printa o mapa
-
 	# printa o mapa
 		li a0 0xff000000
 		mv a1 s3
@@ -294,7 +228,9 @@ Jogo: nop
 		li a3 224
 		jal ra printSprite
 		
-		la t4 funcoesObjetosDoJogo
+
+		# parte do codic[go responsavel po colocar coisa variaveis entre fase
+		la t4 funcoesObjetosDoJogo 
 		addi t2 s7 44
 		addi t1 s7 16
 		li s10 0
@@ -310,7 +246,8 @@ Jogo: nop
 					addi t4 t4 4
 		jal x0 loop_descobre_funcoes_do_jogo
 		end_loop_descobre_funcoes_do_jogo:
-		InitPersonagemReg(a4, a5)
+
+		InitPersonagemReg(a4, a5) #inicializar o personagem
 
 		# loop_do_jogo_Jogo:
 		# 	# ecall tmepo
@@ -442,153 +379,164 @@ Jogo: nop
 			mv s5 a0
 			# end
 			
-			# estados que nao podem ter teclas lidas
-			li t0 0											# \
-			sgt t1 s0 t0									#  \
-			li t0 10										#   - Pulo Vertical
-			slt t2 s0 t0									#   /
-			mv a0 s4										#  /
-			beq t1 t2 else_jogo_pausar_loop_do_jogo_Jogo 	# /	
+		# estados que nao podem ter teclas lidas
+		li t0 0											# \
+		sgt t1 s0 t0									#  \
+		li t0 10										#   - Pulo Vertical
+		slt t2 s0 t0									#   /
+		mv a0 s4										#  /
+		beq t1 t2 else_jogo_pausar_loop_do_jogo_Jogo 	# /	
 
-			li t0 14										# \	
-			sgt t1 s0 t0									#  \
-			li t0 25										#    - Pulo Diagonal direita
-			slt t2 s0 t0									#   /
-			mv a0 s4										#  /
-			beq t1 t2 else_jogo_pausar_loop_do_jogo_Jogo	# /
+		li t0 14										# \	
+		sgt t1 s0 t0									#  \
+		li t0 25										#    - Pulo Diagonal direita
+		slt t2 s0 t0									#   /
+		mv a0 s4										#  /
+		beq t1 t2 else_jogo_pausar_loop_do_jogo_Jogo	# /
 
-			li t0 29										# \	
-			sgt t1 s0 t0									#  \
-			li t0 40										#    - Pulo Diagonal direita
-			slt t2 s0 t0									#   /
-			mv a0 s4										#  /
-			beq t1 t2 else_jogo_pausar_loop_do_jogo_Jogo	# /
+		li t0 29										# \	
+		sgt t1 s0 t0									#  \
+		li t0 40										#    - Pulo Diagonal direita
+		slt t2 s0 t0									#   /
+		mv a0 s4										#  /
+		beq t1 t2 else_jogo_pausar_loop_do_jogo_Jogo	# /
 
-			# fim desses estados
-			jal ra LeTeclaDoTeclado  # chama a funcao que le a tecla do teclado
-			sw a0 ultimaTeclaPressionada, t0
-			li t0 1
-			li t0 '\n'
-			if_jogo_pausar_loop_do_jogo_Jogo: bne a0 t0 else_jogo_pausar_loop_do_jogo_Jogo
-				la t0 estadoDoJogo
-				lw t1 0(t0)
-				xori t1 t1 1
-				sw t1 0(t0)
-				j loop_do_jogo_Jogo
-			else_jogo_pausar_loop_do_jogo_Jogo:
-				# a0 vem  daqui jal ra LeTeclaDoTeclado
-				jal ra MovePersonagem
-				# mv s4 a0 # ultima tecla pressionada
+		# fim desses estados
+		jal ra LeTeclaDoTeclado  # chama a funcao que le a tecla do teclado
+		sw a0 ultimaTeclaPressionada, t0
+		li t0 1
+		li t0 '\n'
+		if_jogo_pausar_loop_do_jogo_Jogo: bne a0 t0 else_jogo_pausar_loop_do_jogo_Jogo
+			la t0 estadoDoJogo
+			lw t1 0(t0)
+			xori t1 t1 1
+			sw t1 0(t0)
+			j loop_do_jogo_Jogo
+		else_jogo_pausar_loop_do_jogo_Jogo:
+			# a0 vem  daqui jal ra LeTeclaDoTeclado
+			jal ra MovePersonagem
+			# mv s4 a0 # ultima tecla pressionada
 
-				# testes para ver qual personagem imprime
-				li t0 -1
-				beq s0 t0 imprimir_personagem_parado_esquerda # parado para a esquerda
-				li t0 0
-				beq s0 t0 imprimir_personagem_parado_direita # parado para a direita
+			# testes para ver qual personagem imprime
+			li t0 -1
+			beq s0 t0 imprimir_personagem_parado_esquerda # parado para a esquerda
+			li t0 0
+			beq s0 t0 imprimir_personagem_parado_direita # parado para a direita
 
-				li t0 0
-				sgt t1 s0 t0  # s0 >= 1
-				li t0 10
-				slt t2 s0 t0  # s0 < 10
-				beq t2 t1 imprimir_personagem_pulo_direita2 # pulo vertical para a direita
+			li t0 0
+			sgt t1 s0 t0  # s0 >= 1
+			li t0 10
+			slt t2 s0 t0  # s0 < 10
+			beq t2 t1 imprimir_personagem_pulo_direita2 # pulo vertical para a direita
 
-				li t0 10 
-				beq s0 t0 imprimir_personagem_correndo1_direita # 1 frame da corrida para a direita
-				li t0 11 
-				beq s0 t0 imprimir_personagem_correndo2_direita # 2 frame da corrida para a direita
-				li t0 12 
-				beq s0 t0 imprimir_personagem_correndo3_direita # 3 frame da corrida para a direita
-				li t0 13 
-				beq s0 t0 imprimir_personagem_correndo4_direita # 4 frame da corrida para a direita
-				li t0 14 
-				beq s0 t0 imprimir_personagem_correndo5_direita # 5 frame da corrida para a direita
+			li t0 10 
+			beq s0 t0 imprimir_personagem_correndo1_direita # 1 frame da corrida para a direita
+			li t0 11 
+			beq s0 t0 imprimir_personagem_correndo2_direita # 2 frame da corrida para a direita
+			li t0 12 
+			beq s0 t0 imprimir_personagem_correndo3_direita # 3 frame da corrida para a direita
+			li t0 13 
+			beq s0 t0 imprimir_personagem_correndo4_direita # 4 frame da corrida para a direita
+			li t0 14 
+			beq s0 t0 imprimir_personagem_correndo5_direita # 5 frame da corrida para a direita
 
-				li t0 15 
-				beq s0 t0 imprimir_personagem_pulo_direita1 # pulo para a direita
-				li t0 15
-				sgt t1 s0 t0  # s0 >= 16
-				li t0 25
-				slt t2 s0 t0  # s0 <= 26
-				beq t2 t1 imprimir_personagem_pulo_direita2
-				li t0 25 
-				beq s0 t0 imprimir_personagem_correndo1_esquerda # 1 frame da corrida para a esquerda
-				li t0 26 
-				beq s0 t0 imprimir_personagem_correndo2_esquerda # 2 frame da corrida para a esquerda
-				li t0 27 
-				beq s0 t0 imprimir_personagem_correndo3_esquerda # 3 frame da corrida para a esquerda
-				li t0 28 
-				beq s0 t0 imprimir_personagem_correndo4_esquerda # 4 frame da corrida para a esquerda
-				li t0 29 
-				beq s0 t0 imprimir_personagem_correndo5_esquerda # 5 frame da corrida para a esquerda
+			li t0 15 
+			beq s0 t0 imprimir_personagem_pulo_direita1 # pulo para a direita
+			li t0 15
+			sgt t1 s0 t0  # s0 >= 16
+			li t0 25
+			slt t2 s0 t0  # s0 <= 26
+			beq t2 t1 imprimir_personagem_pulo_direita2
+			li t0 25 
+			beq s0 t0 imprimir_personagem_correndo1_esquerda # 1 frame da corrida para a esquerda
+			li t0 26 
+			beq s0 t0 imprimir_personagem_correndo2_esquerda # 2 frame da corrida para a esquerda
+			li t0 27 
+			beq s0 t0 imprimir_personagem_correndo3_esquerda # 3 frame da corrida para a esquerda
+			li t0 28 
+			beq s0 t0 imprimir_personagem_correndo4_esquerda # 4 frame da corrida para a esquerda
+			li t0 29 
+			beq s0 t0 imprimir_personagem_correndo5_esquerda # 5 frame da corrida para a esquerda
 
-				li t0 30 
-				beq s0 t0 imprimir_personagem_pulo_direita1_Espelhado # pulo para a direita
-				li t0 30
-				sgt t1 s0 t0  # s0 >= 31
-				li t0 40
-				slt t2 s0 t0  # s0 <= 39
-				beq t2 t1 imprimir_personagem_pulo_direita2_Espelhado
+			li t0 30 
+			beq s0 t0 imprimir_personagem_pulo_direita1_Espelhado # pulo para a direita
+			li t0 30
+			sgt t1 s0 t0  # s0 >= 31
+			li t0 40
+			slt t2 s0 t0  # s0 <= 39
+			beq t2 t1 imprimir_personagem_pulo_direita2_Espelhado
 
-				li t0 39
-				sgt t1 s0 t0  # s0 >= 40
-				li t0 50
-				slt t2 s0 t0  # s0 <= 49
-				beq t2 t1 imprimir_personagem_pulo_direita2_Espelhado
+			li t0 39
+			sgt t1 s0 t0  # s0 >= 40
+			li t0 50
+			slt t2 s0 t0  # s0 <= 49
+			beq t2 t1 imprimir_personagem_pulo_direita2_Espelhado
 
-				# fim dos testes
+			li t0 49
+			sgt t1 s0 t0  # s0 >= 50
+			li t0 61
+			slt t2 s0 t0  # s0 <= 60
+			beq t2 t1 imprimir_personagem_escada_1
 
-				imprimir_personagem_parado_esquerda:
-					la a0 Personagem_Parado_16_24_1_Frame_Espelhado
-					j desenho_personagem
-				imprimir_personagem_parado_direita:
-					la a0 Personagem_Parado_16_24_1_Frame
-					j desenho_personagem
+			# fim dos testes
 
-				imprimir_personagem_correndo1_direita:
-					la a0 Personagem_Correndo_16_24_1
-					j desenho_personagem
-				imprimir_personagem_correndo2_direita:
-					la a0 Personagem_Correndo_16_24_2
-					j desenho_personagem
-				imprimir_personagem_correndo3_direita:
-					la a0 Personagem_Correndo_16_24_3
-					j desenho_personagem
-				imprimir_personagem_correndo4_direita:
-					la a0 Personagem_Correndo_16_24_4
-					j desenho_personagem
-				imprimir_personagem_correndo5_direita:
-					la a0 Personagem_Correndo_16_24_5
-					j desenho_personagem
+			imprimir_personagem_parado_esquerda:
+				la a0 Personagem_Parado_16_24_1_Frame_Espelhado
+				j desenho_personagem
+			imprimir_personagem_parado_direita:
+				la a0 Personagem_Parado_16_24_1_Frame
+				j desenho_personagem
 
-				imprimir_personagem_pulo_direita1:
-					la a0 Personagem_Pulando_14_24_1Frame
-					j desenho_personagem
-				imprimir_personagem_pulo_direita2:
-					la a0 Personagem_Pulando_14_24_2Frame
-					j desenho_personagem
+			imprimir_personagem_correndo1_direita:
+				la a0 Personagem_Correndo_16_24_1
+				j desenho_personagem
+			imprimir_personagem_correndo2_direita:
+				la a0 Personagem_Correndo_16_24_2
+				j desenho_personagem
+			imprimir_personagem_correndo3_direita:
+				la a0 Personagem_Correndo_16_24_3
+				j desenho_personagem
+			imprimir_personagem_correndo4_direita:
+				la a0 Personagem_Correndo_16_24_4
+				j desenho_personagem
+			imprimir_personagem_correndo5_direita:
+				la a0 Personagem_Correndo_16_24_5
+				j desenho_personagem
 
-				imprimir_personagem_correndo1_esquerda:
-					la a0 Personagem_Correndo_16_24_1_Espelhado
-					j desenho_personagem
-				imprimir_personagem_correndo2_esquerda:
-					la a0 Personagem_Correndo_16_24_2_Espelhado
-					j desenho_personagem
-				imprimir_personagem_correndo3_esquerda:
-					la a0 Personagem_Correndo_16_24_3_Espelhado
-					j desenho_personagem
-				imprimir_personagem_correndo4_esquerda:
-					la a0 Personagem_Correndo_16_24_4_Espelhado
-					j desenho_personagem
-				imprimir_personagem_correndo5_esquerda:
-					la a0 Personagem_Correndo_16_24_5_Espelhado
-					j desenho_personagem
+			imprimir_personagem_pulo_direita1:
+				la a0 Personagem_Pulando_14_24_1Frame
+				j desenho_personagem
+			imprimir_personagem_pulo_direita2:
+				la a0 Personagem_Pulando_14_24_2Frame
+				j desenho_personagem
 
-				imprimir_personagem_pulo_direita1_Espelhado:
-					la a0 Personagem_Pulando_14_24_1Frame_Espelhado
-					j desenho_personagem
-				imprimir_personagem_pulo_direita2_Espelhado:
-					la a0 Personagem_Pulando_14_24_2Frame_Espelhado
-					j desenho_personagem
+			imprimir_personagem_correndo1_esquerda:
+				la a0 Personagem_Correndo_16_24_1_Espelhado
+				j desenho_personagem
+			imprimir_personagem_correndo2_esquerda:
+				la a0 Personagem_Correndo_16_24_2_Espelhado
+				j desenho_personagem
+			imprimir_personagem_correndo3_esquerda:
+				la a0 Personagem_Correndo_16_24_3_Espelhado
+				j desenho_personagem
+			imprimir_personagem_correndo4_esquerda:
+				la a0 Personagem_Correndo_16_24_4_Espelhado
+				j desenho_personagem
+			imprimir_personagem_correndo5_esquerda:
+				la a0 Personagem_Correndo_16_24_5_Espelhado
+				j desenho_personagem
+
+			imprimir_personagem_pulo_direita1_Espelhado:
+				la a0 Personagem_Pulando_14_24_1Frame_Espelhado
+				j desenho_personagem
+			imprimir_personagem_pulo_direita2_Espelhado:
+				la a0 Personagem_Pulando_14_24_2Frame_Espelhado
+				j desenho_personagem
+
+			imprimir_personagem_escada_1:
+				la a0 Personagem_Escalando_10_26_1Frame
+				j desenho_personagem
+				
 					
 				
 				desenho_personagem:
@@ -596,7 +544,7 @@ Jogo: nop
 				lw s4 ultimaTeclaPressionada # salvando a ultima tecla pressionada
 				mv s6 s0 # salva o ultimo estado
 
-
+				# chama as funções dos objetos do jogo
 				la t0 funcoesObjetosDoJogo
 				add t1 t0 s10
 				while_chama_funcoes_do_jogo: beq t1 t0 fim_while_chama_funcoes_do_jogo
@@ -605,9 +553,11 @@ Jogo: nop
 					addi t0 t0 4
 					jal x0 while_chama_funcoes_do_jogo
 				fim_while_chama_funcoes_do_jogo:
-				la t0 cimaOuBaixo
+
+				la t0 posicaoPersonagemY
 				lw t0 0(t0)
-				if_esta_em_cima: bne t0 x0 else_esta_em_cima
+				li t1 144
+				if_esta_em_cima: bgt t0 t1 else_esta_em_cima
 					la t0 posicaoPersonagemX
 					lw t0 0(t0)
 					li t1 308
@@ -656,7 +606,6 @@ Jogo: nop
 				sub a0 a0 s5
 				blt a0 t0 while_nao_aconteceu_30_FPS # se o tempo for < 30 segundo fica preso no loop
 			
-			
 			li a1, 4				# coluna do relogio
 			li a2, 228				# linha do relogio
 			jal RELOGIO_LOOP
@@ -666,23 +615,29 @@ Jogo: nop
 			li a2, 280				# coord X
 			jal imprimir_vida	
 
+			jal imprimir_pontuacao
+
 			jal x0 loop_do_jogo_Jogo
-		end_loop_do_jogo_Jogo:
+			end_loop_do_jogo_Jogo:
 		jal x0 loop_troca_fase_Jogo
 	end_loop_troca_fase_Jogo:
 	lw ra 0(sp)
 	addi sp sp 4
 FimJogo: jalr x0 ra 0
+.include "Utilidades_alvim.s"
+.include "vetorJogo.s"
+.include "utilidades.s"
 .include "personagem.s"
 .include "relogio.s"
+.include "pontuacao.s"
 .include "vida.s"
-.include "utilidades.s"
 .include "movimentacoes/movimento_pulo.s"
 .include "movimentacoes/movimento_pulo_vertical_esquerda.s"
 .include "movimentacoes/movimento_direita.s"
 .include "movimentacoes/movimento_esquerda.s"
 .include "movimentacoes/movimento_pulo_direita.s"
 .include "movimentacoes/movimento_pulo_esquerda.s"
-.include "Utilidades_alvim.s"
-.include "vetorJogo.s"
+.include "movimentacoes/movimento_escada_cima.s"
+.include "movimentacoes/movimento_escada_baixo.s"
 .include "SYSTEMv12.s"
+
