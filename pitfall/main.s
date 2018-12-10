@@ -384,9 +384,19 @@ Jogo: nop
 				j desenho_personagem
 
 			imprimir_personagem_pulo_direita1:
+				macro_song(61,500,115,127,10)
+				macro_song(63,500,115,127,10)
+				macro_song(65,500,115,127,10)
+				macro_song(67,500,115,127,10)
+				macro_song(69,500,115,127,10)
 				la a0 Personagem_Pulando_14_24_1Frame
 				j desenho_personagem
 			imprimir_personagem_pulo_direita2:
+				macro_song(61,500,115,127,10)
+				macro_song(63,500,115,127,10)
+				macro_song(65,500,115,127,10)
+				macro_song(67,500,115,127,10)
+				macro_song(69,500,115,127,10)
 				la a0 Personagem_Pulando_14_24_2Frame
 				j desenho_personagem
 
@@ -407,9 +417,19 @@ Jogo: nop
 				j desenho_personagem
 
 			imprimir_personagem_pulo_direita1_Espelhado:
+				macro_song(61,500,115,127,10)
+				macro_song(63,500,115,127,10)
+				macro_song(65,500,115,127,10)
+				macro_song(67,500,115,127,10)
+				macro_song(69,500,115,127,10)
 				la a0 Personagem_Pulando_14_24_1Frame_Espelhado
 				j desenho_personagem
 			imprimir_personagem_pulo_direita2_Espelhado:
+				macro_song(61,500,115,127,10)
+				macro_song(63,500,115,127,10)
+				macro_song(65,500,115,127,10)
+				macro_song(67,500,115,127,10)
+				macro_song(69,500,115,127,10)
 				la a0 Personagem_Pulando_14_24_2Frame_Espelhado
 				j desenho_personagem
 
