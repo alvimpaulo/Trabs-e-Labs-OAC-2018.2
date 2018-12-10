@@ -1,5 +1,5 @@
 .text
-    incioPuloVertical: nop
+    inicioPuloVertical: nop
 		# salva stack
 		addi sp sp -4 
 		sw ra 0(sp)
@@ -7,7 +7,8 @@
         ble s0, zero, fimPuloVertical # se s0 estiver zerado, personagem parado
         li t0 10
         bge s0 t0 fimPuloVertical # se s0 nao for um estado do pulo vertical (>= 10) 
-        jal ra ApagaPersonagem
+        la t0 ApagaPersonagem
+	jalr ra t0 0
         slli t0, s0, 2 # word = 4 bytes, estado do pulo
         addi t0, t0, -4
         la t1 vetorDeslocamentoPuloVertical

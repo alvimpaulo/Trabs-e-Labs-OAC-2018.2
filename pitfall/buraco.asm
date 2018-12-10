@@ -8,7 +8,7 @@ CORES: 	.word 0xA3A3A3A3, 0xF0F0F0F0, 0x24242424, 0x11111111, 0xB8B8B8B8, 0xA3A3
 la s0 BURACO # carega o & do BURACO
 la s6 CORES # carrga o ENdereco da cor
 li s1 0  # estado do buravo
-li s2 -4 # valor pra ser add/sub endereço
+li s2 -4 # valor pra ser add/sub endereï¿½o
 li s3 -1  # valor add/sub estado
 li s4 6 #  final do estado
 li s5 -1 # registrador -1
@@ -22,12 +22,13 @@ LOOP: bgt s1 s4 LOOP2 # se for == ao final do estado
 	add a2 t4 t3 # a direita do centro da tela
 	lw a4 0(s6) # cor do treco
 	
-	jal ra DrawQuadrado
+	la t0 DrawQuadrado
+	jalr ra t0 0
 	
 	
-	add s6 s6 s2 # soma  endereço CORES
+	add s6 s6 s2 # soma  endereï¿½o CORES
 	add s1 s1 s3 # soma estado 
-	add s0 s0 s2 # Soma endereço BURACO
+	add s0 s0 s2 # Soma endereï¿½o BURACO
 	
 	li a7 32
 	li a0 100

@@ -15,7 +15,8 @@
         li t0 30
         beq s0 t0 fimMovimentacaoPuloEsquerda # se for o primeiro estado do pulo,  so apaga a sprite
 
-        jal ra ApagaPersonagem
+        la t0 ApagaPersonagem
+	jalr ra t0 0
 
         li t0 31 # primeiro estado efetivo do pulo diagonal
         sub t0 s0 t0

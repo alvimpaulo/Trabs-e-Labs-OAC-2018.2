@@ -18,10 +18,12 @@ MovePersonagem:
 	addi sp, sp, -8
 	sw ra 0(sp)
 	sw a0 4(sp)
-	jal ra incioPuloVertical
-	jal ra incioPuloVerticalEsquerda
-	jal ra incioPuloDireita
-	jal ra incioPuloEsquerda
+	jal inicioPuloVertical
+	jal inicioPuloVerticalEsquerda
+	jal incioPuloDireita
+	jal incioPuloEsquerda
+	la t0 incioQueda
+	jalr t0 0
 	li t0 1
 	slt t0 s6 t0 # t0 = 1 se o ultimo estado for ele parado
 	slt t1 s0 t1 # t1 = 1 se o estado atual e ele parado
@@ -52,7 +54,7 @@ MovePersonagem:
 		beq s4 t0 espaco_precedido_de_d
 			li t0 'a'
 			beq s4 t0 espaco_precedido_de_a
-				jal ra incioPuloVertical
+				jal ra inicioPuloVertical
 				j finalPulo
 		espaco_precedido_de_d:
 			li s0 15

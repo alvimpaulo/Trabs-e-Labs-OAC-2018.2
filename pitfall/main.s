@@ -18,10 +18,10 @@
 # | 1 - 9 -> Pulo vertical virado a direita					|
 # | 10 - 14 -> movimentacao para a direita					|
 # | 15 - 24 -> pulo para a direita							|
-
 # | 30 - 39 -> pulo para a esquerda							|
 # | 40 - 49 -> Pulo vertical virado a esquerda 				|
 # | 50 - 60 -> Movimento Escada								|
+# | 61 - 69 -> Queda										|
 
 # | 			   .data importados         				|
 # | vidas (.word)  -> Vidas do jogador						|
@@ -31,8 +31,8 @@
 	estadoDoJogo: .space 4
 	ultimaTeclaPressionada: .space 4
 	vetorDeslocamentoPulo: .word -10,-8, -5, -3, 0, 3, 5, 8, 10
-	vetorDeslocamentoPuloVertical: .word -10,-8, -4, -2, 0, 2, 4, 8, 10
-	vetorDeslocamentoPuloDiagonal: .word -10,-8, -4, -2, 0, 2, 4, 8, 10
+	vetorDeslocamentoPuloVertical: .word -4,-2, -2, -2, 0, 2, 2, 2, 4
+	vetorDeslocamentoPuloDiagonal: .word -4,-2, -2, -2, 0, 2, 2, 2, 4
     	vectorImagensMenu: .space 12
     	vectorFuncoesMenu: .space 12
 	.include "Sprites\source\sourcezao.s"										
@@ -236,6 +236,13 @@ Jogo: nop
 		mv a0 s4										#  /
 		beq t1 t2 else_jogo_pausar_loop_do_jogo_Jogo	# /
 
+		li t0 60										# \	
+		sgt t1 s0 t0									#  \
+		li t0 70										#    - Queda
+		slt t2 s0 t0									#   /
+		mv a0 s4										#  /
+		beq t1 t2 else_jogo_pausar_loop_do_jogo_Jogo	# /
+
 		# fim desses estados
 		jal ra LeTeclaDoTeclado  # chama a funcao que le a tecla do teclado
 		sw a0 ultimaTeclaPressionada, t0
@@ -251,6 +258,52 @@ Jogo: nop
 			# a0 vem  daqui jal ra LeTeclaDoTeclado
 			jal ra MovePersonagem
 			# mv s4 a0 # ultima tecla pressionada
+
+			# Se estiver caindo, pular colisao
+			li t0 60										# \	
+			sgt t1 s0 t0									#  \
+			li t0 70										#    - Queda
+			slt t2 s0 t0									#   /
+			mv a0 s4										#  /
+			beq t1 t2 fim_acoes								# /
+
+			# Colocar colisao aqui
+
+			# buracos sem ser o buracao
+
+			li t0 125
+			lw t1 posicaoPersonagemY
+			blt t1 t0 fim_acoes # se ele estiver acima do buraco
+			li t0 180
+			bge t1 t0 fim_acoes # se ele estiver abaixo do buraco
+
+			li t0 85
+			lw t1 posicaoPersonagemX
+			sgt t2 t1 t0
+			li t0 114
+			slt t3 t1 t0 # se o personagem estiver no primeiro buraco
+			beq t3 t2 caiu_buraco
+
+			li t0 203
+			lw t1 posicaoPersonagemX
+			sgt t2 t1 t0
+			li t0 234
+			slt t3 t1 t0 # se o personagem estiver no primeiro buraco
+			beq t3 t2 caiu_buraco	
+		
+			# Fim das colisoes
+			fim_colisoes:
+			j fim_acoes
+
+			# acoes com base nas colisoes
+			caiu_buraco:
+				li s0 61
+				la t0 incioQueda
+				jalr t0 0
+				j fim_acoes
+			# fim das acoes
+
+			fim_acoes:
 
 			# testes para ver qual personagem imprime
 			li t0 -1
@@ -313,6 +366,12 @@ Jogo: nop
 			slt t2 s0 t0  # s0 <= 60
 			beq t2 t1 imprimir_personagem_escada
 
+			li t0 60
+			sgt t1 s0 t0  # s0 >= 50
+			li t0 70
+			slt t2 s0 t0  # s0 <= 60
+			beq t2 t1 imprimir_personagem_queda
+
 			# fim dos testes
 
 			imprimir_personagem_parado_esquerda:
@@ -374,10 +433,14 @@ Jogo: nop
 				beq t0 zero imprimir_personagem_escada_2
 					la a0 Personagem_Escalando_10_26_1Frame
 					j desenho_personagem
-				imprimir_personagem_escada_2:
-					la a0 Personagem_Escalando_10_26_2Frame
-					j desenho_personagem
-			
+			imprimir_personagem_escada_2:
+				la a0 Personagem_Escalando_10_26_2Frame
+				j desenho_personagem
+			imprimir_personagem_queda:
+				la a0 Personagem_Parado_16_24_1_Frame
+				j desenho_personagem
+
+
 			desenho_personagem:
 			jal ra DesenhaSpritePersonagem
 			lw s4 ultimaTeclaPressionada # salvando a ultima tecla pressionada
@@ -419,5 +482,6 @@ FimJogo: jalr x0 ra 0
 .include "movimentacoes/movimento_pulo_direita.s"
 .include "movimentacoes/movimento_pulo_esquerda.s"
 .include "movimentacoes/movimento_escada.s"
+.include "movimentacoes/movimento_queda.s"
 .include "SYSTEMv12.s"
 

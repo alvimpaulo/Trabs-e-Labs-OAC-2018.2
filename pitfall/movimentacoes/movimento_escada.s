@@ -1,4 +1,4 @@
-# 50 >= s0 > 60
+# 50 >= s0 >= 60
 # a0 = Tecla pressioanda
 .text
     incioEscada: nop
@@ -25,8 +25,6 @@
         beq s0 t0 estado_52
         li t0 53
         beq s0 t0 estado_53
-        li t0 59
-        beq s0 t0 estado_59
         li t0 54
         beq s0 t0 estado_54
         li t0 55

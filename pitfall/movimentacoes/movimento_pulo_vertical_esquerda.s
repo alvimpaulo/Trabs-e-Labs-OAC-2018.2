@@ -1,5 +1,5 @@
 .text
-    incioPuloVerticalEsquerda: nop
+    inicioPuloVerticalEsquerda: nop
 		# salva stack
 		addi sp sp -4 
 		sw ra 0(sp)
@@ -8,7 +8,8 @@
         ble s0, t0, fimPuloVerticalEsquerda # s0 abaixo do estado
         li t0 50
         bge s0 t0 fimPuloVerticalEsquerda # s0 acima da fronteira   
-        jal ra ApagaPersonagem
+        la t0 ApagaPersonagem
+	jalr ra t0 0
 
         li t0 40 # primeiro estado efetivo do pulo vertical
         sub t0 s0 t0

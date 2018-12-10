@@ -30,7 +30,8 @@ reset_MenuDoJogo:
     while_loop_menu:
     		addi sp sp -4
     		sw t1 0(sp)
-        jal ra LeTeclaDoTeclado
+        la t0 LeTeclaDoTeclado
+	jalr ra t0 0
     		lw t1 0(sp)
         addi sp sp 4
         li t0 'w'
@@ -56,7 +57,8 @@ reset_MenuDoJogo:
                 
                 addi sp sp -4
                 sw t1 0(sp)
-                jal ra printSpriteWord
+                la t0 printSpriteWord
+	jalr ra t0 0
                 lw t1 0(sp)
                 addi sp sp 4
 
@@ -84,7 +86,8 @@ reset_MenuDoJogo:
 
                 addi sp sp -4
                 sw t1 0(sp)
-                jal ra printSpriteWord
+                la t0 printSpriteWord
+	jalr ra t0 0
                 lw t1 0(sp)
                 addi sp sp 4
 
@@ -127,7 +130,8 @@ reset_MenuDoJogo:
 
                     addi sp sp -4
                     sw t1 0(sp)
-                    jal ra printSpriteWord
+                    la t0 printSpriteWord
+	jalr ra t0 0
                     lw t1 0(sp)
                     addi sp sp 4
             	    
