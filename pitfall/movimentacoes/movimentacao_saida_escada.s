@@ -17,7 +17,7 @@
         li t0 70 # primeiro estado efetivo do pulo diagonal
         sub t0 s0 t0
         slli t0, t0, 2 # t0 = (s0 - 70) * 4
-        la t1 vetorDeslocamentoPuloDiagonalEscada
+        la t1 vetorDeslocamentoPuloVerticalEscada
         add t0 t0 t1
 
         # movimentacao do personagem em y

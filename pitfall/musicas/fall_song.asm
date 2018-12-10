@@ -5,10 +5,10 @@ li a1,%b
 li a2,%c
 li a3,%d
 li a7,31
-ecall
+M_Ecall
 li a7, 32
 li a0 %e
-ecall
+M_Ecall
 .end_macro
 
 .text

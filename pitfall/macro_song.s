@@ -4,9 +4,9 @@ li a0,%a
 li a1,%b   
 li a2,%c
 li a3,%d
-li a7,31
-ecall
-li a7, 32
+li a7,131
+M_Ecall
+li a7, 132
 li a0,%e
-ecall
+M_Ecall
 .end_macro

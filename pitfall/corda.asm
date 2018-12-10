@@ -165,7 +165,7 @@ LOOP: bgt s1 s4 LOOP2 # se for == ao final do estado
 	
 	li a7 41
 	mv a0 t6
-	ecall
+	M_Ecall
 
 	sb a0 0(t6)
 	
@@ -180,7 +180,7 @@ LOOP: bgt s1 s4 LOOP2 # se for == ao final do estado
 		lw a0 0(t0)
 		li t2 0
 	PULA:
-	ecall
+	M_Ecall
 	
 
 	

@@ -32,7 +32,7 @@ LOOP: bgt s1 s4 LOOP2 # se for == ao final do estado
 	
 	li a7 32
 	li a0 100
-	ecall
+	M_Ecall
 	
 	
 	j LOOP

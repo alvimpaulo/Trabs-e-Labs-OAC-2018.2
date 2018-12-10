@@ -12,7 +12,7 @@
 # 1 word = parede
 # #################################################
 .data
-vectorFases: .space 11220
+vectorFases: .space 520
 
 .text
 

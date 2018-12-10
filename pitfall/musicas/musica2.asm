@@ -12,11 +12,11 @@ TOCA:	slli t3, t5, 3
 	li a2, 1
 	li a3, 127
 	li a7, 33
-	ecall
+	M_Ecall
 	
 	addi t5, t5, 1		#contador de notas
 	blt t5, t4, TOCA
 	
 	
 	li a7, 10
-	ecall
+	M_Ecall

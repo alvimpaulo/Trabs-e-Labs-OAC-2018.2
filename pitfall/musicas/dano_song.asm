@@ -5,15 +5,15 @@ li a1,%b
 li a2,%c
 li a3,%d
 li a7,31
-ecall
+M_Ecall
 li a7, 32
 li a0 %e
-ecall
+M_Ecall
 .end_macro
 
 .text
 dano_song(20,4000,124,60,0) 
-# O 4000 é a duração da nota em nanosegundos, se necessário, pode diminuir
+# O 4000 ï¿½ a duraï¿½ï¿½o da nota em nanosegundos, se necessï¿½rio, pode diminuir
 
 
 
