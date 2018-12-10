@@ -103,14 +103,20 @@ MovePersonagem:
 				sgt t1 s0 t0
 				li t0 15
 				slt t2, s0, t0
-				beq t2 t1 else_esta_correndo_direita
-				if_esta_correndo_direita:
-					li s0 10
+				beq t2 t1 if_esta_correndo_direita
 				else_esta_correndo_direita:
+					li t0 59
+					beq s0 t0 final_escada_e_d_pressionado
+					li s0 10
+				if_esta_correndo_direita:
 				jal ra andarDireita
 
 				
-
+				j FimMovePersonagem
+				final_escada_e_d_pressionado:
+				 li s0 70
+				 la t0 incioSaidaEscada
+				 jalr t0 0
 				j FimMovePersonagem
 			else_tecla_de_d_foi_apertada_MovePersonagem: 
 					li t0 'w'

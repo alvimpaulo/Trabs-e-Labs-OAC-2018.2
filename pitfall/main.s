@@ -35,7 +35,8 @@
 	ultimaTeclaPressionada: .space 4
 	funcoesObjetosDoJogo: .space 44
 	vetorDeslocamentoPuloVertical: .word -4,-2, -2, -2, 0, 2, 2, 2, 4
-	vetorDeslocamentoPuloVerticalEscada: .word -6,-4, -2, -2, 0, 2, 2, 2, 4
+	vetorDeslocamentoPuloDiagonalEscada: .word -10,-8, -4, -2, 0, 2, 2, 2, 4
+	vetorDeslocamentoPuloDiagonal: .word -4,-2, -2, -2, 0, 2, 2, 2, 4
 	vectorImagensMenu: .space 12
 	vectorFuncoesMenu: .space 12			
 	.include "Sprites/source/sourcezao.s"	
@@ -348,18 +349,18 @@ Jogo: nop
 			li t0 180
 			bge t1 t0 fim_acoes # se ele estiver abaixo do buraco
 
-			li t0 85
+			li t0 84
 			lw t1 posicaoPersonagemX
 			sgt t2 t1 t0
-			li t0 114
+			li t0 113
 			slt t3 t1 t0 # se o personagem estiver no primeiro buraco
 			beq t3 t2 caiu_buraco
 
-			li t0 203
+			li t0 204
 			lw t1 posicaoPersonagemX
 			sgt t2 t1 t0
-			li t0 234
-			slt t3 t1 t0 # se o personagem estiver no primeiro buraco
+			li t0 232
+			slt t3 t1 t0 # se o personagem estiver no segundo buraco
 			beq t3 t2 caiu_buraco	
 		
 			# Fim das colisoes
@@ -369,6 +370,8 @@ Jogo: nop
 
 			# acoes com base nas colisoes
 			caiu_buraco:
+				lw t0 48(s7) # t0 tem valor se é buraco ou nao
+				beqz t0 fim_acoes # se nao tiver buraco, cai fora
 				li s0 61
 				la t0 incioQueda
 				jalr t0 0
@@ -443,7 +446,13 @@ Jogo: nop
 			sgt t1 s0 t0  # s0 >= 50
 			li t0 70
 			slt t2 s0 t0  # s0 <= 60
-			beq t2 t1 imprimir_personagem_queda
+			beq t2 t1 imprimir_personagem_queda # queda
+
+			li t0 69
+			sgt t1 s0 t0  # s0 >= 50
+			li t0 80
+			slt t2 s0 t0  # s0 <= 60
+			beq t2 t1 imprimir_personagem_saida_escada
 
 			# fim dos testes
 
@@ -550,11 +559,16 @@ Jogo: nop
 			imprimir_personagem_queda:
 				la a0 Personagem_Parado_16_24_1_Frame
 				la t0 desenho_personagem
-	jalr x0 t0 0
+				jalr x0 t0 0
+			
+			imprimir_personagem_saida_escada:
+				la a0 Personagem_Pulando_14_24_2Frame
+				la t0 desenho_personagem
+				jalr x0 t0 0
 				
 				desenho_personagem:
 				la t0 DesenhaSpritePersonagem
-	jalr ra t0 0
+				jalr ra t0 0
 				lw s4 ultimaTeclaPressionada # salvando a ultima tecla pressionada
 				mv s6 s0 # salva o ultimo estado
 
@@ -648,13 +662,13 @@ Jogo: nop
 	lw ra 0(sp)
 	addi sp sp 4
 FimJogo: jalr x0 ra 0
+.include "vida.s"
 .include "Utilidades_alvim.s"
 .include "vetorJogo.s"
 .include "utilidades.s"
 .include "personagem.s"
 .include "relogio.s"
 .include "pontuacao.s"
-.include "vida.s"
 .include "movimentacoes/movimento_pulo.s"
 .include "movimentacoes/movimento_pulo_vertical_esquerda.s"
 .include "movimentacoes/movimento_direita.s"

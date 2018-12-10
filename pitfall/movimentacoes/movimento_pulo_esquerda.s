@@ -32,7 +32,7 @@
         sw t2, 0(t1)
 
         # movimentacao do personagem em x
-        li t0 -VELOCIDADE_DOS_PERSONAGEM # sempre se move vel em x
+        li t0 -6 # sempre se move vel em x
         la t1, posicaoPersonagemX
         lw t2, 0(t1)
         add t2, t2, t0 # t2 = posicao atual em x + vel
