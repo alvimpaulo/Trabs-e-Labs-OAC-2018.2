@@ -33,7 +33,7 @@
 	ultimaTeclaPressionada: .space 4
 	funcoesObjetosDoJogo: .space 44
 	vetorDeslocamentoPuloVertical: .word -4,-2, -2, -2, 0, 2, 2, 2, 4
-	vetorDeslocamentoPuloDiagonalEscada: .word -6,-4, -2, -2, 0, 2, 2, 2, 4
+	vetorDeslocamentoPuloDiagonalEscada: .word -10,-8, -4, -2, 0, 2, 2, 2, 4
 	vetorDeslocamentoPuloDiagonal: .word -4,-2, -2, -2, 0, 2, 2, 2, 4
 	vectorImagensMenu: .space 12
 	vectorFuncoesMenu: .space 12			
@@ -423,7 +423,13 @@ Jogo: nop
 			sgt t1 s0 t0  # s0 >= 50
 			li t0 70
 			slt t2 s0 t0  # s0 <= 60
-			beq t2 t1 imprimir_personagem_queda
+			beq t2 t1 imprimir_personagem_queda # queda
+
+			li t0 69
+			sgt t1 s0 t0  # s0 >= 50
+			li t0 80
+			slt t2 s0 t0  # s0 <= 60
+			beq t2 t1 imprimir_personagem_saida_escada
 
 			# fim dos testes
 
@@ -511,6 +517,9 @@ Jogo: nop
 				j desenho_personagem
 			imprimir_personagem_queda:
 				la a0 Personagem_Parado_16_24_1_Frame
+				j desenho_personagem
+			imprimir_personagem_saida_escada:
+				la a0 Personagem_Pulando_14_24_2Frame
 				j desenho_personagem
 				
 				desenho_personagem:
