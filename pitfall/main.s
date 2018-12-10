@@ -55,6 +55,7 @@
 .include "macro_relogio.s"
 .include "macro_vida.s"
 .include "macro_pontuacao.s"
+.include "macro_song.s"
 
 M_SetEcall(exceptionHandling)
 jal ra Main
@@ -100,6 +101,7 @@ reset_MenuDoJogo:
         if_tecla_w_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_w_foi_apertada_MovePersonagem
             addi t1 t1 1
             li t3 3
+            macro_song(61,350,118,60,0)          #BotaoMenu_song
             if_passou_do_limite_superior:bne t1 t3 else_passou_do_limite_superior
                 addi t1 t1 -3
             else_passou_do_limite_superior:
@@ -129,6 +131,7 @@ reset_MenuDoJogo:
             if_tecla_s_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_s_foi_apertada_MovePersonagem
                 addi t1 t1 -1
                 li t3 -1
+                macro_song(61,350,118,60,0)          #BotaoMenu_song
                 if_passou_do_limite_inferior: bne t1 t3 else_passou_do_limite_inferior
                     addi t1 t1 3
                 else_passou_do_limite_inferior:
