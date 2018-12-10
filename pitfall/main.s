@@ -353,7 +353,7 @@ Jogo: nop
 			sgt t1 s0 t0  # s0 >= 50
 			li t0 61
 			slt t2 s0 t0  # s0 <= 60
-			beq t2 t1 imprimir_personagem_escada_1
+			beq t2 t1 imprimir_personagem_escada
 
 			# fim dos testes
 
@@ -410,9 +410,15 @@ Jogo: nop
 				la a0 Personagem_Pulando_14_24_2Frame_Espelhado
 				j desenho_personagem
 
-			imprimir_personagem_escada_1:
-				la a0 Personagem_Escalando_10_26_1Frame
-				j desenho_personagem
+			imprimir_personagem_escada:
+				li t0 2
+				rem t0 s0 t0 # descobrir se s0 e impar ou par
+				beq t0 zero imprimir_personagem_escada_2
+					la a0 Personagem_Escalando_10_26_1Frame
+					j desenho_personagem
+				imprimir_personagem_escada_2:
+					la a0 Personagem_Escalando_10_26_2Frame
+					j desenho_personagem
 				
 					
 				
@@ -514,7 +520,6 @@ FimJogo: jalr x0 ra 0
 .include "movimentacoes/movimento_esquerda.s"
 .include "movimentacoes/movimento_pulo_direita.s"
 .include "movimentacoes/movimento_pulo_esquerda.s"
-.include "movimentacoes/movimento_escada_cima.s"
-.include "movimentacoes/movimento_escada_baixo.s"
+.include "movimentacoes/movimento_escada.s"
 .include "SYSTEMv12.s"
 
