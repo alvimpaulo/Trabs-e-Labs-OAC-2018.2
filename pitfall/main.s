@@ -1,4 +1,4 @@
-# | --- Tabela de registradores salvos --- 					|
+d# | --- Tabela de registradores salvos --- 					|
 # | s0 -> Estado atual do personagem						|
 # | s1 -> Vetor de movimentacao para o pulo do personagem 	|
 # | s2 -> Mapa atual										|
@@ -56,7 +56,6 @@
 .include "macro_vida.s"
 .include "macro_pontuacao.s"
 .include "macro_song.s"
-
 M_SetEcall(exceptionHandling)
 jal ra Main
 FimDoPrograma: jal x0 FimDoPrograma
