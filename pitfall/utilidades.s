@@ -9,12 +9,12 @@ ColisaoObj: nop
 	slt t1 a4 a2
 	#t0 &= t1
 	and t0 t0 t1
-	#t1 = a1 > a5
-	slt t1 a5 a1
+	#t1 = a1 < a5
+	slt t1 a1 a5
 	#t0 &= t1
 	and t0 t0 t1
-	#t1 = a3 < a5
-	slt t1 a3 a5
+	#t1 = a3 > a5
+	slt t1 a5 a3
 	#t0 &= t1
 	and a0 t0 t1
 FimColisaoObj: jalr x0 ra 0

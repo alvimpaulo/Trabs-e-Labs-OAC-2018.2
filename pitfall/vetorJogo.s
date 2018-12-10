@@ -15,7 +15,6 @@
 # #################################################
 .data
 vectorFases: .space 11220
-
 .text
 
 InitFases:
@@ -97,7 +96,7 @@ InitFases:
     # sw x0 16(t0) # ponteiro pro cipo
 
     # la t1 InitLagoEstatico
-    # sw t1 20(t0) # ponteiro para o lago ou jacarés
+    sw t1 20(t0) # ponteiro para o lago ou jacarés
 
     # li t1 2
     # sw t1 24(t0) # número de troncos
@@ -129,8 +128,8 @@ InitFases:
 
     # sw x0 16(t0) # ponteiro pro cipo
 
-    # la t1 InitJacare
-    # sw t1 20(t0) # ponteiro para o lago ou jacarés
+     # la t1 InitJacare
+     sw t1 20(t0) # ponteiro para o lago ou jacarés
 
     # sw x0 24(t0) # número de troncos
 
@@ -194,8 +193,8 @@ InitFases:
     # la t1 InitCipo
     # sw t1 16(t0) # ponteiro pro cipo
 
-    # la t1 InitBuraco
-    # sw t1 20(t0) # ponteiro para o lago ou jacarés
+     # la t1 InitBuraco
+     sw t1 20(t0) # ponteiro para o lago ou jacarés
 
     # sw x0 24(t0) # número de troncos
 
@@ -259,7 +258,7 @@ InitFases:
     # sw t1 16(t0) # ponteiro pro cipo
 
     # la t1 InitJacare
-    # sw t1 20(t0) # ponteiro para o lago ou jacarés
+    sw t1 20(t0) # ponteiro para o lago ou jacarés
 
     # sw x0 24(t0) # número de troncos
 

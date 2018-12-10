@@ -329,17 +329,17 @@ Jogo: nop
 			li t0 180
 			bge t1 t0 fim_acoes # se ele estiver abaixo do buraco
 
-			li t0 85
+			li t0 84
 			lw t1 posicaoPersonagemX
 			sgt t2 t1 t0
-			li t0 114
+			li t0 113
 			slt t3 t1 t0 # se o personagem estiver no primeiro buraco
 			beq t3 t2 caiu_buraco
 
-			li t0 203
+			li t0 204
 			lw t1 posicaoPersonagemX
 			sgt t2 t1 t0
-			li t0 234
+			li t0 232
 			slt t3 t1 t0 # se o personagem estiver no segundo buraco
 			beq t3 t2 caiu_buraco	
 		
