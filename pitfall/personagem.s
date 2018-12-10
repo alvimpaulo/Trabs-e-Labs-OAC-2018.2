@@ -31,6 +31,8 @@ MovePersonagem:
 	jal incioPuloEsquerda
 	la t0 incioQueda
 	jalr t0 0
+	la t0 incioSaidaEscada
+	jalr t0 0
 	li t0 1
 	slt t0 s6 t0 # t0 = 1 se o ultimo estado for ele parado
 	slt t1 s0 t1 # t1 = 1 se o estado atual e ele parado
@@ -98,14 +100,17 @@ MovePersonagem:
 				jal ra ApagaPersonagem
 
 				li t0 9
-				ble s0, t0, if_esta_correndo_direita 
+				sgt t1 s0 t0
 				li t0 15
-				bge s0, t0, if_esta_correndo_direita 
-				j else_esta_correndo_direita
+				slt t2, s0, t0
+				beq t2 t1 else_esta_correndo_direita
 				if_esta_correndo_direita:
 					li s0 10
 				else_esta_correndo_direita:
 				jal ra andarDireita
+
+				
+
 				j FimMovePersonagem
 			else_tecla_de_d_foi_apertada_MovePersonagem: 
 					li t0 'w'

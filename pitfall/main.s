@@ -7,10 +7,10 @@
 # | s5 -> tempo que o loop começou							|
 # | s6 -> ultimo estado										|
 # | s7 -> fase do jogo										|
-# | s8 -> estado vai pra proxima fase												|
-# | s9 -> proxima fase												|
+# | s8 -> estado vai pra proxima fase						|			
+# | s9 -> proxima fase										|
 # | s10-> vazio												|
-# | s11-> relogio do jogo
+# | s11-> relogio do jogo									|
 
 # | 			Tabela dos Estados de s0					|
 # | -1 -> Parado para a esquerda							|
@@ -22,6 +22,7 @@
 # | 40 - 49 -> Pulo vertical virado a esquerda 				|
 # | 50 - 60 -> Movimento Escada								|
 # | 61 - 69 -> Queda										|
+# | 70 - 79 -> saida da escada								|
 
 # | 			   .data importados         				|
 # | vidas (.word)  -> Vidas do jogador						|
@@ -31,21 +32,21 @@
 	estadoDoJogo: .space 4
 	ultimaTeclaPressionada: .space 4
 	funcoesObjetosDoJogo: .space 44
-	vetorDeslocamentoPulo: .word -10,-8, -5, -3, 0, 3, 5, 8, 10
 	vetorDeslocamentoPuloVertical: .word -4,-2, -2, -2, 0, 2, 2, 2, 4
+	vetorDeslocamentoPuloDiagonalEscada: .word -6,-4, -2, -2, 0, 2, 2, 2, 4
 	vetorDeslocamentoPuloDiagonal: .word -4,-2, -2, -2, 0, 2, 2, 2, 4
 	vectorImagensMenu: .space 12
 	vectorFuncoesMenu: .space 12			
-	.include "Sprites\source\sourcezao.s"	
-	.include "Sprites\source\fase1.s"	
-	.include "Sprites\source\fase3.s"	
-	.include "Sprites\source\fase4.s"	
-	.include "Sprites\source\fase5.s"	
-	.include "Sprites\source\fase6.s"	
-	.include "Sprites\source\fase7.s"	
-	.include "Sprites\source\fase8.s"	
-	.include "Sprites\source\fase9.s"	
-	.include "Sprites\source\fase10.s"	
+	.include "Sprites/source/sourcezao.s"	
+	.include "Sprites/source/fase1.s"	
+	.include "Sprites/source/fase3.s"	
+	.include "Sprites/source/fase4.s"	
+	.include "Sprites/source/fase5.s"	
+	.include "Sprites/source/fase6.s"	
+	.include "Sprites/source/fase7.s"	
+	.include "Sprites/source/fase8.s"	
+	.include "Sprites/source/fase9.s"	
+	.include "Sprites/source/fase10.s"	
 							
 
 .text
@@ -284,6 +285,13 @@ Jogo: nop
 		li t0 60										# \	
 		sgt t1 s0 t0									#  \
 		li t0 70										#    - Queda
+		slt t2 s0 t0									#   /
+		mv a0 s4										#  /
+		beq t1 t2 else_jogo_pausar_loop_do_jogo_Jogo	# /
+
+		li t0 69										# \	
+		sgt t1 s0 t0									#  \
+		li t0 80										#    - Saida Escada
 		slt t2 s0 t0									#   /
 		mv a0 s4										#  /
 		beq t1 t2 else_jogo_pausar_loop_do_jogo_Jogo	# /
@@ -605,5 +613,6 @@ FimJogo: jalr x0 ra 0
 .include "movimentacoes/movimento_pulo_esquerda.s"
 .include "movimentacoes/movimento_escada.s"
 .include "movimentacoes/movimento_queda.s"
+.include "movimentacoes/movimentacao_saida_escada.s"
 .include "SYSTEMv12.s"
 
