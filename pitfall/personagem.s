@@ -85,7 +85,7 @@ MovePersonagem:
 			ble s0, t0, if_esta_correndo_esquerda 
 			li t0 30
 			bge s0, t0, if_esta_correndo_esquerda 
-			j else_esta_correndo_direita
+			j else_esta_correndo_esquerda
 			if_esta_correndo_esquerda:
 				li s0 25
 			else_esta_correndo_esquerda:
