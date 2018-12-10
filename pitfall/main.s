@@ -1,14 +1,14 @@
 # | --- Tabela de registradores salvos --- 					|
-# | s0 -> Estado atual do personagem						|	
+# | s0 -> Estado atual do personagem						|
 # | s1 -> Vetor de movimentacao para o pulo do personagem 	|
 # | s2 -> Mapa atual										|
 # | s3 - > Endereco da memoria onde esta o mapa atual 		|
 # | s4 -> ultimo input										|
 # | s5 -> tempo que o loop começou							|
 # | s6 -> ultimo estado										|
-# | s7 -> vazio												|
-# | s8 -> vazio												|
-# | s9 -> vazio												|
+# | s7 -> fase do jogo										|
+# | s8 -> estado vai pra proxima fase												|
+# | s9 -> proxima fase												|
 # | s10-> vazio												|
 # | s11-> relogio do jogo
 
@@ -30,12 +30,23 @@
 .data
 	estadoDoJogo: .space 4
 	ultimaTeclaPressionada: .space 4
+	funcoesObjetosDoJogo: .space 44
 	vetorDeslocamentoPulo: .word -10,-8, -5, -3, 0, 3, 5, 8, 10
 	vetorDeslocamentoPuloVertical: .word -4,-2, -2, -2, 0, 2, 2, 2, 4
 	vetorDeslocamentoPuloDiagonal: .word -4,-2, -2, -2, 0, 2, 2, 2, 4
-    	vectorImagensMenu: .space 12
-    	vectorFuncoesMenu: .space 12
-	.include "Sprites\source\sourcezao.s"										
+	vectorImagensMenu: .space 12
+	vectorFuncoesMenu: .space 12			
+	.include "Sprites\source\sourcezao.s"	
+	.include "Sprites\source\fase1.s"	
+	.include "Sprites\source\fase3.s"	
+	.include "Sprites\source\fase4.s"	
+	.include "Sprites\source\fase5.s"	
+	.include "Sprites\source\fase6.s"	
+	.include "Sprites\source\fase7.s"	
+	.include "Sprites\source\fase8.s"	
+	.include "Sprites\source\fase9.s"	
+	.include "Sprites\source\fase10.s"	
+							
 
 .text
 .include "macros2.s"
@@ -44,35 +55,40 @@
 .include "macro_relogio.s"
 .include "macro_vida.s"
 .include "macro_pontuacao.s"
+.include "macro_song.s"
 
 M_SetEcall(exceptionHandling)
 jal ra Main
 FimDoPrograma: jal x0 FimDoPrograma
 Main:
+	addi	sp sp -8
+	sw ra 0(sp)
+	sw t1 4(sp)
+	jal ra InitFases
+	lw t1 0(sp)
+	addi sp sp 4
 reset_MenuDoJogo:
-		addi	sp sp -4
-		sw ra 0(sp)
     li t1 2
     la t2 vectorImagensMenu
-    
+
     la t3 menuSair
     sw t3 0(t2)
-    
+
     la t3 menuCreditos
     sw t3 4(t2)
-    
+
     la t3 menuJogar
     sw t3 8(t2)
 
 
     la t2 vectorFuncoesMenu
-    
+
     la t3 fim_while_loop_menu
     sw t3 0(t2)
-    
+
     la t3 fim_while_loop_menu
     sw t3 4(t2)
-    
+
     la t3 Jogo
     sw t3 8(t2)
     while_loop_menu:
@@ -85,6 +101,7 @@ reset_MenuDoJogo:
         if_tecla_w_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_w_foi_apertada_MovePersonagem
             addi t1 t1 1
             li t3 3
+            macro_song(61,350,118,60,0)          #BotaoMenu_song
             if_passou_do_limite_superior:bne t1 t3 else_passou_do_limite_superior
                 addi t1 t1 -3
             else_passou_do_limite_superior:
@@ -92,7 +109,7 @@ reset_MenuDoJogo:
                 li a0 0xff004530
 
                 la a1 vectorImagensMenu
-  	            slli t2 t1 2 
+  	            slli t2 t1 2
     	          add a1 a1 t2
       	        lw a1 0(a1)
 	              addi a1 a1 8
@@ -101,7 +118,7 @@ reset_MenuDoJogo:
 
                 li a3 129
 
-                
+
                 addi sp sp -4
                 sw t1 0(sp)
                 jal ra printSpriteWord
@@ -114,6 +131,7 @@ reset_MenuDoJogo:
             if_tecla_s_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_s_foi_apertada_MovePersonagem
                 addi t1 t1 -1
                 li t3 -1
+                macro_song(61,350,118,60,0)          #BotaoMenu_song
                 if_passou_do_limite_inferior: bne t1 t3 else_passou_do_limite_inferior
                     addi t1 t1 3
                 else_passou_do_limite_inferior:
@@ -121,7 +139,7 @@ reset_MenuDoJogo:
                 li a0 0xff004530
 
                 la a1 vectorImagensMenu
-  	            slli t2 t1 2 
+  	            slli t2 t1 2
     	          add a1 a1 t2
       	        lw a1 0(a1)
 	              addi a1 a1 8
@@ -164,7 +182,7 @@ reset_MenuDoJogo:
                     li a0 0xff004530
 
                     la a1 vectorImagensMenu
-                    slli t2 t1 2 
+                    slli t2 t1 2
                     add a1 a1 t2
                     lw a1 0(a1)
                     addi a1 a1 8
@@ -178,10 +196,10 @@ reset_MenuDoJogo:
                     jal ra printSpriteWord
                     lw t1 0(sp)
                     addi sp sp 4
-            	    
+
 	  jal x0 while_loop_menu
 	  fim_while_loop_menu:
-    
+
 		lw ra 0(sp)
 		addi	sp sp 4
 FimMain: jalr x0 ra 0
@@ -191,29 +209,56 @@ Jogo: nop
 	sw ra 0(sp)
 	li s0 0 # estado inicial
 	li s4 0
-	la s3 fase2
+	la s9 vectorFases
 	addi s3 s3 8 # s3 = mapa inicial
-	
 	RELOGIO_INICIO(1200000)				# Inicializar relogio do jogo
 	inicializar_vida(3)					# Inicializar vidas
+	li a4 POSICAO_INICIAL_PERSONAGEM_SUPERIOR_ESQUERDA_X # argumentos de inicialização dos prsonagens
+	li a5 POSICAO_INICIAL_PERSONAGEM_SUPERIOR_ESQUERDA_Y # argumentos de inicialização dos prsonagens
 	inicializar_pontuacao(2000)			# Inicializar pontuacao
-	
+
+	loop_troca_fase_Jogo:
+		mv s7 s9
+		li s0 0 # estado inicial
+		li s4 0
+		lw s3 32(s7) # carrega o mapa da fase
+		addi s3 s3 8 # s3 = mapa inicial
+		# printa o mapa
 	# printa o mapa
 		li a0 0xff000000
 		mv a1 s3
 		li a2 320
 		li a3 224
 		jal ra printSprite
-	
-	
-	InitPersonagem (POSICAO_INICIAL_PERSONAGEM_SUPERIOR_DIREITA_X, POSICAO_INICIAL_PERSONAGEM_SUPERIOR_DIREITA_Y) #inicia o personagem
-	loop_do_jogo_Jogo:
-		# ecall tmepo
-		li a7 30
-		ecall
-		mv s5 a0
-		# end
 		
+
+		# parte do codic[go responsavel po colocar coisa variaveis entre fase
+		la t4 funcoesObjetosDoJogo 
+		addi t2 s7 44
+		addi t1 s7 16
+		li s10 0
+		loop_descobre_funcoes_do_jogo: beq t1 t2 end_loop_descobre_funcoes_do_jogo
+			lw t3 0(t1)
+			addi t1 t1 4
+			if_tem_funcao_do_jogo: beq t3 x0 loop_descobre_funcoes_do_jogo
+				la t0 funcoesObjetosDoJogo
+				addi t0 s7 36
+				beq t1 t0 loop_descobre_funcoes_do_jogo
+					addi s10 s10 4
+					sw t3 0(t4)
+					addi t4 t4 4
+		jal x0 loop_descobre_funcoes_do_jogo
+		end_loop_descobre_funcoes_do_jogo:
+
+		InitPersonagemReg(a4, a5) #inicializar o personagem
+		
+		loop_do_jogo_Jogo:
+			# ecall tmepo
+			li a7 30
+			ecall
+			mv s5 a0
+			# end
+			
 		# estados que nao podem ter teclas lidas
 		li t0 0											# \
 		sgt t1 s0 t0									#  \
@@ -398,9 +443,19 @@ Jogo: nop
 				j desenho_personagem
 
 			imprimir_personagem_pulo_direita1:
+				macro_song(61,500,115,127,10)
+				macro_song(63,500,115,127,10)
+				macro_song(65,500,115,127,10)
+				macro_song(67,500,115,127,10)
+				macro_song(69,500,115,127,10)
 				la a0 Personagem_Pulando_14_24_1Frame
 				j desenho_personagem
 			imprimir_personagem_pulo_direita2:
+				macro_song(61,500,115,127,10)
+				macro_song(63,500,115,127,10)
+				macro_song(65,500,115,127,10)
+				macro_song(67,500,115,127,10)
+				macro_song(69,500,115,127,10)
 				la a0 Personagem_Pulando_14_24_2Frame
 				j desenho_personagem
 
@@ -421,9 +476,19 @@ Jogo: nop
 				j desenho_personagem
 
 			imprimir_personagem_pulo_direita1_Espelhado:
+				macro_song(61,500,115,127,10)
+				macro_song(63,500,115,127,10)
+				macro_song(65,500,115,127,10)
+				macro_song(67,500,115,127,10)
+				macro_song(69,500,115,127,10)
 				la a0 Personagem_Pulando_14_24_1Frame_Espelhado
 				j desenho_personagem
 			imprimir_personagem_pulo_direita2_Espelhado:
+				macro_song(61,500,115,127,10)
+				macro_song(63,500,115,127,10)
+				macro_song(65,500,115,127,10)
+				macro_song(67,500,115,127,10)
+				macro_song(69,500,115,127,10)
 				la a0 Personagem_Pulando_14_24_2Frame_Espelhado
 				j desenho_personagem
 
@@ -439,42 +504,99 @@ Jogo: nop
 			imprimir_personagem_queda:
 				la a0 Personagem_Parado_16_24_1_Frame
 				j desenho_personagem
+				
+				desenho_personagem:
+				jal ra DesenhaSpritePersonagem
+				lw s4 ultimaTeclaPressionada # salvando a ultima tecla pressionada
+				mv s6 s0 # salva o ultimo estado
 
+				# chama as funções dos objetos do jogo
+				la t0 funcoesObjetosDoJogo
+				add t1 t0 s10
+				while_chama_funcoes_do_jogo: beq t1 t0 fim_while_chama_funcoes_do_jogo
+					lw t2 0(t0)
+					jalr ra t2 0
+					addi t0 t0 4
+					jal x0 while_chama_funcoes_do_jogo
+				fim_while_chama_funcoes_do_jogo:
 
-			desenho_personagem:
-			jal ra DesenhaSpritePersonagem
-			lw s4 ultimaTeclaPressionada # salvando a ultima tecla pressionada
-			mv s6 s0 # salva o ultimo estado
+				la t0 posicaoPersonagemY
+				lw t0 0(t0)
+				li t1 144
+				if_esta_em_cima: bgt t0 t1 else_esta_em_cima
+					la t0 posicaoPersonagemX
+					lw t0 0(t0)
+					li t1 308
+					if_esta_na_direita_cima: blt t0 t1 else_esta_na_direita_cima
+						lw s9 8(s7)
+						li s8 1
+						li a4 POSICAO_INICIAL_PERSONAGEM_SUPERIOR_ESQUERDA_X
+						li a5 POSICAO_INICIAL_PERSONAGEM_SUPERIOR_ESQUERDA_Y
+						jal x0 loop_troca_fase_Jogo
+					else_esta_na_direita_cima:
+						li t1 12
+						if_esta_na_esquerda_cima: bgt t0 t1 else_esta_em_baixo
+							lw s9 0(s7)
+							li s8 1
+							li a4 POSICAO_INICIAL_PERSONAGEM_SUPERIOR_DIREITA_X
+							li a5 POSICAO_INICIAL_PERSONAGEM_SUPERIOR_DIREITA_Y
+							jal x0 loop_troca_fase_Jogo
+						else_esta_na_esquerda_cima:
+				else_esta_em_cima:
+					if_esta_em_baixo:
+						la t0 posicaoPersonagemX
+						lw t0 0(t0)
+						li t1 308
+						if_esta_na_direita_baixo: blt t0 t1 else_esta_na_direita_baixo
+							lw s9 12(s7)
+							li s8 1
+							li a4 POSICAO_INICIAL_PERSONAGEM_INFERIOR_ESQUERDA_X
+							li a5 POSICAO_INICIAL_PERSONAGEM_INFERIOR_ESQUERDA_Y
+							jal x0 loop_troca_fase_Jogo
+						else_esta_na_direita_baixo:
+							li t1 12
+							if_esta_na_esquerda_baixo:  bgt t0 t1 else_esta_em_baixo
+								lw s9 4(s7)
+								li s8 1
+								li a4 POSICAO_INICIAL_PERSONAGEM_INFERIOR_DIREITA_X
+								li a5 POSICAO_INICIAL_PERSONAGEM_INFERIOR_DIREITA_Y
+								jal x0 loop_troca_fase_Jogo
+							else_esta_na_esquerda_baixo:
+					else_esta_em_baixo:
+				
+				
+			li t0 100
+			while_nao_aconteceu_30_FPS:
+				li a7 30
+				ecall
+				sub a0 a0 s5
+				blt a0 t0 while_nao_aconteceu_30_FPS # se o tempo for < 30 segundo fica preso no loop
 			
-			
-		li t0 100
-		while_nao_aconteceu_30_FPS:
-			li a7 30
-			ecall
-			sub a0 a0 s5
-			blt a0 t0 while_nao_aconteceu_30_FPS # se o tempo for < 30 segundo fica preso no loop
-		li a1, 4				# coluna do relogio
-		li a2, 228				# linha do relogio
-		jal RELOGIO_LOOP
+			li a1, 4				# coluna do relogio
+			li a2, 228				# linha do relogio
+			jal RELOGIO_LOOP
 
-		li a0, 0XFF000000		# end. bitmap
-		li a1, 228				# coord Y
-		li a2, 280				# coord X
-		jal imprimir_vida	
+			li a0, 0XFF000000		# end. bitmap
+			li a1, 228				# coord Y
+			li a2, 280				# coord X
+			jal imprimir_vida	
 
-		jal imprimir_pontuacao
+			jal imprimir_pontuacao
 
-		jal x0 loop_do_jogo_Jogo
-	end_loop_do_jogo_Jogo:
+			jal x0 loop_do_jogo_Jogo
+			end_loop_do_jogo_Jogo:
+		jal x0 loop_troca_fase_Jogo
+	end_loop_troca_fase_Jogo:
 	lw ra 0(sp)
 	addi sp sp 4
 FimJogo: jalr x0 ra 0
 .include "Utilidades_alvim.s"
+.include "vetorJogo.s"
 .include "utilidades.s"
 .include "personagem.s"
 .include "relogio.s"
-.include "vida.s"
 .include "pontuacao.s"
+.include "vida.s"
 .include "movimentacoes/movimento_pulo.s"
 .include "movimentacoes/movimento_pulo_vertical_esquerda.s"
 .include "movimentacoes/movimento_direita.s"
