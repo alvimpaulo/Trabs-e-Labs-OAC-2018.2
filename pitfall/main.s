@@ -465,7 +465,7 @@ Jogo: nop
 						lw t0 0(t0)
 						li t1 308
 						if_esta_na_direita_baixo: blt t0 t1 else_esta_na_direita_baixo
-							lw s9 16(s7)
+							lw s9 12(s7)
 							li s8 1
 							li a4 POSICAO_INICIAL_PERSONAGEM_INFERIOR_ESQUERDA_X
 							li a5 POSICAO_INICIAL_PERSONAGEM_INFERIOR_ESQUERDA_Y
