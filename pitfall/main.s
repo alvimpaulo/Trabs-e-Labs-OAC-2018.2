@@ -36,7 +36,14 @@
 	vetorDeslocamentoPuloDiagonalEscada: .word -10,-8, -4, -2, 0, 2, 2, 2, 4
 	vetorDeslocamentoPuloDiagonal: .word -4,-2, -2, -2, 0, 2, 2, 2, 4
 	vectorImagensMenu: .space 12
-	vectorFuncoesMenu: .space 12			
+	vectorFuncoesMenu: .space 12
+    vectorMenuSong: .word 	55,400,400,55,400,400,55,400,400,72,1200,1200,
+                            64,1200,0,67,1200,1200,65,400,400,64,400,400,
+                            62,400,400,65,1200,0,84,1200,1200,64,800,0,
+                            67,800,800,65,400,400,64,400,400,62,400,400,
+                            65,1200,0,84,1200,1200,64,800,0,67,800,800,
+                            62,400,0,65,400,400,64,400,400,65,400,400,
+                            59,1200,0,62,1200,1200,			
 	.include "Sprites/source/sourcezao.s"	
 	.include "Sprites/source/fase1.s"	
 	.include "Sprites/source/fase3.s"	
@@ -91,7 +98,28 @@ reset_MenuDoJogo:
 
     la t3 Jogo
     sw t3 8(t2)
+    la a1 vectorImagensMenu
+                    slli t2 t1 2
+                    add a1 a1 t2
+                    lw a1 0(a1)
+                    addi a1 a1 8
+
+                    li a2 100
+
+                    li a3 129
+
+                    addi sp sp -4
+                    sw t1 0(sp)
+                    jal ra printSpriteWord
+                    lw t1 0(sp)
+                    addi sp sp 4
+                    li s0 -12
     while_loop_menu:
+            addi s0 s0 12
+            li t0 312
+            bne s0 t0 menu_song
+            li s0 0
+        menu_song:
     		addi sp sp -4
     		sw t1 0(sp)
         jal ra LeTeclaDoTeclado
@@ -180,22 +208,19 @@ reset_MenuDoJogo:
                     jal x0 while_loop_menu
                 else_tecla_sp_foi_apertada_MovePersonagem:
                     li a0 0xff004530
+                    la t0 vectorMenuSong
+                    add t0 t0 s0
+                    lw a0,0(t0)   
+                    lw a1,4(t0)   
+                    li a2,1
+                    li a3,60
+                    li a7,31
+                    M_Ecall
+                    li a7, 32
+                    lw a0,8(t0)
+                    M_Ecall
 
-                    la a1 vectorImagensMenu
-                    slli t2 t1 2
-                    add a1 a1 t2
-                    lw a1 0(a1)
-                    addi a1 a1 8
-
-                    li a2 100
-
-                    li a3 129
-
-                    addi sp sp -4
-                    sw t1 0(sp)
-                    jal ra printSpriteWord
-                    lw t1 0(sp)
-                    addi sp sp 4
+                    
 
 	  jal x0 while_loop_menu
 	  fim_while_loop_menu:
@@ -351,6 +376,11 @@ Jogo: nop
 			caiu_buraco:
 				lw t0 48(s7) # t0 tem valor se é buraco ou nao
 				beqz t0 fim_acoes # se nao tiver buraco, cai fora
+                macro_song(61,500,16,60,10)     #fall_song
+                macro_song(59,500,16,60,10)     #fall_song
+                macro_song(57,500,16,60,10)     #fall_song
+                macro_song(55,500,16,60,10)     #fall_song
+                macro_song(53,500,16,60,10)     #fall_song
 				li s0 61
 				la t0 incioQueda
 				jalr t0 0
