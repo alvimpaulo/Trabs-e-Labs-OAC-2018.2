@@ -1,17 +1,17 @@
 # #################################################
-# 1 word = ponteiro superior esquerda
-# 1 word = ponteiro interior esquerda
-# 1 word = ponteiro superior direita
-# 1 word = ponteiro inferior direita
-# 1 word = ponteiro pro cipo
-# 1 word = ponteiro para o lago ou jacarés
-# 1 word = número de troncos
-# 1 word = ponteiro para troncos/cobras/fogueiras/tesouros
-# 1 word = tipo basico de chão/escada/tojolo
-# 1 word = escorpiao
-# 1 word = parede
-# 1 word = tem escada
-# 1 word = burado
+# 0     1 word = ponteiro superior esquerda
+# 4     1 word = ponteiro interior esquerda
+# 8     1 word = ponteiro superior direita
+# 12    1 word = ponteiro inferior direita
+# 16    1 word = ponteiro pro cipo
+# 20    1 word = ponteiro para o lago ou jacarés
+# 24    1 word = número de troncos
+# 28    1 word = ponteiro para troncos/cobras/fogueiras/tesouros
+# 32    1 word = tipo basico de chão/escada/tojolo
+# 36    1 word = escorpiao
+# 40    1 word = parede
+# 44    1 word = tem escada
+# 48    1 word = buraco
 # #################################################
 .data
 vectorFases: .space 11220

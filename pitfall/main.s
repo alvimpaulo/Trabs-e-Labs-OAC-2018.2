@@ -1,4 +1,4 @@
-d# | --- Tabela de registradores salvos --- 					|
+# | --- Tabela de registradores salvos --- 					|
 # | s0 -> Estado atual do personagem						|
 # | s1 -> Vetor de movimentacao para o pulo do personagem 	|
 # | s2 -> Mapa atual										|
@@ -340,7 +340,7 @@ Jogo: nop
 			lw t1 posicaoPersonagemX
 			sgt t2 t1 t0
 			li t0 234
-			slt t3 t1 t0 # se o personagem estiver no primeiro buraco
+			slt t3 t1 t0 # se o personagem estiver no segundo buraco
 			beq t3 t2 caiu_buraco	
 		
 			# Fim das colisoes
@@ -349,6 +349,8 @@ Jogo: nop
 
 			# acoes com base nas colisoes
 			caiu_buraco:
+				lw t0 48(s7) # t0 tem valor se é buraco ou nao
+				beqz t0 fim_acoes # se nao tiver buraco, cai fora
 				li s0 61
 				la t0 incioQueda
 				jalr t0 0
