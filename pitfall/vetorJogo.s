@@ -52,7 +52,7 @@ InitFases:
 # fim fase 1
     addi t0 t0 52
 # init fase 2
-    addi t1 t0 52 # ponteiro da fase 1
+    addi t1 t0 -52 # ponteiro da fase 1
     sw t1 0(t0) # ponteiro superior esquerda
     sw t1 4(t0) # ponteiro interior esquerda
 
@@ -85,7 +85,7 @@ InitFases:
 # fim fase 2
     addi t0 t0 52
 # init fase 3
-    addi t1 t0 52 # ponteiro da fase 2
+    addi t1 t0 -52 # ponteiro da fase 2
     sw t1 0(t0) # ponteiro superior esquerda
     sw t1 4(t0) # ponteiro interior esquerda
 
@@ -95,7 +95,7 @@ InitFases:
 
     # sw x0 16(t0) # ponteiro pro cipo
 
-    # la t1 InitLagoEstatico
+    la t1 InitBuraco
     sw t1 20(t0) # ponteiro para o lago ou jacarés
 
     # li t1 2
@@ -118,7 +118,7 @@ InitFases:
 # fim fase 3
     addi t0 t0 52
 # init fase 4
-    addi t1 t0 52 # ponteiro da fase 3
+    addi t1 t0 -52 # ponteiro da fase 3
     sw t1 0(t0) # ponteiro superior esquerda
     sw t1 4(t0) # ponteiro interior esquerda
 
@@ -128,7 +128,7 @@ InitFases:
 
     # sw x0 16(t0) # ponteiro pro cipo
 
-     # la t1 InitJacare
+     la t1 InitBuraco
      sw t1 20(t0) # ponteiro para o lago ou jacarés
 
     # sw x0 24(t0) # número de troncos
@@ -149,7 +149,7 @@ InitFases:
 # fim fase 4
     addi t0 t0 52
 # init fase 5
-    addi t1 t0 52 # ponteiro da fase 4
+    addi t1 t0 -52 # ponteiro da fase 4
     sw t1 0(t0) # ponteiro superior esquerda
     sw t1 4(t0) # ponteiro interior esquerda
 
@@ -193,7 +193,7 @@ InitFases:
     # la t1 InitCipo
     # sw t1 16(t0) # ponteiro pro cipo
 
-     # la t1 InitBuraco
+     la t1 InitBuraco
      sw t1 20(t0) # ponteiro para o lago ou jacarés
 
     # sw x0 24(t0) # número de troncos
@@ -257,7 +257,7 @@ InitFases:
     # la t1 InitCipo
     # sw t1 16(t0) # ponteiro pro cipo
 
-    # la t1 InitJacare
+    la t1 InitBuraco
     sw t1 20(t0) # ponteiro para o lago ou jacarés
 
     # sw x0 24(t0) # número de troncos
@@ -366,6 +366,35 @@ InitTroncoUmParado:
     beq a0 x0 FimInitTroncoUmParado
         atualizar_pontuacao(-12)
  FimInitTroncoUmParado:
+    lw t1 8(sp) 
+    lw t0 4(sp)
+    lw ra 0(sp)
+    addi sp sp 12
+    jalr x0 ra 0
+
+InitBuraco:
+    addi sp sp -12
+    sw ra 0(sp)
+    sw t0 4(sp)
+    sw t1 8(sp)
+
+    li a0 95
+    li a1 146
+    li a2 224
+    li a3 157
+    la t0 posicaoPersonagemX
+    lw a4 0(t0)
+    lw a5 4(t0)
+    addi a5 a5 24
+    la t0 ColisaoObj
+    jalr ra t0 0
+    beq a0 zero FimInitBuraco
+
+    lw t0 vidas
+    addi t0 t0 -1
+    sw t0 vidas, t1
+
+    FimInitBuraco:
     lw t1 8(sp) 
     lw t0 4(sp)
     lw ra 0(sp)

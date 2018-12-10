@@ -608,13 +608,13 @@ Jogo: nop
 	lw ra 0(sp)
 	addi sp sp 4
 FimJogo: jalr x0 ra 0
+.include "vida.s"
 .include "Utilidades_alvim.s"
 .include "vetorJogo.s"
 .include "utilidades.s"
 .include "personagem.s"
 .include "relogio.s"
 .include "pontuacao.s"
-.include "vida.s"
 .include "movimentacoes/movimento_pulo.s"
 .include "movimentacoes/movimento_pulo_vertical_esquerda.s"
 .include "movimentacoes/movimento_direita.s"

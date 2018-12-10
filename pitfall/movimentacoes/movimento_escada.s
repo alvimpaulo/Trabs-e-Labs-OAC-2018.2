@@ -6,6 +6,9 @@
 		addi sp sp -4 
 		sw ra 0(sp)
         
+        lw t0 44(s7)
+        beq t0 zero nao_tem_escada
+
         li t0 'w'
         beq a0 t0 andar_para_cima_escada
         andar_para_baixo_escada:
@@ -102,7 +105,8 @@
         li s0 0
         j fimEscada 
         
-        
+    nao_tem_escada:
+        mv s0 s4    
 		
     fimEscada:    
     # carrega stack
