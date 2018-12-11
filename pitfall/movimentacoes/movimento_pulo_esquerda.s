@@ -21,7 +21,7 @@
         li t0 31 # primeiro estado efetivo do pulo diagonal
         sub t0 s0 t0
         slli t0, t0, 2 # t0 = (s0 - 16) * 2
-        la t1 vetorDeslocamentoPuloVertical
+        la t1 vetorDeslocamentoPuloDiagonal
         add t0 t0 t1
 
         # movimentacao do personagem em y

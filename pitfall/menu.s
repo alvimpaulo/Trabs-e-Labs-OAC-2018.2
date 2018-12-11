@@ -62,7 +62,8 @@ reset_MenuDoJogo:
                 lw t1 0(sp)
                 addi sp sp 4
 
-            jal x0 while_loop_menu
+            la t0 while_loop_menu
+	jalr x0 t0 0
         else_tecla_w_foi_apertada_MovePersonagem:
             li t0 's'
             if_tecla_s_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_s_foi_apertada_MovePersonagem
@@ -91,7 +92,8 @@ reset_MenuDoJogo:
                 lw t1 0(sp)
                 addi sp sp 4
 
-                jal x0 while_loop_menu
+                la t0 while_loop_menu
+	jalr x0 t0 0
             else_tecla_s_foi_apertada_MovePersonagem:
                 li t0 ' '
                 if_tecla_sp_foi_apertada_MovePersonagem: bne a0 t0 else_tecla_sp_foi_apertada_MovePersonagem
@@ -113,8 +115,10 @@ reset_MenuDoJogo:
                     lw t1 0(sp)
                     addi sp sp 4
 
-                    jal x0 reset_MenuDoJogo
-                    jal x0 while_loop_menu
+                    la t0 reset_MenuDoJogo
+	jalr x0 t0 0
+                    la t0 while_loop_menu
+	jalr x0 t0 0
                 else_tecla_sp_foi_apertada_MovePersonagem:
                     li a0 0xff004530
 
@@ -135,8 +139,10 @@ reset_MenuDoJogo:
                     lw t1 0(sp)
                     addi sp sp 4
             	    
-    jal x0 while_loop_menu
-FimMenuDoJogo: jal x0 MenuDoJogo
+    la t0 while_loop_menu
+	jalr x0 t0 0
+FimMenuDoJogo: la t0 MenuDoJogo
+	jalr x0 t0 0
 
 printSpriteWord: #Cuidado, mexe na s0 e s1!!!
 	addi sp  sp  -12
